@@ -1,0 +1,76 @@
+import { AccountID, getID } from "../utils";
+import Image from "./Image";
+import Ingridient from "./Ingridient";
+
+@nearBindgen
+class Recipe {
+  id: string;
+  creator: AccountID;
+  image: Image;
+  title: string;
+  recipeBookID: string;
+  ingredients: Array<Ingridient>;
+  instructions: Array<string>;
+  // to be added: reviews && ratings
+
+  constructor(
+    creator: AccountID,
+    title: string,
+    ingridients: Array<Ingridient>,
+    instructions: Array<string>,
+    recipeBookID: string
+  ) {
+    this.id = getID();
+    this.creator = creator;
+    this.title = title;
+    this.ingredients = ingridients;
+    this.instructions = instructions;
+    this.image = new Image("", "", "");
+    this.recipeBookID = recipeBookID;
+  }
+
+  // set recipe title
+  setTitle(title: string): void {
+    this.title = title;
+  }
+
+  // sets the recipe image banner.
+  setImage(image: Image): void {
+    this.image = new Image(image.name, image.cid, image.url);
+  }
+
+  // Adds ingridient to ingridients.
+  addIngridient(
+    label: string,
+    amount: string,
+    unit: string,
+    details: string
+  ): void {
+    this.ingredients.push(new Ingridient(label, amount, unit, details));
+  }
+
+  // Removes ingridient from ingridients.
+  removeIngridient(ingredientID: string): void {
+    let index = -1;
+
+    for (let i = 0; i < this.ingredients.length; i++) {
+      if (this.ingredients[i].id == ingredientID) index = i;
+    }
+
+    assert(index, "Ingridient not found.");
+
+    this.ingredients.splice(index, 1);
+  }
+
+  // Adds step to instructions.
+  addStep(step: string): void {
+    this.instructions.push(step);
+  }
+  // Removes step from instructions.
+  removeStep(step: string): void {
+    const index = this.instructions.indexOf(step);
+    this.instructions.splice(index, 1);
+  }
+}
+
+export default Recipe;
