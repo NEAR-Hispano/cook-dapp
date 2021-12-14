@@ -10,7 +10,7 @@ class Recipe {
   creator: AccountID;
   category: string;
   description: string;
-  ratings: string;
+  ratings: Map<string, Array<String>>;
   averageRating: number;
   title: string;
   recipeBookID: string;
@@ -29,7 +29,6 @@ class Recipe {
     totalTips: number,
     category: string,
     description: string,
-    ratings: string,
     averageRating: number
   ) {
     this.id = getID();
@@ -42,7 +41,7 @@ class Recipe {
     this.totalTips = totalTips;
     this.category = category;
     this.description = description;
-    this.ratings = ratings;
+    this.ratings = new Map();
     this.averageRating = averageRating;
   }
 
@@ -60,6 +59,8 @@ class Recipe {
   setTotalTips(totalTips: number): void{
     this.totalTips = totalTips
   } 
+
+  
 
   // Adds ingridient to ingridients.
   addIngridient(
@@ -94,6 +95,7 @@ class Recipe {
     this.instructions.splice(index, 1);
   }
 }
+
 
 
 export default Recipe;
