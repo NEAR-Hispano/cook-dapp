@@ -1,48 +1,50 @@
-import { PersistentMap } from "near-sdk-as";
-import { AccountID, getID } from "../utils";
+import { AccountID, getCurrentDate, getID } from "../utils";
 import Image from "./Image";
 import Ingridient from "./Ingridient";
 
 @nearBindgen
 class Recipe {
   id: string;
+  recipeBookID: string;
   image: Image;
   creator: AccountID;
   category: string;
-  description: string;
-  ratings: Map<string, number>;
-  averageRating: number;
   title: string;
-  recipeBookID: string;
+  description: string;
+  chefNote: string;
   ingredients: Array<Ingridient>;
   instructions: Array<string>;
-  createdAt: string;
+  reviews: Set<String>;
+  ratings: Map<string, number>;
+  averageRating: number;
   totalTips: number;
-  // to be added: reviews && ratings
+  createdAt: string;
 
   constructor(
     creator: AccountID,
     title: string,
+    description: string,
     ingridients: Array<Ingridient>,
     instructions: Array<string>,
-    recipeBookID: string,
-    totalTips: number,
+    recipeBookID: string,    
     category: string,
-    description: string,
-    averageRating: number
+    chefNote: string
   ) {
     this.id = getID();
+    this.recipeBookID = recipeBookID;
+    this.image = new Image("", "", "");
     this.creator = creator;
+    this.category = category;
     this.title = title;
+    this.description = description;
+    this.chefNote = chefNote,
     this.ingredients = ingridients;
     this.instructions = instructions;
-    this.image = new Image("", "", "");
-    this.recipeBookID = recipeBookID;
-    this.totalTips = totalTips;
-    this.category = category;
-    this.description = description;
+    this.reviews = new Set();
     this.ratings = new Map();
-    this.averageRating = averageRating;
+    this.averageRating = 0;
+    this.totalTips = 0;
+    this.createdAt = getCurrentDate()
   }
 
   // set recipe title
@@ -55,12 +57,20 @@ class Recipe {
     this.image = new Image(image.name, image.cid, image.url);
   }
 
-  // sets the total of tips given to the recipe author
+  // sets the total of tips given to the recipe creator
   setTotalTips(totalTips: number): void{
     this.totalTips = totalTips
   } 
 
+  // sets category of recipe
+  setCategory(category: string): void {
+    this.category = category;
+  }
   
+  // sets chefNote for recipe
+  setChefNote(chefNote: string): void {
+    this.chefNote = chefNote;
+  }
 
   // Adds ingridient to ingridients.
   addIngridient(

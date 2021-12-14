@@ -8,12 +8,27 @@ export type AccountID = string;
 /* Limits */
 export const MAX_TITLE_LENGTH = 60;
 export const MAX_DESCRIPTION_LENGTH = 160;
-export const MIN_DESCRIPTION_LENGTH = 50;
-export const MIN_TITLE_LENGTH = 30;
+export const MIN_DESCRIPTION_LENGTH = 15;
+export const MIN_TITLE_LENGTH = 10;
 
 /* Definitions */
-export type RecipeCategory = "dinner" | "breakfast" | "lunch" | "dessert" | "snacks";
-export type RatingsKeys = "one" | "oneAndAHalf" | "two" | "twoAndAHalf" | "three" | "threeAndAHalf" | "four" | "fourAndAHalf" | "five";
+export const RatingsKeys: Set<String> = new Set()
+export const RecipeCategorys: Set<String> = new Set()
+RecipeCategorys.add("dinner")
+RecipeCategorys.add("breakfast")
+RecipeCategorys.add("lunch")
+RecipeCategorys.add("dessert")
+RecipeCategorys.add("snacks")
+RatingsKeys.add("one")
+RatingsKeys.add("oneAndAHalf")
+RatingsKeys.add("two")
+RatingsKeys.add("twoAndAHalf")
+RatingsKeys.add("three")
+RatingsKeys.add("threeAndAHalf")
+RatingsKeys.add("four")
+RatingsKeys.add("fourAndAHalf")
+RatingsKeys.add("five")
+RatingsKeys.add("fourAndAHalf")
 
 /* Generates a unique ID */
 export function getID(): string {
