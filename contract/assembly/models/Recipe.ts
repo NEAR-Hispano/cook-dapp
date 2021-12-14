@@ -10,7 +10,7 @@ class Recipe {
   creator: AccountID;
   category: string;
   description: string;
-  ratings: Map<string, Array<String>>;
+  ratings: Map<string, number>;
   averageRating: number;
   title: string;
   recipeBookID: string;
