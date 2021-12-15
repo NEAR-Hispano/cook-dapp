@@ -1,6 +1,6 @@
 import { Context } from "near-sdk-as";
 import { recipeBooks, recipes, users } from "./PersistentCollections";
-import { AccountID } from "./utils";
+import { AccountID, MAX_DESCRIPTION_LENGTH, MAX_TITLE_LENGTH, MIN_DESCRIPTION_LENGTH, MIN_TITLE_LENGTH, RecipeCategorys } from "./utils";
 import User from "./models/User";
 import RecipeBook from "./models/RecipeBook";
 import Recipe from "./models/Recipe";
@@ -19,7 +19,7 @@ import Image from "./models/Image";
  * not exist will create it and return it.
  * @param accountID optional parameter if not provided will use Context.sender.
  * @returns An User object.
- */ 
+ */
 
 export function getUser(accountID: AccountID | null = null): User | null {
   // Check if accountID has been provided and exists.
@@ -93,29 +93,36 @@ export function getRecipeBook(id: string): RecipeBook {
  * @returns Updated recipe book.
  */
 
-export function updateRecipeBook(id: string, title: string | null = null, banner: Image | null = null): RecipeBook {
+export function updateRecipeBook(
+  id: string,
+  title: string | null = null,
+  banner: Image | null = null
+): RecipeBook {
   // Check if recipe exists.
-  assert(recipeBooks.contains(id), "Recipe book not found.")
+  assert(recipeBooks.contains(id), "Recipe book not found.");
 
   // Get recipe by id.
   const recipeBook = getRecipeBook(id);
 
   // Check if creator is the one trying to update else throw error.
-  assert(recipeBook.creator == Context.sender, "Recipe book can only be updated by creator.")
+  assert(
+    recipeBook.creator == Context.sender,
+    "Recipe book can only be updated by creator."
+  );
 
   // Check if title was provided and update.
-  if(title) {
-    recipeBook.setTitle(title)
+  if (title) {
+    recipeBook.setTitle(title);
   }
 
   // Check if banner was provided and update.
-  if(banner) {
-    recipeBook.setBanner(banner)
+  if (banner) {
+    recipeBook.setBanner(banner);
   }
-    
-  recipeBooks.set(recipeBook.id, recipeBook)
-  
-  return recipeBook
+
+  recipeBooks.set(recipeBook.id, recipeBook);
+
+  return recipeBook;
 }
 
 /**
@@ -158,28 +165,41 @@ export function deleteRecipeBook(id: string): void {
 
 /**
  * Method in charge of creation of this recipe.
- * @param recipeBookID ID of recipe book this new recipe will belong to.
- * @param title Descriptive title of the recipe.
- * @param ingridients items the recipe requires.
+ * @param title Title of the recipe.
+ * @param description Description of the recipe.
+ * @param ingridientsList items the recipe requires.
  * @param instructions Steps needed for this recipe to be done.
+ * @param recipeBookID ID of recipe book this new recipe will belong to.
+ * @param category Type of recipe.
+ * @param chefNote Helpful note for preparation of recipe.
  */
 
 export function createRecipe(
-  recipeBookID: string,
   title: string,
+  description: string,
   ingridientsList: Array<Ingridient>,
-  instructions: Array<string>
+  instructions: Array<string>,
+  recipeBookID: string,
+  category: string,
+  chefNote: string
 ): Recipe {
-  // Check if recipe book exists
-  assert(recipeBooks.contains(recipeBookID), "Recipe book not found.");
-  // A recipe book ID should be valid.
-  assert(recipeBookID.length > 1, "Please provide a valid recipe book ID.");
+  
   // The title of the recipe must be descriptive.
-  assert(title.length > 3, "Recipe title to short.");
+  assert(title.length > MIN_TITLE_LENGTH, "Recipe title to short.");
+  // The title of the recipe is to long.
+  assert(title.length < MAX_TITLE_LENGTH, "Recipe title to long.");
+  // The description of the recipe must be descriptive.
+  assert(description.length > MIN_DESCRIPTION_LENGTH, "Recipe description to short.");
+  // The description of the recipe is to long.
+  assert(description.length < MAX_DESCRIPTION_LENGTH, "Recipe description to long.");
+  // check if category is valid.
+  assert(RecipeCategorys.has(category), `Please note this are the valid categories: ${RecipeCategorys.values.toString()}`)
   // A recipe must contain more than 1 ingridient.
   assert(ingridientsList.length > 1, "Please add more than 1 ingridient.");
   // Instructions must have more than 2 steps.
   assert(instructions.length > 2, "Please add at least 3 steps.");
+  // Check if recipe book exists
+  assert(recipeBooks.contains(recipeBookID), "Recipe book not found.");  
 
   // Iniliatize array of Ingridient class.
   const ingridients: Array<Ingridient> = [];
@@ -200,9 +220,12 @@ export function createRecipe(
   const newRecipe = new Recipe(
     Context.sender,
     title,
+    description,
     ingridients,
     instructions,
-    recipeBookID
+    recipeBookID,
+    category,
+    chefNote
   );
 
   // Get user:

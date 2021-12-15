@@ -32,7 +32,8 @@ class Calendar {
 @nearBindgen
 class Event {
     id: string;
-    title: string;    
+    title: string; 
+       
     start: string;
     end: string;
 
