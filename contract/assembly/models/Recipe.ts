@@ -1,3 +1,4 @@
+import { logging } from "near-sdk-as";
 import { AccountID, getCurrentDate, getID } from "../utils";
 import Image from "./Image";
 import Ingridient from "./Ingridient";
@@ -15,8 +16,8 @@ class Recipe {
   ingredients: Array<Ingridient>;
   instructions: Array<string>;
   reviews: Set<String>;
-  ratings: Map<string, number>;
-  averageRating: number;
+  ratings: Array<i32>;
+  averageRating: i32;
   totalTips: number;
   createdAt: string;
 
@@ -26,7 +27,7 @@ class Recipe {
     description: string,
     ingridients: Array<Ingridient>,
     instructions: Array<string>,
-    recipeBookID: string,    
+    recipeBookID: string,
     category: string,
     chefNote: string
   ) {
@@ -37,14 +38,13 @@ class Recipe {
     this.category = category;
     this.title = title;
     this.description = description;
-    this.chefNote = chefNote,
-    this.ingredients = ingridients;
+    (this.chefNote = chefNote), (this.ingredients = ingridients);
     this.instructions = instructions;
     this.reviews = new Set();
-    this.ratings = new Map();
+    this.ratings = new Array();
     this.averageRating = 0;
     this.totalTips = 0;
-    this.createdAt = getCurrentDate()
+    this.createdAt = getCurrentDate();
   }
 
   // set recipe title
@@ -58,18 +58,44 @@ class Recipe {
   }
 
   // sets the total of tips given to the recipe creator
-  setTotalTips(totalTips: number): void{
-    this.totalTips = totalTips
-  } 
+  setTotalTips(totalTips: number): void {
+    this.totalTips = totalTips;
+  }
 
   // sets category of recipe
   setCategory(category: string): void {
     this.category = category;
   }
-  
+
   // sets chefNote for recipe
   setChefNote(chefNote: string): void {
     this.chefNote = chefNote;
+  }
+
+  // adds new review
+  addReview(reviewID: string, rating: i32): void {
+    this.reviews.add(reviewID);
+    // adds rating of review
+    this.addRating(rating);
+  }
+
+  // add new Rating.
+  addRating(rating: i32): void {
+    this.ratings.push(rating);    
+    this.updateAverageRating();
+  }
+
+  // updates average raiting.
+  updateAverageRating(): void {
+    let timesRated = this.ratings.length;
+    let ratingTotal = 0;
+
+    for (let i = 0; i < this.ratings.length; i++) {
+      ratingTotal = ratingTotal + this.ratings[i];
+    }
+
+    this.averageRating = ratingTotal / timesRated;
+    logging.log(`ratingTotal: ${ratingTotal}, timesRated: ${timesRated}`)
   }
 
   // Adds ingridient to ingridients.
@@ -106,6 +132,9 @@ class Recipe {
   }
 }
 
-
-
 export default Recipe;
+
+/**
+ * 
+near call dev-1639457594783-76660970405227 createRecipe '{"title": "Dominican - Mangu", "description": "This recipe helps create the famous platano power dish from Dominican Republic.", "ingridientsList": [{"label": "Banana", "amount": "10", "unit": "pound", "details": "green bananas"}, {"label": "Butter", "amount": "1", "unit": "pound", "details": "Any type."}, {"label": "Onions", "amount": "3", "unit": "pound", "details": "chopped in rings"}], "instructions": ["First crush the bananas", "Add butter", "Serve and enjoy!"], "recipeBookID": "1639457689771839081-74928966", "category": "breakfast", "chefNote":"Feel free to leave a review if you enjoy it!"}' --account-id jgmercedes.testnet
+ */

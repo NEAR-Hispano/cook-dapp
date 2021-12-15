@@ -1,11 +1,19 @@
 import { Context } from "near-sdk-as";
-import { recipeBooks, recipes, users } from "./PersistentCollections";
-import { AccountID, MAX_DESCRIPTION_LENGTH, MAX_TITLE_LENGTH, MIN_DESCRIPTION_LENGTH, MIN_TITLE_LENGTH, RecipeCategorys } from "./utils";
+import { recipeBooks, recipes, reviews, users } from "./PersistentCollections";
+import {
+  AccountID,
+  MAX_DESCRIPTION_LENGTH,
+  MAX_TITLE_LENGTH,
+  MIN_DESCRIPTION_LENGTH,
+  MIN_TITLE_LENGTH,
+  RecipeCategorys,
+} from "./utils";
 import User from "./models/User";
 import RecipeBook from "./models/RecipeBook";
 import Recipe from "./models/Recipe";
 import Ingridient from "./models/Ingridient";
 import Image from "./models/Image";
+import Review from "./models/Review";
 
 /**
  * When the user logs in for the first time, a User will be created and stored in the users
@@ -183,23 +191,31 @@ export function createRecipe(
   category: string,
   chefNote: string
 ): Recipe {
-  
   // The title of the recipe must be descriptive.
   assert(title.length > MIN_TITLE_LENGTH, "Recipe title to short.");
   // The title of the recipe is to long.
   assert(title.length < MAX_TITLE_LENGTH, "Recipe title to long.");
   // The description of the recipe must be descriptive.
-  assert(description.length > MIN_DESCRIPTION_LENGTH, "Recipe description to short.");
+  assert(
+    description.length > MIN_DESCRIPTION_LENGTH,
+    "Recipe description to short."
+  );
   // The description of the recipe is to long.
-  assert(description.length < MAX_DESCRIPTION_LENGTH, "Recipe description to long.");
+  assert(
+    description.length < MAX_DESCRIPTION_LENGTH,
+    "Recipe description to long."
+  );
   // check if category is valid.
-  assert(RecipeCategorys.has(category), `Please note this are the valid categories: ${RecipeCategorys.values.toString()}`)
+  assert(
+    RecipeCategorys.has(category),
+    `Please note this are the valid categories: ${RecipeCategorys.values.toString()}`
+  );
   // A recipe must contain more than 1 ingridient.
   assert(ingridientsList.length > 1, "Please add more than 1 ingridient.");
   // Instructions must have more than 2 steps.
   assert(instructions.length > 2, "Please add at least 3 steps.");
   // Check if recipe book exists
-  assert(recipeBooks.contains(recipeBookID), "Recipe book not found.");  
+  assert(recipeBooks.contains(recipeBookID), "Recipe book not found.");
 
   // Iniliatize array of Ingridient class.
   const ingridients: Array<Ingridient> = [];
@@ -298,4 +314,28 @@ export function deleteRecipe(id: string): void {
 
   // Delete from collection.
   recipes.delete(recipe.id);
+}
+
+export function createReview(
+  text: string,
+  rating: i32,
+  recipeID: string
+): void {
+  // Check if text is too short
+  assert(text.length > MIN_DESCRIPTION_LENGTH, "Review too short.");
+  // Check if text is too long
+  assert(text.length < MAX_DESCRIPTION_LENGTH, "Review too long.");
+  // Check if recipe exists.
+  assert(recipes.contains(recipeID), "Recipe not found.");
+
+  const recipe = getRecipe(recipeID);
+  const reviewKey = `${Context.sender}-${recipeID}`;
+
+  const newReview = new Review(Context.sender, text, rating, recipeID);
+
+  reviews.set(reviewKey, newReview);
+
+  recipe.addReview(reviewKey, rating);
+
+  recipes.set(recipeID, recipe);
 }
