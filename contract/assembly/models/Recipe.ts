@@ -15,7 +15,7 @@ class Recipe {
   chefNote: string;
   ingredients: Array<Ingridient>;
   instructions: Array<string>;
-  reviews: Set<String>;
+  reviews: Array<string>;
   ratings: Array<i32>;
   averageRating: i32;
   totalTips: number;
@@ -40,7 +40,7 @@ class Recipe {
     this.description = description;
     (this.chefNote = chefNote), (this.ingredients = ingridients);
     this.instructions = instructions;
-    this.reviews = new Set();
+    this.reviews = new Array();
     this.ratings = new Array();
     this.averageRating = 0;
     this.totalTips = 0;
@@ -70,32 +70,6 @@ class Recipe {
   // sets chefNote for recipe
   setChefNote(chefNote: string): void {
     this.chefNote = chefNote;
-  }
-
-  // adds new review
-  addReview(reviewID: string, rating: i32): void {
-    this.reviews.add(reviewID);
-    // adds rating of review
-    this.addRating(rating);
-  }
-
-  // add new Rating.
-  addRating(rating: i32): void {
-    this.ratings.push(rating);    
-    this.updateAverageRating();
-  }
-
-  // updates average raiting.
-  updateAverageRating(): void {
-    let timesRated = this.ratings.length;
-    let ratingTotal = 0;
-
-    for (let i = 0; i < this.ratings.length; i++) {
-      ratingTotal = ratingTotal + this.ratings[i];
-    }
-
-    this.averageRating = ratingTotal / timesRated;
-    logging.log(`ratingTotal: ${ratingTotal}, timesRated: ${timesRated}`)
   }
 
   // Adds ingridient to ingridients.
@@ -130,11 +104,43 @@ class Recipe {
     const index = this.instructions.indexOf(step);
     this.instructions.splice(index, 1);
   }
+
+  // adds new review
+  addReview(reviewID: string): void {
+    this.reviews.push(reviewID);
+  }
+
+  // add new Rating.
+  addRating(rating: i32): void {
+    this.ratings.push(rating);
+  }
+
+  // updates average raiting.
+  updateAverageRating(): void {
+    let timesRated = this.ratings.length;
+    let ratingTotal = 0;
+
+    for (let i = 0; i < this.ratings.length; i++) {
+      ratingTotal = ratingTotal + this.ratings[i];
+    }
+
+    // Divide if timesRated is not zero.
+    if (timesRated === 0 || isNaN(timesRated)) {
+      this.averageRating = 0;
+    }
+    // else return 0 as this.averageRating.
+    else {
+      this.averageRating = ratingTotal / timesRated;
+    }
+  }
+
+  deleteReview(id: string): void {
+    this.reviews.splice(this.reviews.indexOf(id), 1);
+  }
+
+  deleteRating(rating: i32): void {
+    this.ratings.splice(this.ratings.indexOf(rating), 1);
+  }
 }
 
 export default Recipe;
-
-/**
- * 
-near call dev-1639457594783-76660970405227 createRecipe '{"title": "Dominican - Mangu", "description": "This recipe helps create the famous platano power dish from Dominican Republic.", "ingridientsList": [{"label": "Banana", "amount": "10", "unit": "pound", "details": "green bananas"}, {"label": "Butter", "amount": "1", "unit": "pound", "details": "Any type."}, {"label": "Onions", "amount": "3", "unit": "pound", "details": "chopped in rings"}], "instructions": ["First crush the bananas", "Add butter", "Serve and enjoy!"], "recipeBookID": "1639457689771839081-74928966", "category": "breakfast", "chefNote":"Feel free to leave a review if you enjoy it!"}' --account-id jgmercedes.testnet
- */

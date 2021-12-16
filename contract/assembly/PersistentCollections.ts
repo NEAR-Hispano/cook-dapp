@@ -13,7 +13,7 @@ import Review from "./models/Review";
 const users = new PersistentUnorderedMap<AccountID, User>("users");
 const recipeBooks = new PersistentUnorderedMap<AccountID, RecipeBook>("recipeBooks");
 const recipes = new PersistentUnorderedMap<AccountID, Recipe>("recipes");
-const reviews = new PersistentUnorderedMap<AccountID, Review>("reviews");
+const reviews = new PersistentUnorderedMap<string, Review>("reviews");
 
 
 export { users, recipeBooks, recipes, reviews };

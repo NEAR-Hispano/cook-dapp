@@ -1,5 +1,6 @@
 import { AccountID, getCurrentDate, getID } from "../utils";
 
+@nearBindgen
 class Review {
     id: string;
     creator: AccountID;

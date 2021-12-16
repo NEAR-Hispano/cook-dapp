@@ -257,6 +257,9 @@ export function createRecipe(
   // get recipe book
   const recipeBook = getRecipeBook(recipeBookID);
 
+  // Check if user created the recipe book
+  assert(recipeBook.creator == Context.sender, "You can only create recipes on your own recipe books.")
+
   if (recipeBook) {
     // add new recipe id to list of recipes in the recipe book.
     recipeBook.addRecipe(newRecipe.id);
@@ -304,6 +307,13 @@ export function deleteRecipe(id: string): void {
     users.set(Context.sender, user);
   }
 
+  // delete recipe reviews
+  if (recipe.reviews.length > 0) {
+    for (let i = 0; i < recipe.reviews.length; i++) {
+      deleteReview(recipe.reviews[i]);
+    }
+  }
+
   // Get recipe book
   const recipeBook = getRecipeBook(recipe.recipeBookID);
 
@@ -320,7 +330,7 @@ export function createReview(
   text: string,
   rating: i32,
   recipeID: string
-): void {
+): Review {
   // Check if text is too short
   assert(text.length > MIN_DESCRIPTION_LENGTH, "Review too short.");
   // Check if text is too long
@@ -329,13 +339,58 @@ export function createReview(
   assert(recipes.contains(recipeID), "Recipe not found.");
 
   const recipe = getRecipe(recipeID);
-  const reviewKey = `${Context.sender}-${recipeID}`;
+  const reviewKey = `${Context.sender}-${recipe.id}`;
+
+  assert(
+    !recipe.reviews.includes(reviewKey),
+    "Users can only review a recipe once."
+  );
 
   const newReview = new Review(Context.sender, text, rating, recipeID);
 
+  recipe.addReview(reviewKey);
+  recipe.addRating(rating);
+  recipe.updateAverageRating();
+
   reviews.set(reviewKey, newReview);
-
-  recipe.addReview(reviewKey, rating);
-
   recipes.set(recipeID, recipe);
+
+  return newReview;
+}
+
+export function getReview(id: string): Review {
+  return reviews.getSome(id);
+}
+
+export function getRecipeReviews(id: string): Array<Review> {
+  assert(recipes.contains(id), "Recipe not found.");
+
+  let recipe = getRecipe(id);
+  let reviewsList: Array<Review> = new Array();
+
+  for (let i = 0; i < recipe.reviews.length; i++) {
+    if (getReview(recipe.reviews[i])) {
+      reviewsList.push(getReview(recipe.reviews[i]));
+    }
+  }
+
+  return reviewsList;
+}
+
+export function deleteReview(id: string): void {
+  const review = getReview(id);
+  assert(
+    review.creator == Context.sender,
+    "Review can only be deleted by creator."
+  );
+  const reviewKey = `${review.creator}-${review.recipeID}`;
+
+  const recipe = getRecipe(review.recipeID);
+
+  recipe.deleteReview(reviewKey);
+  recipe.deleteRating(review.rating);
+  recipe.updateAverageRating();
+  recipes.set(review.recipeID, recipe);
+
+  reviews.delete(reviewKey);
 }
