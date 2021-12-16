@@ -3,6 +3,7 @@ import { AccountID } from "./utils";
 import User from "./models/User";
 import RecipeBook from "./models/RecipeBook";
 import Recipe from "./models/Recipe";
+import Review from "./models/Review";
 
 /**
  * This file contains collection of variables which will store data 
@@ -12,6 +13,7 @@ import Recipe from "./models/Recipe";
 const users = new PersistentUnorderedMap<AccountID, User>("users");
 const recipeBooks = new PersistentUnorderedMap<AccountID, RecipeBook>("recipeBooks");
 const recipes = new PersistentUnorderedMap<AccountID, Recipe>("recipes");
+const reviews = new PersistentUnorderedMap<string, Review>("reviews");
 
 
-export { users, recipeBooks, recipes };
+export { users, recipeBooks, recipes, reviews };

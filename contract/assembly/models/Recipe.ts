@@ -1,3 +1,4 @@
+import { logging } from "near-sdk-as";
 import { AccountID, getCurrentDate, getID } from "../utils";
 import Image from "./Image";
 import Ingridient from "./Ingridient";
@@ -14,9 +15,9 @@ class Recipe {
   chefNote: string;
   ingredients: Array<Ingridient>;
   instructions: Array<string>;
-  reviews: Set<String>;
-  ratings: Map<string, number>;
-  averageRating: number;
+  reviews: Array<string>;
+  ratings: Array<i32>;
+  averageRating: i32;
   totalTips: number;
   createdAt: string;
 
@@ -26,7 +27,7 @@ class Recipe {
     description: string,
     ingridients: Array<Ingridient>,
     instructions: Array<string>,
-    recipeBookID: string,    
+    recipeBookID: string,
     category: string,
     chefNote: string
   ) {
@@ -37,14 +38,13 @@ class Recipe {
     this.category = category;
     this.title = title;
     this.description = description;
-    this.chefNote = chefNote,
-    this.ingredients = ingridients;
+    (this.chefNote = chefNote), (this.ingredients = ingridients);
     this.instructions = instructions;
-    this.reviews = new Set();
-    this.ratings = new Map();
+    this.reviews = new Array();
+    this.ratings = new Array();
     this.averageRating = 0;
     this.totalTips = 0;
-    this.createdAt = getCurrentDate()
+    this.createdAt = getCurrentDate();
   }
 
   // set recipe title
@@ -58,15 +58,15 @@ class Recipe {
   }
 
   // sets the total of tips given to the recipe creator
-  setTotalTips(totalTips: number): void{
-    this.totalTips = totalTips
-  } 
+  setTotalTips(totalTips: number): void {
+    this.totalTips = totalTips;
+  }
 
   // sets category of recipe
   setCategory(category: string): void {
     this.category = category;
   }
-  
+
   // sets chefNote for recipe
   setChefNote(chefNote: string): void {
     this.chefNote = chefNote;
@@ -104,8 +104,43 @@ class Recipe {
     const index = this.instructions.indexOf(step);
     this.instructions.splice(index, 1);
   }
+
+  // adds new review
+  addReview(reviewID: string): void {
+    this.reviews.push(reviewID);
+  }
+
+  // add new Rating.
+  addRating(rating: i32): void {
+    this.ratings.push(rating);
+  }
+
+  // updates average raiting.
+  updateAverageRating(): void {
+    let timesRated = this.ratings.length;
+    let ratingTotal = 0;
+
+    for (let i = 0; i < this.ratings.length; i++) {
+      ratingTotal = ratingTotal + this.ratings[i];
+    }
+
+    // Divide if timesRated is not zero.
+    if (timesRated === 0 || isNaN(timesRated)) {
+      this.averageRating = 0;
+    }
+    // else return 0 as this.averageRating.
+    else {
+      this.averageRating = ratingTotal / timesRated;
+    }
+  }
+
+  deleteReview(id: string): void {
+    this.reviews.splice(this.reviews.indexOf(id), 1);
+  }
+
+  deleteRating(rating: i32): void {
+    this.ratings.splice(this.ratings.indexOf(rating), 1);
+  }
 }
-
-
 
 export default Recipe;
