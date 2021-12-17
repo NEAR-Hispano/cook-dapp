@@ -1,4 +1,3 @@
-import { logging } from "near-sdk-as";
 import { AccountID, getCurrentDate, getID } from "../utils";
 import Image from "./Image";
 import Ingridient from "./Ingridient";
@@ -16,8 +15,8 @@ class Recipe {
   ingredients: Array<Ingridient>;
   instructions: Array<string>;
   reviews: Array<string>;
-  ratings: Array<i32>;
-  averageRating: i32;
+  ratings: Array<f64>;
+  averageRating: f64;
   totalTips: number;
   createdAt: string;
 
@@ -111,14 +110,14 @@ class Recipe {
   }
 
   // add new Rating.
-  addRating(rating: i32): void {
+  addRating(rating: f64): void {
     this.ratings.push(rating);
   }
 
   // updates average raiting.
   updateAverageRating(): void {
     let timesRated = this.ratings.length;
-    let ratingTotal = 0;
+    let ratingTotal: f64 = 0;
 
     for (let i = 0; i < this.ratings.length; i++) {
       ratingTotal = ratingTotal + this.ratings[i];
@@ -138,7 +137,7 @@ class Recipe {
     this.reviews.splice(this.reviews.indexOf(id), 1);
   }
 
-  deleteRating(rating: i32): void {
+  deleteRating(rating: f64): void {
     this.ratings.splice(this.ratings.indexOf(rating), 1);
   }
 }

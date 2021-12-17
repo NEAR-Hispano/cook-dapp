@@ -28,3 +28,11 @@ export function getID(): string {
 export function getCurrentDate(): string {
   return datetime.block_datetime().toString().split("T")[0]
 }
+
+/* Get real rating */
+export function mapRating(number: f64): f64 {
+  if (number === 0 || isNaN(number)) {
+    return 0
+  }
+  return <f64>(number / 2);
+}

@@ -2,6 +2,7 @@ import { Context } from "near-sdk-as";
 import { recipeBooks, recipes, reviews, users } from "./PersistentCollections";
 import {
   AccountID,
+  mapRating,
   MAX_DESCRIPTION_LENGTH,
   MAX_TITLE_LENGTH,
   MIN_DESCRIPTION_LENGTH,
@@ -319,6 +320,7 @@ export function deleteRecipe(id: string): void {
 
   // Delete recipe from recipe book.
   recipeBook.removeRecipe(recipe.id);
+
   // Update recipe book.
   recipeBooks.set(recipeBook.id, recipeBook);
 
@@ -326,7 +328,14 @@ export function deleteRecipe(id: string): void {
   recipes.delete(recipe.id);
 }
 
-export function createReview(
+/**
+ * Method to create a Review.
+ * @param text Text of the review.
+ * @param rating Rating to put in the review.
+ * @param recipeID ID of the review.
+ */
+
+ export function createReview(
   text: string,
   rating: i32,
   recipeID: string
@@ -338,36 +347,98 @@ export function createReview(
   // Check if recipe exists.
   assert(recipes.contains(recipeID), "Recipe not found.");
 
+  //Get reference from the recipe its being reviewed.
   const recipe = getRecipe(recipeID);
+  //Defines the reviewKey.
   const reviewKey = `${Context.sender}-${recipe.id}`;
 
+  //Check if the user has already reviewed the current recipe.
   assert(
     !recipe.reviews.includes(reviewKey),
     "Users can only review a recipe once."
   );
+  
+  //
+  const newReview = new Review(Context.sender, text, mapRating(<f64>rating), recipeID);
 
-  const newReview = new Review(Context.sender, text, rating, recipeID);
-
+  //Add review to the current recipe.
   recipe.addReview(reviewKey);
-  recipe.addRating(rating);
+  //Add rating to the current recipe.
+  recipe.addRating(mapRating(<f64>rating));
+  //Update current AverageRating of the recipe.
   recipe.updateAverageRating();
 
+
+  //Set Maps
   reviews.set(reviewKey, newReview);
   recipes.set(recipeID, recipe);
 
   return newReview;
 }
 
-export function getReview(id: string): Review {
+/**
+ * Method to get a Review.
+ * @param id ID of the review to get.
+ */
+
+ export function getReview(id: string): Review {
   return reviews.getSome(id);
 }
 
-export function getRecipeReviews(id: string): Array<Review> {
+
+/**
+ * Method that updates a review.
+ * @param id Review id to update.
+ * @param text New review text.
+ * @param rating New review rating
+ * @returns Updated Review.
+ */
+
+export function updateReview(id: string, text: string, rating: i32): Review {
+  assert(reviews.contains(id), "Review not found.")
+  // Check if text is too short
+  assert(text.length > MIN_DESCRIPTION_LENGTH, "Review too short.");
+  // Check if text is too long
+  assert(text.length < MAX_DESCRIPTION_LENGTH, "Review too long.");
+
+  const review = getReview(id);
+  const recipe = getRecipe(review.recipeID);
+
+  // Check if creator is the one updating.
+  assert(review.creator == Context.sender, "Review can only be updated by creator.")
+  
+  // Delete old rating from recipe.
+  recipe.deleteRating(review.rating);
+
+  // Update review
+  review.setText(text);
+  review.setRating(mapRating(<f64>rating));
+  
+  // Update new rating from review 
+  recipe.addRating(review.rating);
+  recipe.updateAverageRating();
+
+  // Update persistent collections.
+  reviews.set(`${Context.sender}-${review.id}`, review);
+  recipes.set(recipe.id, recipe);
+
+  return review;
+}
+
+/**
+ * Method to get the all the reviews from a recipe.
+ * @param id ID of the recipe to ge the reviews from.
+ */
+
+ export function getRecipeReviews(id: string): Array<Review> {
   assert(recipes.contains(id), "Recipe not found.");
 
+  // get recipe from the id.
   let recipe = getRecipe(id);
+  // Set a reviewList to store the reviews of the current recipe.
   let reviewsList: Array<Review> = new Array();
 
+  // Get all the reviews saved in the recipe by their ids.
   for (let i = 0; i < recipe.reviews.length; i++) {
     if (getReview(recipe.reviews[i])) {
       reviewsList.push(getReview(recipe.reviews[i]));
@@ -377,20 +448,34 @@ export function getRecipeReviews(id: string): Array<Review> {
   return reviewsList;
 }
 
-export function deleteReview(id: string): void {
+/**
+ * Method to delete a Review.
+ * @param id ID of the review to delete.
+ */
+
+ export function deleteReview(id: string): void {
+  //Get review from id
   const review = getReview(id);
+  //Check if the user who wants to delete the review is the author of it
   assert(
     review.creator == Context.sender,
     "Review can only be deleted by creator."
   );
+  //Set the reviewKey
   const reviewKey = `${review.creator}-${review.recipeID}`;
 
+  //Set recipe by ID
   const recipe = getRecipe(review.recipeID);
 
+  //Deletes Review from recipe.
   recipe.deleteReview(reviewKey);
+  //Deletes Rating from recipe.
   recipe.deleteRating(review.rating);
+  //Updates the Average Rating of the recipe.
   recipe.updateAverageRating();
+  //Update recipes map
   recipes.set(review.recipeID, recipe);
 
+  //Deletes the review
   reviews.delete(reviewKey);
 }
