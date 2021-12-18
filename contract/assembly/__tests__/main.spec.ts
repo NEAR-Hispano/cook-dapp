@@ -88,7 +88,7 @@ describe('Create a review  ', () => {
 describe('Deletes a review  ', () => {
   it('Requires an ID of a Recipe Book.', () => {
     expect(() => {
-      Contract.deleteReview("");
+      Contract.deleteReview("melenoidd.testnet-1639544172647018008-75053426");
     }).toThrow("The review you are trying to delete is not from your own");
   })
 })
