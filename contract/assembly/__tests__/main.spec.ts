@@ -93,3 +93,10 @@ describe('Deletes a review  ', () => {
   })
 })
 
+describe('Deletes a review  ', () => {
+  it('Requires an ID of a Recipe Book.', () => {
+    expect(() => {
+      Contract.updateReview("melenoidd.testnet-1639544172647018008-75053426", invalidShortText, 3);
+    }).toThrow("Description too short, please add a longer review");
+  })
+})
