@@ -50,10 +50,19 @@ class Recipe {
   setTitle(title: string): void {
     this.title = title;
   }
+  
+  // set recipe description
+  setDescription(description: string): void {
+    this.description = description;
+  }
 
   // sets the recipe image banner.
-  setImage(image: Image): void {
-    this.image = new Image(image.name, image.cid, image.url);
+  setImage(image: Image | null = null): void {
+    if(image) {
+      this.image = new Image(image.name, image.cid, image.url);
+    } else {
+      this.image = new Image("", "", "");
+    }
   }
 
   // sets the total of tips given to the recipe creator

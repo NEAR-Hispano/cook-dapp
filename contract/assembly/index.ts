@@ -209,7 +209,9 @@ export function createRecipe(
   // check if category is valid.
   assert(
     RecipeCategorys.has(category),
-    `Please note this are the valid categories: ${RecipeCategorys.values.toString()}`
+    `Please note this are the valid categories: ${RecipeCategorys.values().join(
+      ", "
+    )}`
   );
   // A recipe must contain more than 1 ingridient.
   assert(ingridientsList.length > 1, "Please add more than 1 ingridient.");
@@ -259,7 +261,10 @@ export function createRecipe(
   const recipeBook = getRecipeBook(recipeBookID);
 
   // Check if user created the recipe book
-  assert(recipeBook.creator == Context.sender, "You can only create recipes on your own recipe books.")
+  assert(
+    recipeBook.creator == Context.sender,
+    "You can only create recipes on your own recipe books."
+  );
 
   if (recipeBook) {
     // add new recipe id to list of recipes in the recipe book.
@@ -282,6 +287,99 @@ export function createRecipe(
 
 export function getRecipe(id: string): Recipe {
   return recipes.getSome(id);
+}
+
+/**
+ * Method that updates recipe
+ * @param id ID of recipe to update.
+ * @param image Image to set recipe with.
+ * @param category Category to set recipe with.
+ * @param title Title to set recipe with.
+ * @param description Description to set recipe with.
+ * @param chefNote Chef note to set recipe with.
+ * @param ingridients New ingridients to add to recipe.
+ * @param instructions New steps to add to recipe.
+ * @returns Updated Recipe.
+ */
+
+export function updateRecipe(
+  id: string,
+  category: string,
+  title: string,
+  description: string,
+  chefNote: string,
+  image: Image | null = null,
+  ingridients: Array<Ingridient> | null = null,
+  instructions: Array<string> | null = null,
+): Recipe {
+  // Check that recipe exists.
+  assert(recipes.contains(id), "Recipe not found.");
+  // The title of the recipe must be descriptive.
+  assert(title.length > MIN_TITLE_LENGTH, "Recipe title to short.");
+  // The title of the recipe is to long.
+  assert(title.length < MAX_TITLE_LENGTH, "Recipe title to long.");
+  // The description of the recipe must be descriptive.
+  assert(
+    description.length > MIN_DESCRIPTION_LENGTH,
+    "Recipe description to short."
+  );
+  // The description of the recipe is to long.
+  assert(
+    description.length < MAX_DESCRIPTION_LENGTH,
+    "Recipe description to long."
+  );
+  // The chef note of the recipe must be descriptive.
+  assert(
+    chefNote.length > MIN_DESCRIPTION_LENGTH,
+    "Recipe chef note to short."
+  );
+  // The chef note of the recipe is to long.
+  assert(chefNote.length < MAX_DESCRIPTION_LENGTH, "Recipe chef note to long.");
+  // check if category is valid.
+  assert(
+    RecipeCategorys.has(category),
+    `Please note this are the valid categories: ${RecipeCategorys.values().join(", ")}`
+  );
+
+  const recipe = getRecipe(id);
+
+  // Check if the creator is the one calling the function.
+  assert(
+    recipe.creator == Context.sender,
+    "Recipe can only be updated by recipe creator."
+  );
+  // Update Image
+  recipe.setImage(image);
+  // Update Category
+  recipe.setCategory(category);
+  // Update title
+  recipe.setTitle(title);
+  // Update description
+  recipe.setDescription(description);
+  // Update chef note
+  recipe.setChefNote(chefNote);
+  // Update ingridient list
+  if (ingridients) {
+    for (let i = 0; i < ingridients.length; i++) {
+      const ingridient = ingridients[i];
+      recipe.addIngridient(
+        ingridient.label,
+        ingridient.amount,
+        ingridient.unit,
+        ingridient.details
+      );
+    }
+  }
+  // Update instructions
+  if (instructions) {
+    for (let i = 0; i < instructions.length; i++) {
+      recipe.addStep(instructions[i]);
+    }
+  }
+
+  // Update persistent collection.
+  recipes.set(recipe.id, recipe);
+  return recipe;
 }
 
 /**
@@ -335,7 +433,7 @@ export function deleteRecipe(id: string): void {
  * @param recipeID ID of the review.
  */
 
- export function createReview(
+export function createReview(
   text: string,
   rating: i32,
   recipeID: string
@@ -357,9 +455,14 @@ export function deleteRecipe(id: string): void {
     !recipe.reviews.includes(reviewKey),
     "Users can only review a recipe once."
   );
-  
-  //
-  const newReview = new Review(Context.sender, text, mapRating(<f64>rating), recipeID);
+
+  //Create new review
+  const newReview = new Review(
+    Context.sender,
+    text,
+    mapRating(<f64>rating),
+    recipeID
+  );
 
   //Add review to the current recipe.
   recipe.addReview(reviewKey);
@@ -367,7 +470,6 @@ export function deleteRecipe(id: string): void {
   recipe.addRating(mapRating(<f64>rating));
   //Update current AverageRating of the recipe.
   recipe.updateAverageRating();
-
 
   //Set Maps
   reviews.set(reviewKey, newReview);
@@ -381,10 +483,9 @@ export function deleteRecipe(id: string): void {
  * @param id ID of the review to get.
  */
 
- export function getReview(id: string): Review {
+export function getReview(id: string): Review {
   return reviews.getSome(id);
 }
-
 
 /**
  * Method that updates a review.
@@ -395,7 +496,7 @@ export function deleteRecipe(id: string): void {
  */
 
 export function updateReview(id: string, text: string, rating: i32): Review {
-  assert(reviews.contains(id), "Review not found.")
+  assert(reviews.contains(id), "Review not found.");
   // Check if text is too short
   assert(text.length > MIN_DESCRIPTION_LENGTH, "Review too short.");
   // Check if text is too long
@@ -405,16 +506,19 @@ export function updateReview(id: string, text: string, rating: i32): Review {
   const recipe = getRecipe(review.recipeID);
 
   // Check if creator is the one updating.
-  assert(review.creator == Context.sender, "Review can only be updated by creator.")
-  
+  assert(
+    review.creator == Context.sender,
+    "Review can only be updated by creator."
+  );
+
   // Delete old rating from recipe.
   recipe.deleteRating(review.rating);
 
   // Update review
   review.setText(text);
   review.setRating(mapRating(<f64>rating));
-  
-  // Update new rating from review 
+
+  // Update new rating from review
   recipe.addRating(review.rating);
   recipe.updateAverageRating();
 
@@ -430,7 +534,7 @@ export function updateReview(id: string, text: string, rating: i32): Review {
  * @param id ID of the recipe to ge the reviews from.
  */
 
- export function getRecipeReviews(id: string): Array<Review> {
+export function getRecipeReviews(id: string): Array<Review> {
   assert(recipes.contains(id), "Recipe not found.");
 
   // get recipe from the id.
@@ -453,7 +557,9 @@ export function updateReview(id: string, text: string, rating: i32): Review {
  * @param id ID of the review to delete.
  */
 
- export function deleteReview(id: string): void {
+export function deleteReview(id: string): void {
+  // check if review exists.
+  assert(reviews.contains(id), "Review not found.");
   //Get review from id
   const review = getReview(id);
   //Check if the user who wants to delete the review is the author of it
