@@ -3,6 +3,7 @@ import * as Contract from "../index"
 
 const invalidID = "notAnID"
 const invalidTitle = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. "
+const invalidShortText = "This short"
 
 describe('Get User  ', () => {
   it('should get a user.', () => {
@@ -65,6 +66,30 @@ describe('Deletes a recipe  ', () => {
     expect(() => {
       Contract.deleteRecipe(invalidID);
     }).toThrow("Recipe not found.");
+  })
+})
+
+describe('Deletes a recipe  ', () => {
+  it('Requires an ID of a Recipe Book.', () => {
+    expect(() => {
+      Contract.deleteRecipe(invalidID);
+    }).toThrow("Recipe not found.");
+  })
+})
+
+describe('Create a review  ', () => {
+  it('Requires an ID of a Recipe Book.', () => {
+    expect(() => {
+      Contract.createReview("It looks very tasty", 3, invalidID);
+    }).toThrow("The recipe you want to rate, is not found");
+  })
+})
+
+describe('Deletes a review  ', () => {
+  it('Requires an ID of a Recipe Book.', () => {
+    expect(() => {
+      Contract.deleteReview("");
+    }).toThrow("The review you are trying to delete is not from your own");
   })
 })
 
