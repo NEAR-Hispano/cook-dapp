@@ -1,4 +1,4 @@
-import { Context } from "near-sdk-as";
+import { Context, logging } from "near-sdk-as";
 import { recipeBooks, recipes, reviews, users } from "./PersistentCollections";
 import {
   AccountID,
@@ -310,7 +310,7 @@ export function updateRecipe(
   chefNote: string,
   image: Image | null = null,
   ingridients: Array<Ingridient> | null = null,
-  instructions: Array<string> | null = null,
+  instructions: Array<string> | null = null
 ): Recipe {
   // Check that recipe exists.
   assert(recipes.contains(id), "Recipe not found.");
@@ -338,7 +338,9 @@ export function updateRecipe(
   // check if category is valid.
   assert(
     RecipeCategorys.has(category),
-    `Please note this are the valid categories: ${RecipeCategorys.values().join(", ")}`
+    `Please note this are the valid categories: ${RecipeCategorys.values().join(
+      ", "
+    )}`
   );
 
   const recipe = getRecipe(id);
@@ -380,6 +382,26 @@ export function updateRecipe(
   // Update persistent collection.
   recipes.set(recipe.id, recipe);
   return recipe;
+}
+
+/**
+ * Method to get all recipes created.
+ * @returns Array of all recipes created.
+ */
+
+export function getRecipes(): Array<Recipe> {
+  //Get all the keys the recipes are stored with.
+  const keys = recipes.keys();
+  //Initialize var that will hold list of recipes.
+  const list = new Array<Recipe>();
+
+  for (let i = 0; i < keys.length; i++) {
+    // loop through the keys, get and push each recipe the key is holding as pair.
+    list.push(getRecipe(keys[i]));
+  }
+
+  // return list or recipes created.
+  return list;
 }
 
 /**
@@ -444,6 +466,8 @@ export function createReview(
   assert(text.length < MAX_DESCRIPTION_LENGTH, "Review too long.");
   // Check if recipe exists.
   assert(recipes.contains(recipeID), "Recipe not found.");
+  // Check that rating is greater or equal to 1 and equal or lesser than 10.
+  assert(rating >= 1 && rating >= 10, "Rating must range beetwen 1 through 10.")
 
   //Get reference from the recipe its being reviewed.
   const recipe = getRecipe(recipeID);
