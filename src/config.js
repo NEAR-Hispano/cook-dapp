@@ -1,4 +1,4 @@
-const CONTRACT_NAME = process.env.CONTRACT_NAME ||'cookdapp'
+const CONTRACT_NAME = process.env.CONTRACT_NAME ||'near-transfer-practice'
 
 function getConfig(env) {
   switch (env) {
