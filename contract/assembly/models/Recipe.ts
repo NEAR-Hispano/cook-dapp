@@ -17,7 +17,7 @@ class Recipe {
   reviews: Array<string>;
   ratings: Array<f64>;
   averageRating: f64;
-  totalTips: number;
+  totalTips: f64;
   createdAt: string;
 
   constructor(
@@ -83,7 +83,7 @@ class Recipe {
   // Adds ingridient to ingridients.
   addIngridient(
     label: string,
-    amount: string,
+    amount: i32,
     unit: string,
     details: string
   ): void {

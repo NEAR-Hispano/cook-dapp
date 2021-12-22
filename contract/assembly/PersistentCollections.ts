@@ -15,5 +15,4 @@ const recipeBooks = new PersistentUnorderedMap<AccountID, RecipeBook>("recipeBoo
 const recipes = new PersistentUnorderedMap<string, Recipe>("recipes");
 const reviews = new PersistentUnorderedMap<string, Review>("reviews");
 
-
 export { users, recipeBooks, recipes, reviews };

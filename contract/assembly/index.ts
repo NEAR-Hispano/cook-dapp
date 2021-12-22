@@ -1,12 +1,16 @@
-import { Context, logging } from "near-sdk-as";
+import { Context, ContractPromiseBatch, logging, u128 } from "near-sdk-as";
 import { recipeBooks, recipes, reviews, users } from "./PersistentCollections";
 import {
   AccountID,
+  Amount,
+  asNEAR,
   mapRating,
   MAX_DESCRIPTION_LENGTH,
   MAX_TITLE_LENGTH,
   MIN_DESCRIPTION_LENGTH,
   MIN_TITLE_LENGTH,
+  nearToF64,
+  ONE_NEAR,
   RecipeCategorys,
 } from "./utils";
 import User from "./models/User";
@@ -385,6 +389,47 @@ export function updateRecipe(
 }
 
 /**
+ *  Method that allows a user to tip the creator of another user.
+ * @param recipeID Recipe id in order to send the deposit attached to recipe creator and update information of recipe.
+ */
+
+export function tipRecipe(recipeID: string): void {
+  // Check that recipe ID is valid and recipe exists.
+  assert(recipes.contains(recipeID), "Recipe not found.");
+  
+  // Check that user tipping exists.
+  assert(users.contains(Context.sender), "Please register as a user with the method getUser or login to DApp.")
+  
+  // Get amount of NEAR for the recipe tip.
+  const amount: Amount = Context.attachedDeposit;
+  
+  // Check if tip amount is greater than zero.
+  assert(amount > u128.Zero, "Tip amount must be greater than zero.");
+  
+  // Get Recipe
+  const recipe = getRecipe(recipeID);
+  
+  // Process transaction to recipe creator.
+  ContractPromiseBatch.create(recipe.creator).transfer(amount);
+  
+  // Update recipe totalTips
+  recipe.setTotalTips(f64.add(recipe.totalTips, nearToF64(amount)));
+  
+  // Get user that is tipping.
+  const userTipping = getUser(Context.sender);
+
+  // Updated total tipped by user.
+  if(userTipping) {
+    userTipping.setTotalTipped(f64.add(userTipping.totalTipped, nearToF64(amount)));
+    // Update user in persistent collection.
+    users.set(Context.sender, userTipping);
+  }
+
+  // Update recipe.
+  recipes.set(recipe.id, recipe);
+}
+
+/**
  * Method to get all recipes created.
  * @returns Array of all recipes created.
  */
@@ -467,7 +512,10 @@ export function createReview(
   // Check if recipe exists.
   assert(recipes.contains(recipeID), "Recipe not found.");
   // Check that rating is greater or equal to 1 and equal or lesser than 10.
-  assert(rating >= 1 && rating >= 10, "Rating must range beetwen 1 through 10.")
+  assert(
+    rating > 0 && rating < 11,
+    "Rating must range beetwen 1 through 10."
+  );
 
   //Get reference from the recipe its being reviewed.
   const recipe = getRecipe(recipeID);

@@ -9,6 +9,7 @@ class User {
   savedRecipeBooks: Array<String>;
   recipesCreated: Array<String>;
   recipeBooksCreated: Array<String>;
+  totalTipped: f64;
   calendar: Calendar;
   groceryList: GroceryList;
 
@@ -18,6 +19,7 @@ class User {
     this.savedRecipeBooks = new Array();
     this.recipesCreated = new Array();
     this.recipeBooksCreated = new Array();
+    this.totalTipped = 0;
     this.calendar = new Calendar();
     this.groceryList = new GroceryList();
   }
@@ -58,6 +60,10 @@ class User {
   removeFromRecipeBooksCreated(id: string): void {
     let index = this.recipeBooksCreated.indexOf(id);
     this.recipeBooksCreated.splice(index, 1);
+  }
+  // Updates total tipped amount.
+  setTotalTipped(totalTipped: f64): void {
+    this.totalTipped = totalTipped;
   }
 }
 

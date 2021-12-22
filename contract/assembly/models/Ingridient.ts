@@ -4,11 +4,11 @@ import { getID } from "../utils";
 class Ingridient {
   id: string;
   label: string;
-  amount: string;
+  amount: i32;
   unit: string;
   details: string;
 
-  constructor(label: string, amount: string, unit: string, details: string) {
+  constructor(label: string, amount: i32, unit: string, details: string) {
     this.id = getID();
     this.label = label;
     this.amount = amount;
@@ -19,7 +19,7 @@ class Ingridient {
   setLabel(label: string): void {
     this.label = label;
   }
-  setAmount(amount: string): void {
+  setAmount(amount: u64): void {
     this.amount = amount;
   }
   setDetails(details: string): void {

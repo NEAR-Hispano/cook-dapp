@@ -1,5 +1,5 @@
 import { u128 } from "near-sdk-as";
-import { context, datetime } from "near-sdk-core";
+import { context, datetime, logging } from "near-sdk-core";
 
 /**
  * Account ID of transaction sender.
@@ -99,4 +99,14 @@ export function asNEAR(amount: u128): string {
  */
 export function toYocto(amount: number): u128 {
   return u128.mul(ONE_NEAR, u128.from(amount));
+}
+
+/**
+ * @function nearToF64
+ * @param amount Amount in yocto Ⓝ as an unsigned 128-bit integer
+ * @returns NEAR amount in f64.
+ */
+
+export function nearToF64(amount: u128): f64 {
+  return u128.div(amount, ONE_NEAR).toF64();
 }
