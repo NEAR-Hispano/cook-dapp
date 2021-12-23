@@ -4,6 +4,7 @@ import {
   AccountID,
   Amount,
   asNEAR,
+  getCurrentDate,
   mapRating,
   MAX_DESCRIPTION_LENGTH,
   MAX_TITLE_LENGTH,
@@ -396,31 +397,36 @@ export function updateRecipe(
 export function tipRecipe(recipeID: string): void {
   // Check that recipe ID is valid and recipe exists.
   assert(recipes.contains(recipeID), "Recipe not found.");
-  
+
   // Check that user tipping exists.
-  assert(users.contains(Context.sender), "Please register as a user with the method getUser or login to DApp.")
-  
+  assert(
+    users.contains(Context.sender),
+    "Please register as a user with the method getUser or login to DApp."
+  );
+
   // Get amount of NEAR for the recipe tip.
   const amount: Amount = Context.attachedDeposit;
-  
+
   // Check if tip amount is greater than zero.
   assert(amount > u128.Zero, "Tip amount must be greater than zero.");
-  
+
   // Get Recipe
   const recipe = getRecipe(recipeID);
-  
+
   // Process transaction to recipe creator.
   ContractPromiseBatch.create(recipe.creator).transfer(amount);
-  
+
   // Update recipe totalTips
   recipe.setTotalTips(f64.add(recipe.totalTips, nearToF64(amount)));
-  
+
   // Get user that is tipping.
   const userTipping = getUser(Context.sender);
 
   // Updated total tipped by user.
-  if(userTipping) {
-    userTipping.setTotalTipped(f64.add(userTipping.totalTipped, nearToF64(amount)));
+  if (userTipping) {
+    userTipping.setTotalTipped(
+      f64.add(userTipping.totalTipped, nearToF64(amount))
+    );
     // Update user in persistent collection.
     users.set(Context.sender, userTipping);
   }
@@ -447,6 +453,48 @@ export function getRecipes(): Array<Recipe> {
 
   // return list or recipes created.
   return list;
+}
+
+
+/**
+ * Method that returns the most trending recipes in current month.
+ * @returns Sorted list of recipes by the highest ratings in current month.
+ */
+
+export function getTrendingRecipes(): Array<Recipe> {
+  // Get list of all recipes.
+  const allRecipes = getRecipes();
+  // List of recipes created in current month.
+  const validRecipes: Array<Recipe> = new Array();
+
+  // Pushes recipes which were created in current month to validRecipes.
+  for (let i = 0; i < allRecipes.length; i++) {
+    // Month current recipe was created.
+    const recipeCreatedMonth = Date.parse(allRecipes[i].createdAt).getUTCMonth();
+    // Current month.
+    const currentMonth = Date.parse(getCurrentDate()).getUTCMonth();
+
+    // Skip recipe which were not created in current month.
+    if (recipeCreatedMonth !== currentMonth) continue;
+    // Push recipes created in current month.
+    validRecipes.push(allRecipes[i]);
+  }
+
+  // Return sorted valid recipes which are created on current month sorted by avarege rating.
+  return validRecipes.sort(
+    (aRecipe, bRecipe) => <i32>bRecipe.averageRating - <i32>aRecipe.averageRating
+  );
+}
+
+/**
+ * Method that gets list of most tiped recipes.
+ * @returns Recipes list sorted by the most tiped ones.
+ */
+export function getMostTipedRecipes(): Array<Recipe> {
+  // Gets list of recipes with getRecipes() than returns sorted array by the amount of tips.
+  return getRecipes().sort(
+    (aRecipe, bRecipe) => <i32>bRecipe.totalTips - <i32>aRecipe.totalTips
+  );
 }
 
 /**
@@ -512,10 +560,7 @@ export function createReview(
   // Check if recipe exists.
   assert(recipes.contains(recipeID), "Recipe not found.");
   // Check that rating is greater or equal to 1 and equal or lesser than 10.
-  assert(
-    rating > 0 && rating < 11,
-    "Rating must range beetwen 1 through 10."
-  );
+  assert(rating > 0 && rating < 11, "Rating must range beetwen 1 through 10.");
 
   //Get reference from the recipe its being reviewed.
   const recipe = getRecipe(recipeID);
