@@ -1,4 +1,13 @@
-import { AccountID, getCurrentDate, getID } from "../utils";
+import {
+  AccountID,
+  getCurrentDate,
+  getID,
+  MAX_DESCRIPTION_LENGTH,
+  MAX_TITLE_LENGTH,
+  MIN_DESCRIPTION_LENGTH,
+  MIN_TITLE_LENGTH,
+  RecipeCategorys,
+} from "../utils";
 import Image from "./Image";
 import Ingridient from "./Ingridient";
 
@@ -47,18 +56,36 @@ class Recipe {
   }
 
   // set recipe title
-  setTitle(title: string): void {
-    this.title = title;
+  setTitle(title: string | null): void {
+    if (title) {
+      // The title of the recipe must be descriptive.
+      assert(title.length > MIN_TITLE_LENGTH, "Recipe title to short.");
+      // The title of the recipe is to long.
+      assert(title.length < MAX_TITLE_LENGTH, "Recipe title to long.");
+      this.title = title;
+    }
   }
-  
+
   // set recipe description
-  setDescription(description: string): void {
-    this.description = description;
+  setDescription(description: string | null): void {
+    if (description) {
+      // The description of the recipe must be descriptive.
+      assert(
+        description.length > MIN_DESCRIPTION_LENGTH,
+        "Recipe description to short."
+      );
+      // The description of the recipe is to long.
+      assert(
+        description.length < MAX_DESCRIPTION_LENGTH,
+        "Recipe description to long."
+      );
+      this.description = description;
+    }
   }
 
   // sets the recipe image banner.
   setImage(image: Image | null = null): void {
-    if(image) {
+    if (image) {
       this.image = new Image(image.name, image.cid, image.url);
     } else {
       this.image = new Image("", "", "");
@@ -71,46 +98,47 @@ class Recipe {
   }
 
   // sets category of recipe
-  setCategory(category: string): void {
-    this.category = category;
+  setCategory(category: string | null): void {
+    if (category) {
+    // check if category is valid.
+    assert(
+      RecipeCategorys.has(category),
+      `Please note this are the valid categories: ${RecipeCategorys.values().join(
+        ", "
+      )}`
+    );
+      this.category = category;
+    }
   }
 
   // sets chefNote for recipe
-  setChefNote(chefNote: string): void {
-    this.chefNote = chefNote;
-  }
-
-  // Adds ingridient to ingridients.
-  addIngridient(
-    label: string,
-    amount: i32,
-    unit: string,
-    details: string
-  ): void {
-    this.ingredients.push(new Ingridient(label, amount, unit, details));
-  }
-
-  // Removes ingridient from ingridients.
-  removeIngridient(ingredientID: string): void {
-    let index = -1;
-
-    for (let i = 0; i < this.ingredients.length; i++) {
-      if (this.ingredients[i].id == ingredientID) index = i;
+  setChefNote(chefNote: string | null): void {
+    if (chefNote) {
+      // The chef note of the recipe must be descriptive.
+      assert(
+        chefNote.length > MIN_DESCRIPTION_LENGTH,
+        "Recipe chef note to short."
+      );
+      // The chef note of the recipe is to long.
+      assert(
+        chefNote.length < MAX_DESCRIPTION_LENGTH,
+        "Recipe chef note to long."
+      );
+      this.chefNote = chefNote;
     }
-
-    assert(index, "Ingredient not found.");
-
-    this.ingredients.splice(index, 1);
   }
 
-  // Adds step to instructions.
-  addStep(step: string): void {
-    this.instructions.push(step);
+  // Sets the ingridient list.
+  setIngridients(ingridients: Array<Ingridient> | null): void{
+    if(ingridients) {
+      this.ingredients = ingridients;
+    }
   }
-  // Removes step from instructions.
-  removeStep(step: string): void {
-    const index = this.instructions.indexOf(step);
-    this.instructions.splice(index, 1);
+
+  setInstructions(instructions: Array<string> | null): void {
+    if(instructions) {
+      this.instructions = instructions;
+    }
   }
 
   // adds new review
