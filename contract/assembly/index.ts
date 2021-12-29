@@ -1,9 +1,18 @@
-import { Context, ContractPromiseBatch, logging, u128 } from "near-sdk-as";
-import { recipeBooks, recipes, reviews, users } from "./PersistentCollections";
+import {
+  Context,
+  ContractPromiseBatch,
+  u128,
+} from "near-sdk-as";
+import {
+  groceryLists,
+  recipeBooks,
+  recipes,
+  reviews,
+  users,
+} from "./PersistentCollections";
 import {
   AccountID,
   Amount,
-  asNEAR,
   getCurrentDate,
   mapRating,
   MAX_DESCRIPTION_LENGTH,
@@ -11,7 +20,6 @@ import {
   MIN_DESCRIPTION_LENGTH,
   MIN_TITLE_LENGTH,
   nearToF64,
-  ONE_NEAR,
   RecipeCategorys,
 } from "./utils";
 import User from "./models/User";
@@ -20,6 +28,7 @@ import Recipe from "./models/Recipe";
 import Ingridient from "./models/Ingridient";
 import Image from "./models/Image";
 import Review from "./models/Review";
+import GroceryLists, { GroceryList } from "./models/GroceryLists";
 
 /**
  * When the user logs in for the first time, a User will be created and stored in the users
@@ -53,14 +62,29 @@ export function getUser(accountID: AccountID | null = null): User | null {
     return users.get(Context.sender);
   }
 
-  // Create the user if it does not exist.
+  // Create the user as it wasn't found.
+  createUser();
+
+  // return new user created
+  return users.get(Context.sender);
+}
+
+/**
+ * Method that creates the user and initializes tools they will use such as their grocery list.
+ * @returns
+ */
+
+function createUser(): void {
+  // Create the user.
   let newUser = new User(Context.sender);
+  // Create the user grocery list.
+  let userGroceryList = new GroceryLists();
 
   // set the new user in the persistent map with the key being the user accountID.
   users.set(Context.sender, newUser);
 
-  // return new user created
-  return users.get(Context.sender);
+  // Create user grocery list.
+  groceryLists.set(Context.sender, userGroceryList);
 }
 
 /**
@@ -309,47 +333,18 @@ export function getRecipe(id: string): Recipe {
 
 export function updateRecipe(
   id: string,
-  category: string,
-  title: string,
-  description: string,
-  chefNote: string,
+  category: string | null = null,
+  title: string | null = null,
+  description: string | null = null,
+  chefNote: string | null = null,
   image: Image | null = null,
   ingridients: Array<Ingridient> | null = null,
   instructions: Array<string> | null = null
 ): Recipe {
   // Check that recipe exists.
   assert(recipes.contains(id), "Recipe not found.");
-  // The title of the recipe must be descriptive.
-  assert(title.length > MIN_TITLE_LENGTH, "Recipe title to short.");
-  // The title of the recipe is to long.
-  assert(title.length < MAX_TITLE_LENGTH, "Recipe title to long.");
-  // The description of the recipe must be descriptive.
-  assert(
-    description.length > MIN_DESCRIPTION_LENGTH,
-    "Recipe description to short."
-  );
-  // The description of the recipe is to long.
-  assert(
-    description.length < MAX_DESCRIPTION_LENGTH,
-    "Recipe description to long."
-  );
-  // The chef note of the recipe must be descriptive.
-  assert(
-    chefNote.length > MIN_DESCRIPTION_LENGTH,
-    "Recipe chef note to short."
-  );
-  // The chef note of the recipe is to long.
-  assert(chefNote.length < MAX_DESCRIPTION_LENGTH, "Recipe chef note to long.");
-  // check if category is valid.
-  assert(
-    RecipeCategorys.has(category),
-    `Please note this are the valid categories: ${RecipeCategorys.values().join(
-      ", "
-    )}`
-  );
-
+  // Get recipe.
   const recipe = getRecipe(id);
-
   // Check if the creator is the one calling the function.
   assert(
     recipe.creator == Context.sender,
@@ -366,24 +361,9 @@ export function updateRecipe(
   // Update chef note
   recipe.setChefNote(chefNote);
   // Update ingridient list
-  if (ingridients) {
-    for (let i = 0; i < ingridients.length; i++) {
-      const ingridient = ingridients[i];
-      recipe.addIngridient(
-        ingridient.label,
-        ingridient.amount,
-        ingridient.unit,
-        ingridient.details
-      );
-    }
-  }
+  recipe.setIngridients(ingridients);
   // Update instructions
-  if (instructions) {
-    for (let i = 0; i < instructions.length; i++) {
-      recipe.addStep(instructions[i]);
-    }
-  }
-
+  recipe.setInstructions(instructions);
   // Update persistent collection.
   recipes.set(recipe.id, recipe);
   return recipe;
@@ -455,7 +435,6 @@ export function getRecipes(): Array<Recipe> {
   return list;
 }
 
-
 /**
  * Method that returns the most trending recipes in current month.
  * @returns Sorted list of recipes by the highest ratings in current month.
@@ -470,7 +449,9 @@ export function getTrendingRecipes(): Array<Recipe> {
   // Pushes recipes which were created in current month to validRecipes.
   for (let i = 0; i < allRecipes.length; i++) {
     // Month current recipe was created.
-    const recipeCreatedMonth = Date.parse(allRecipes[i].createdAt).getUTCMonth();
+    const recipeCreatedMonth = Date.parse(
+      allRecipes[i].createdAt
+    ).getUTCMonth();
     // Current month.
     const currentMonth = Date.parse(getCurrentDate()).getUTCMonth();
 
@@ -482,7 +463,8 @@ export function getTrendingRecipes(): Array<Recipe> {
 
   // Return sorted valid recipes which are created on current month sorted by avarege rating.
   return validRecipes.sort(
-    (aRecipe, bRecipe) => <i32>bRecipe.averageRating - <i32>aRecipe.averageRating
+    (aRecipe, bRecipe) =>
+      <i32>bRecipe.averageRating - <i32>aRecipe.averageRating
   );
 }
 
@@ -701,4 +683,37 @@ export function deleteReview(id: string): void {
 
   //Deletes the review
   reviews.delete(reviewKey);
+}
+
+export function updateGroceryList(lists: Array<GroceryList>): void {
+  const groceryList = groceryLists.get(Context.sender);
+  if (groceryList) {
+    groceryList.setLists(lists);
+    groceryLists.set(Context.sender, groceryList);
+  }
+}
+
+export function addGroceryListRecipe(recipeID: string): void {
+  const groceryList = groceryLists.get(Context.sender);
+  if (groceryList) {
+    const recipe = getRecipe(recipeID);
+    const list: GroceryList = new GroceryList();
+    list.label = recipe.title;
+    list.recipeID = recipe.id;
+
+    for (let i = 0; i < recipe.ingredients.length; i++) {
+      list.ingridients.push(recipe.ingredients[i]);
+    }
+
+    groceryList.lists.push(list);
+    groceryLists.set(Context.sender, groceryList);
+  }
+}
+
+export function addFavoriteRecipe(recipeID: string): void {
+  const user = getUser();
+  if (user) {
+    user.addToFavoritesRecipes(recipeID);
+    users.set(Context.sender, user);
+  }
 }
