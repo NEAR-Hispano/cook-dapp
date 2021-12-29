@@ -1,102 +1,201 @@
-near-transfer-practice
-==================
+# :fork_and_knife: CookDApp
 
-This [React] app was initialized with [create-near-app]
+CookDApp’s purpose is to allow the creation, sharing, and schedule of meals through recipes.
 
-
-Quick Start
-===========
-
-To run this project locally:
-
-1. Prerequisites: Make sure you've installed [Node.js] ≥ 12
-2. Install dependencies: `yarn install`
-3. Run the local development server: `yarn dev` (see `package.json` for a
-   full list of `scripts` you can run with `yarn`)
-
-Now you'll have a local development environment backed by the NEAR TestNet!
-
-Go ahead and play with the app and the code. As you make code changes, the app will automatically reload.
+CookDApp name represents the implementation of food, recipes, and cooks in this DApp, it will allow users to create recipe books in which they will be able to store recipes, these recipes can be edited and deleted by the creator, the individual recipes and recipe books can be rated by others, this rating will be used to keep tracking of the most rated recipes, this will allow a ranking system for the most popular and delicious meals which can be selected and added to anyone’s schedule so they may try the recipe themselves.
 
 
-Exploring The Code
-==================
+# :gear: Installation
 
-1. The "backend" code lives in the `/contract` folder. See the README there for
-   more info.
-2. The frontend code lives in the `/src` folder. `/src/index.html` is a great
-   place to start exploring. Note that it loads in `/src/index.js`, where you
-   can learn how the frontend connects to the NEAR blockchain.
-3. Tests: there are different kinds of tests for the frontend and the smart
-   contract. See `contract/README` for info about how it's tested. The frontend
-   code gets tested with [jest]. You can run both of these at once with `yarn
-   run test`.
+For the locally installation of this project:
 
+## Pre-requisites
 
-Deploy
-======
+- Before you compile this code, you will need to install  [Node.js](https://nodejs.org/en/download/package-manager/)  ≥ 12
 
-Every smart contract in NEAR has its [own associated account][NEAR accounts]. When you run `yarn dev`, your smart contract gets deployed to the live NEAR TestNet with a throwaway account. When you're ready to make it permanent, here's how.
+- (optional) near-shell
 
+```
+npm i -g near-shell
+```
 
-Step 0: Install near-cli (optional)
--------------------------------------
+-  yarn
 
-[near-cli] is a command line interface (CLI) for interacting with the NEAR blockchain. It was installed to the local `node_modules` folder when you ran `yarn install`, but for best ergonomics you may want to install it globally:
+```
+npm i -g yarn
+```
 
-    yarn install --global near-cli
+- Install dependencies: 
+```
+yarn install.
+```
+# :page_facing_up:	 Cloning the repo
 
-Or, if you'd rather use the locally-installed version, you can prefix all `near` commands with `npx`
+```html
+    git clone https://github.com/NEAR-Hispano/cook-dapp.git
+```
 
-Ensure that it's installed with `near --version` (or `npx near --version`)
+```html
+    cd cook-dapp
+```
 
+# :hammer_and_wrench: Project scripts for build and deploy
 
-Step 1: Create an account for the contract
-------------------------------------------
-
-Each account on NEAR can have at most one contract deployed to it. If you've already created an account such as `your-name.testnet`, you can deploy your contract to `near-transfer-practice.your-name.testnet`. Assuming you've already created an account on [NEAR Wallet], here's how to create `near-transfer-practice.your-name.testnet`:
-
-1. Authorize NEAR CLI, following the commands it gives you:
-
-      near login
-
-2. Create a subaccount (replace `YOUR-NAME` below with your actual account name):
-
-      near create-account near-transfer-practice.YOUR-NAME.testnet --masterAccount YOUR-NAME.testnet
+Install npm dependencies
 
 
-Step 2: set contract name in code
----------------------------------
-
-Modify the line in `src/config.js` that sets the account name of the contract. Set it to the account id you used above.
-
-    const CONTRACT_NAME = process.env.CONTRACT_NAME || 'near-transfer-practice.YOUR-NAME.testnet'
+```html
+    npm install
+```
 
 
-Step 3: deploy!
----------------
-
-One command:
-
-    yarn deploy
-
-As you can see in `package.json`, this does two things:
-
-1. builds & deploys smart contract to NEAR TestNet
-2. builds & deploys frontend code to GitHub using [gh-pages]. This will only work if the project already has a repository set up on GitHub. Feel free to modify the `deploy` script in `package.json` to deploy elsewhere.
+### Run contract scripts
 
 
-Troubleshooting
-===============
+Script for building the contract
+```html
+    sh scripts/build-contract.sh
+```
+Script for deploying the contract
+```html
+    sh scripts/dev-deploy-contract.sh
+```
+Script for cleaning the current local build of the contract
+```html
+    sh scripts/clean.sh
+```
+Script for testing contract
+```html
+    sh scripts/test-contract.sh
+```
+# :memo: Try it yourself
+# Assembly Contract Methods
+## getUser Method
+Method to get user info
+```html
+    near call <your deployed contract> getUser "{}" --account-id <your test account>
+```
 
-On Windows, if you're seeing an error containing `EPERM` it may be related to spaces in your path. Please see [this issue](https://github.com/zkat/npx/issues/209) for more details.
+## createUser Method
+
+```html
+    near call <your deployed contract> createUser "{}" --account-id <your test account>
+```
+
+## createRecipeBook Method
+```html
+    near call <your deployed contract> createRecipeBook "{"title":string}" --account-id <your test account>
+```
+
+## getRecipeBook Method
+
+```html
+    near call <your deployed contract> getRecipeBook "{"id": string}" --account-id <your test account>
+```
+
+## updateRecipeBook Method
+
+```html
+    near call <your deployed contract> updateRecipeBook "{"id": string, "title": string}" --account-id <your test account>
+```
+## deleteRecipeBook Method
+
+```html
+    near call <your deployed contract> deleteRecipeBook "{"id": string}" --account-id <your test account>
+```
+## createRecipe Method
+
+```html
+    near call <your deployed contract> createRecipe "{"title": string, "description":string, "ingridientsList": Array["label":string, "amount":i32, "unit":string, "details":strring], "instructions":Array[string], "recipeBookID":strrig, "category":string, "chefNote":string}" --account-id <your test account>
+```
+
+## getRecipe Method
+
+```html
+    near call <your deployed contract> getRecipe"{"id": string}" --account-id <your test account>
+```
+## updateRecipe Method
+
+```html
+    near call <your deployed contract> updateRecipe "{"id": string, "title": string, "description":string, "ingridientsList": Array["label":string, "amount":i32, "unit":string, "details":strring], "instructions":Array[string], "recipeBookID":strrig, "category":string, "chefNote":string}" --account-id <your test account>
+```
+## deleteRecipe Method
+
+```html
+    near call <your deployed contract> updateRecipeBook "{"id": string}" --account-id <your test account>
+```
+## tipRecipe Method
+
+```html
+    near call <your deployed contract> tipRecipe "{"id": string}" --account-id <your test account>
+```
+## getRecipes Method
+
+```html
+    near call <your deployed contract> getRecipes "{}" --account-id <your test account>
+```
+## getTrendingRecipes Method
+
+```html
+    near call <your deployed contract> getTrendingRecipes "{}" --account-id <your test account>
+```
+## getMostTipedRecipes Method
+
+```html
+    near call <your deployed contract> getMostTipedRecipes "{}" --account-id <your test account>
+```
+
+## createReview Method
+
+```html
+    near call <your deployed contract> createReview "{"text": string, "rating":i32, "recipeID":string}" --account-id <your test account>
+```
+## getReview Method
+
+```html
+    near call <your deployed contract> getReview "{"id": string}" --account-id <your test account>
+```
+## updateReview Method
+
+```html
+    near call <your deployed contract> updateReview "{"id": string, "text": string, "rating": i32}" --account-id <your test account>
+```
+## getRecipeReviews Method
+
+```html
+    near call <your deployed contract> getRecipeReviews "{"id": string}" --account-id <your test account>
+```
+## deleteReview Method
+
+```html
+    near call <your deployed contract> deleteReview "{"id": string}" --account-id <your test account>
+```
+## addGroceryListRecipe Method
+
+```html
+    near call <your deployed contract> addGroceryListRecipe "{"recipeID": string}" --account-id <your test account>
+```
+## updateGroceryList Method
+
+```html
+    near call <your deployed contract> updateRecipeBook "{"lists": Array["label": string, "ingridients": Array["label":string, "amount":i32, "unit":string, "details":string], "recipeID": string]}" --account-id <your test account>
+```
+## addFavoriteRecipe Method
+
+```html
+    near call <your deployed contract> addFavoriteRecipe "{"recipeID": string}" --account-id <your test account>
+```
+# To Explore
+
+-   `assembly/` contract developed in AssemblyScript
+-   `assembly/assembly/index.ts`  for the AssemblyScript contract code
+-   `src/index.html`  for the front-end HTML
+-   `src/index.js`  for the JavaScript front-end code and how to integrate contracts
+-   `src/App.js`  for the main React component
+-    `scripts/` runable scripts for building/testing/deploying the contract
+
+# Front-End Current Mockups
+
+Here you can give a check to our Front-End design -  [Figma Mockup](www.figma.com/file/919MgqK51D7Yf8j161Wwbx/CookdApp)
 
 
-  [React]: https://reactjs.org/
-  [create-near-app]: https://github.com/near/create-near-app
-  [Node.js]: https://nodejs.org/en/download/package-manager/
-  [jest]: https://jestjs.io/
-  [NEAR accounts]: https://docs.near.org/docs/concepts/account
-  [NEAR Wallet]: https://wallet.testnet.near.org/
-  [near-cli]: https://github.com/near/near-cli
-  [gh-pages]: https://github.com/tschaub/gh-pages
