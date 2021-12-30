@@ -11,6 +11,8 @@ import {
 import Image from "./Image";
 import Ingridient from "./Ingridient";
 
+const defaultRecipeImage: Image = new Image("", "", "");
+
 @nearBindgen
 class Recipe {
   id: string;
@@ -41,7 +43,7 @@ class Recipe {
   ) {
     this.id = getID();
     this.recipeBookID = recipeBookID;
-    this.image = new Image("", "", "");
+    this.image = defaultRecipeImage;
     this.creator = creator;
     this.category = category;
     this.title = title;
@@ -87,8 +89,6 @@ class Recipe {
   setImage(image: Image | null = null): void {
     if (image) {
       this.image = new Image(image.name, image.cid, image.url);
-    } else {
-      this.image = new Image("", "", "");
     }
   }
 
@@ -100,13 +100,13 @@ class Recipe {
   // sets category of recipe
   setCategory(category: string | null): void {
     if (category) {
-    // check if category is valid.
-    assert(
-      RecipeCategorys.has(category),
-      `Please note this are the valid categories: ${RecipeCategorys.values().join(
-        ", "
-      )}`
-    );
+      // check if category is valid.
+      assert(
+        RecipeCategorys.has(category),
+        `Please note this are the valid categories: ${RecipeCategorys.values().join(
+          ", "
+        )}`
+      );
       this.category = category;
     }
   }
@@ -129,14 +129,14 @@ class Recipe {
   }
 
   // Sets the ingridient list.
-  setIngridients(ingridients: Array<Ingridient> | null): void{
-    if(ingridients) {
+  setIngridients(ingridients: Array<Ingridient> | null): void {
+    if (ingridients) {
       this.ingredients = ingridients;
     }
   }
 
   setInstructions(instructions: Array<string> | null): void {
-    if(instructions) {
+    if (instructions) {
       this.instructions = instructions;
     }
   }
@@ -170,10 +170,12 @@ class Recipe {
     }
   }
 
+  // Deleted review ID.
   deleteReview(id: string): void {
     this.reviews.splice(this.reviews.indexOf(id), 1);
   }
 
+  // Deletes rating.
   deleteRating(rating: f64): void {
     this.ratings.splice(this.ratings.indexOf(rating), 1);
   }

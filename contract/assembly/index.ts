@@ -1,10 +1,6 @@
+import { Context, ContractPromiseBatch, u128 } from "near-sdk-as";
 import {
-  Context,
-  ContractPromiseBatch,
-  u128,
-} from "near-sdk-as";
-import {
-  groceryLists,
+  shoppingLists,
   recipeBooks,
   recipes,
   reviews,
@@ -28,7 +24,7 @@ import Recipe from "./models/Recipe";
 import Ingridient from "./models/Ingridient";
 import Image from "./models/Image";
 import Review from "./models/Review";
-import GroceryLists, { GroceryList } from "./models/GroceryLists";
+import { ShoppingList, RecipeList, GroceryList } from "./models/ShopppingList";
 
 /**
  * When the user logs in for the first time, a User will be created and stored in the users
@@ -39,7 +35,7 @@ import GroceryLists, { GroceryList } from "./models/GroceryLists";
  * Method in charge of getting an User object accepts param accountID which is optional,
  * if provided will check if it exists and return the user or else it will throw with message
  * user not found; If no param is provided will use Context.sender to get the user if it does
- * not exist will create it and return it.
+ * not exist will create it, and return it.
  * @param accountID optional parameter if not provided will use Context.sender.
  * @returns An User object.
  */
@@ -78,13 +74,13 @@ function createUser(): void {
   // Create the user.
   let newUser = new User(Context.sender);
   // Create the user grocery list.
-  let userGroceryList = new GroceryLists();
+  let userGroceryList = new ShoppingList();
 
   // set the new user in the persistent map with the key being the user accountID.
   users.set(Context.sender, newUser);
 
   // Create user grocery list.
-  groceryLists.set(Context.sender, userGroceryList);
+  shoppingLists.set(Context.sender, userGroceryList);
 }
 
 /**
@@ -400,7 +396,18 @@ export function tipRecipe(recipeID: string): void {
   recipe.setTotalTips(f64.add(recipe.totalTips, nearToF64(amount)));
 
   // Get user that is tipping.
-  const userTipping = getUser(Context.sender);
+  const userTipping = getUser();
+
+  // Get user being tipped.
+  const userBeingTipped = getUser(recipe.creator);
+
+  // Increment Creator of recipe tips recived.
+  if(userBeingTipped) {
+    // Update user total tips recived .
+    userBeingTipped.setTipsRecived(f64.add(userBeingTipped.tipsReceived, nearToF64(amount)));
+    // Update user in persistent collection.
+    users.set(recipe.creator, userBeingTipped);
+  }
 
   // Updated total tipped by user.
   if (userTipping) {
@@ -619,10 +626,10 @@ export function updateReview(id: string, text: string, rating: i32): Review {
 
   // Update new rating from review
   recipe.addRating(review.rating);
-  recipe.updateAverageRating();
+  recipe.updateAverageRating();  
 
   // Update persistent collections.
-  reviews.set(`${Context.sender}-${review.id}`, review);
+  reviews.set(`${Context.sender}-${review.recipeID}`, review);
   recipes.set(recipe.id, recipe);
 
   return review;
@@ -685,35 +692,59 @@ export function deleteReview(id: string): void {
   reviews.delete(reviewKey);
 }
 
+/**
+ * Method that gets and returns User ShoppingList.
+ * @returns User ShoppingList
+ */
+export function getShoppingList(): ShoppingList {
+  return shoppingLists.getSome(Context.sender);
+}
+
+/**
+ * Method that updates the User GroceryList in ShoppingList.
+ * @param lists List of ingridients the User ShoppingList - GroceryList will be populated with.
+ */
 export function updateGroceryList(lists: Array<GroceryList>): void {
-  const groceryList = groceryLists.get(Context.sender);
-  if (groceryList) {
-    groceryList.setLists(lists);
-    groceryLists.set(Context.sender, groceryList);
-  }
+  const shoppingList = shoppingLists.getSome(Context.sender);
+  shoppingList.setGroceryLists(lists);
+  shoppingLists.set(Context.sender, shoppingList);
 }
 
-export function addGroceryListRecipe(recipeID: string): void {
-  const groceryList = groceryLists.get(Context.sender);
-  if (groceryList) {
-    const recipe = getRecipe(recipeID);
-    const list: GroceryList = new GroceryList();
-    list.label = recipe.title;
-    list.recipeID = recipe.id;
-
-    for (let i = 0; i < recipe.ingredients.length; i++) {
-      list.ingridients.push(recipe.ingredients[i]);
-    }
-
-    groceryList.lists.push(list);
-    groceryLists.set(Context.sender, groceryList);
-  }
+/**
+ * Method that updates the User RecipeList in ShoppingList.
+ * @param lists List of ingridients the User ShoppingList - RecipeList will be populated with.
+ */
+export function updateRecipeList(lists: Array<RecipeList>): void {
+  const shoppingList = shoppingLists.getSome(Context.sender);
+  shoppingList.setRecipeLists(lists);
+  shoppingLists.set(Context.sender, shoppingList);
 }
 
+/**
+ * Method that creates a dedicated list of recipe ingridients and adds it to the User ShoppingList.
+ * @param recipeID ID of recipe which Ingridients will be added to a dedicated list in the user shopping list.
+ */
+export function addRecipeList(recipeID: string): void {
+  const shoppingList = shoppingLists.getSome(Context.sender);
+  const recipe = getRecipe(recipeID);
+  const recipeList: RecipeList = new RecipeList();
+
+  recipeList.label = recipe.title;
+  recipeList.recipeID = recipe.id;
+  recipeList.ingridients = recipe.ingredients;
+
+  shoppingList.recipesLists.push(recipeList);
+  shoppingLists.set(Context.sender, shoppingList);
+}
+
+/**
+ * Method that adds a recipe id to the users list of favorite recipes.
+ * @param recipeID ID of recipe to be added to the User favoriteRecipes.
+ */
 export function addFavoriteRecipe(recipeID: string): void {
   const user = getUser();
   if (user) {
-    user.addToFavoritesRecipes(recipeID);
+    user.addToFavoriteRecipes(recipeID);
     users.set(Context.sender, user);
   }
 }

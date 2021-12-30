@@ -2,7 +2,7 @@ import { AccountID, getID } from "../utils";
 import Image from "./Image";
 
 
-const defaultBanner = new Image("", "", "")
+const defaultBanner: Image = new Image("", "", "")
 
 @nearBindgen
 class RecipeBook {

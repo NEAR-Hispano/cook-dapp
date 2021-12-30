@@ -1,34 +1,30 @@
 import { AccountID } from "../utils";
-import GroceryLists from "./GroceryLists";
-import Calendar from "./Calendar";
 
 @nearBindgen
 class User {
   accountID: AccountID;
-  favoritesRecipes: Set<String>;
+  favoriteRecipes: Set<String>;
   recipesCreated: Array<String>;
   recipeBooksCreated: Array<String>;
   totalTipped: f64;
-  calendar: Calendar;
-  groceryList: GroceryLists;
+  tipsReceived: f64;
 
   constructor(accountID: AccountID) {
     this.accountID = accountID;
-    this.favoritesRecipes = new Set();
+    this.favoriteRecipes = new Set();
     this.recipesCreated = new Array();
     this.recipeBooksCreated = new Array();
-    this.totalTipped = 0;
-    this.calendar = new Calendar();
-    this.groceryList = new GroceryLists();
+    this.totalTipped = 0; 
+    this.tipsReceived = 0;
   }
 
   // Adds ID of favorite Recipe.
-  addToFavoritesRecipes(id: string): void {
-    this.favoritesRecipes.add(id);
+  addToFavoriteRecipes(id: string): void {
+    this.favoriteRecipes.add(id);
   }
   // Removes ID of Recipe from favorites.
   removeFromFavoritesRecipes(id: string): void {
-    this.favoritesRecipes.delete(id);
+    this.favoriteRecipes.delete(id);
   }
 
   // Adds ID of Recipe created.
@@ -52,6 +48,10 @@ class User {
   // Updates total tipped amount.
   setTotalTipped(totalTipped: f64): void {
     this.totalTipped = totalTipped;
+  }
+  // Updates total recived tips.
+  setTipsRecived(tipsReceived: f64): void {
+    this.tipsReceived = tipsReceived;
   }
 }
 

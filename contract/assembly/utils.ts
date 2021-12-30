@@ -1,5 +1,5 @@
 import { u128 } from "near-sdk-as";
-import { context, datetime, logging } from "near-sdk-core";
+import { datetime } from "near-sdk-core";
 
 /**
  * Account ID of transaction sender.
@@ -22,7 +22,7 @@ RecipeCategorys.add("snacks");
 
 /* Generates a unique ID */
 export function getID(): string {
-  return `${context.blockTimestamp}-${context.blockIndex}`;
+  return `${datetime.block_datetime().nanosecond}${datetime.block_datetime().epochNanoseconds}`;
 }
 
 /*  Get current date */

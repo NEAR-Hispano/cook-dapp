@@ -4,7 +4,7 @@ import User from "./models/User";
 import RecipeBook from "./models/RecipeBook";
 import Recipe from "./models/Recipe";
 import Review from "./models/Review";
-import GroceryLists from "./models/GroceryLists";
+import { ShoppingList } from "./models/ShopppingList";
 
 /**
  * This file contains collection of variables which will store data 
@@ -15,6 +15,6 @@ const users = new PersistentUnorderedMap<AccountID, User>("users");
 const recipeBooks = new PersistentUnorderedMap<AccountID, RecipeBook>("recipeBooks");
 const recipes = new PersistentUnorderedMap<string, Recipe>("recipes");
 const reviews = new PersistentUnorderedMap<string, Review>("reviews");
-const groceryLists = new PersistentUnorderedMap<AccountID, GroceryLists>("grocery-lists");
+const shoppingLists = new PersistentUnorderedMap<AccountID, ShoppingList>("shopping-lists");
 
-export { users, recipeBooks, recipes, reviews, groceryLists };
+export { users, recipeBooks, recipes, reviews, shoppingLists };
