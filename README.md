@@ -71,16 +71,11 @@ Script for testing contract
 # :memo: Try it yourself
 # Assembly Contract Methods
 ## getUser Method
-Method to get user info
+
 ```html
     near call <your deployed contract> getUser "{}" --account-id <your test account>
 ```
 
-## createUser Method
-
-```html
-    near call <your deployed contract> createUser "{}" --account-id <your test account>
-```
 
 ## createRecipeBook Method
 ```html
