@@ -69,16 +69,16 @@ describe('Deletes a recipe  ', () => {
   })
 })
 
-describe('Deletes a recipe  ', () => {
-  it('Requires an ID of a Recipe Book.', () => {
+describe('Update a Recipe  ', () => {
+  it('Requires an ID of a Recipe and the components you are trying to update.', () => {
     expect(() => {
-      Contract.deleteRecipe(invalidID);
-    }).toThrow("Recipe not found.");
+      Contract.updateRecipe("1639544172647018008-75053426", "comida china");
+    }).toThrow("The caegory you are trying to choose do not exists");
   })
 })
 
 describe('Create a review  ', () => {
-  it('Requires an ID of a Recipe Book.', () => {
+  it('Requieres the text review, a rating and the recipeID you are trying to review', () => {
     expect(() => {
       Contract.createReview("It looks very tasty", 3, invalidID);
     }).toThrow("The recipe you want to rate, is not found");
@@ -86,17 +86,43 @@ describe('Create a review  ', () => {
 })
 
 describe('Deletes a review  ', () => {
-  it('Requires an ID of a Recipe Book.', () => {
+  it('Requires an ID of the Review you are trying to delete.', () => {
     expect(() => {
       Contract.deleteReview("melenoidd.testnet-1639544172647018008-75053426");
     }).toThrow("The review you are trying to delete is not from your own");
   })
 })
 
-describe('Deletes a review  ', () => {
-  it('Requires an ID of a Recipe Book.', () => {
+describe('Update a review  ', () => {
+  it('Requires an ID and the components you are trying to update.', () => {
     expect(() => {
       Contract.updateReview("melenoidd.testnet-1639544172647018008-75053426", invalidShortText, 3);
     }).toThrow("Description too short, please add a longer review");
   })
 })
+
+describe('Tip a recipe ', () => {
+  it('Requires and ID of a recipe', () => {
+    expect(() => {
+      Contract.tipRecipe(invalidID);
+    }).toThrow("There is not recipe with such ID");
+  })
+})
+
+
+describe('Add a recipe to your favorites list  ', () => {
+  it('Requires an ID of a Recipe', () => {
+    expect(() => {
+      Contract.addFavoriteRecipe(invalidID);
+    }).not.toThrow("There is not recipe with such ID");
+  })
+})
+
+describe('Add a list of ingredients to the user ShoppingList  ', () => {
+  it('Requires an ID of a Recipe', () => {
+    expect(() => {
+      Contract.addRecipeList(invalidID);
+    }).toThrow("There is not recipe with such ID");
+  })
+})
+
