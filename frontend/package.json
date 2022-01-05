@@ -1,0 +1,37 @@
+{
+  "name": "cookdapp-frontend",
+  "version": "1.0.0",
+  "description": "Frontend packages for CookDApp.",
+  "main": "index.js",
+  "scripts": {
+    "start": "env-cmd -f ../neardev/dev-account.env react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "author": "jgmercedes & melenoidd",
+  "license": "ISC",
+  "devDependencies": {
+    "env-cmd": "^10.1.0",
+    "node-sass": "^7.0.1"
+  },
+  "dependencies": {
+    "near-api-js": "~0.43.1",
+    "react": "~17.0.1",
+    "react-dom": "~17.0.1",
+    "react-router-dom": "^6.2.1",
+    "react-scripts": "^5.0.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
