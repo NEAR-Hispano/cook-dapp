@@ -1,6 +1,6 @@
 import React from "react";
 
-function SearchIcon() {
+const SearchIcon = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

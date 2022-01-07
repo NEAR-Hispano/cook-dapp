@@ -3,12 +3,13 @@ import Navbar from "./components/Navbar";
 
 const Layout = ({ children }) => {
   return (
-    <div className="app-container">
+    <main className="app-container">
       <header>
         <Navbar />
-      </header>
-      <p>{children}</p>      
-    </div>
+      </header>      
+      {children}
+      <footer />
+    </main>
   );
 };
 

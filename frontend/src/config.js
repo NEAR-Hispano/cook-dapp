@@ -1,4 +1,4 @@
-const CONTRACT_NAME = process.env.CONTRACT_NAME ||'cookdapp'
+const CONTRACT_NAME = process.env.CONTRACT_NAME ||'dev-1641442305000-18492844522975'
 
 function getConfig(env) {
   switch (env) {

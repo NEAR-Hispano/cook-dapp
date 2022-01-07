@@ -1,6 +1,6 @@
 import React from "react";
 
-function LangIcon() {
+const LangIcon = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -14,6 +14,6 @@ function LangIcon() {
       ></path>
     </svg>
   );
-}
+};
 
 export default LangIcon;
