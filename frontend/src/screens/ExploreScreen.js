@@ -1,13 +1,9 @@
-import React from 'react'
-import useTranslator from "../hooks/useTranslator"
+import React from "react";
+import useTranslator from "../hooks/useTranslator";
 
 const ExploreScreen = () => {
-    const translate = useTranslator()
-    return (
-        <div>
-            {translate("explore")}
-        </div>
-    )
-}
+  const translate = useTranslator();
+  return <div>{translate("explore")}</div>;
+};
 
-export default ExploreScreen
+export default ExploreScreen;

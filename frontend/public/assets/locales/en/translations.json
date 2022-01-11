@@ -6,5 +6,10 @@
     "menu": "menu",
     "pages": "pages",
     "follow_us": "follow us",
-    "explore": "explore"
+    "footer_description": "Cook DApp is our attempt to make it possible for people around the world to share a piece of their identity, culture and customs, and what better way to do it than from the kitchen through your favorite recipes.",
+    "create_account": "create account",
+    "login": "login",
+    "or": "or",
+    "login_title": "welcome back",
+    "login_text": "connect your NEAR wallet and access an endless number of recipes, recipe books and get rewards for your awesome taste."
 }

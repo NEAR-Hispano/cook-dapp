@@ -1,19 +1,19 @@
 const socials = [
   {
     label: "twitter",
-    link: "www.twitter.com/CookDapp",
+    link: "https://www.twitter.com/CookDapp",
   },
   {
     label: "medium",
-    link: "www.medium.com/@cookdapp",
+    link: "https://www.medium.com/@cookdapp",
   },
   {
     label: "youtube",
-    link: "www.youtube.com/channel/UCBLYSd199LMLEAfFzpSNwHg",
+    link: "https://www.youtube.com/channel/UCBLYSd199LMLEAfFzpSNwHg",
   },
   {
     label: "telegram",
-    link: "www.t.me/cookdapp",
+    link: "https://www.t.me/cookdapp",
   },
 ];
 

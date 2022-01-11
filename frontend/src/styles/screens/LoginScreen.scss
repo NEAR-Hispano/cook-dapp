@@ -1,0 +1,102 @@
+.login-screen-container {
+  height: calc(100vh - 250px);
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;  
+}
+
+.login-content-container {
+  height: 450px;
+  width: 450px;
+  max-width: 90%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+
+  .login-near-icon-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .login-text {
+    margin-top: 30px;
+    margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    h5 {
+      font-family: "Near-Font-SemiBold";
+      text-transform: uppercase;
+      font-size: 1rem;
+      color: black;
+      margin-bottom: 10px;
+    }
+
+    p {
+        max-width: 40ch;
+
+        &::first-letter {
+          text-transform: uppercase;          
+        }
+    }
+  }
+
+  .login-buttons-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+
+    .login-button-container {
+      width: 100%;
+
+      button {
+        font-family: "Near-Font-SemiBold";
+        width: 100%;
+        padding: 10px 20px;
+        text-transform: capitalize;
+        background-color: inherit;
+        border: solid 1px $black;
+        outline: none;
+        margin: 20px 0;
+        cursor: pointer;
+        background-color: white;
+      }
+    }
+
+    .login-buttons-separator {
+      font-family: "Near-Font-SemiBold";
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+
+      small {
+        &::before {
+          left: 0;
+        }
+        &::after {
+          right: 0;
+        }
+        &::before,
+        &::after {
+          content: "";
+          position: absolute;
+          top: 50%;
+          width: 40%;
+          transform: translate(0, -50%);
+          height: 0.1px;
+          background-color: rgb(0, 0, 0);
+        }
+      }
+    }
+  }
+}

@@ -7,9 +7,10 @@ header {
 }
 
 .app-container {
-    padding-top: 70px;
+    padding-top: 65px;
 }
 
 .body-container {
-    height: calc(100vh - 70px);
+    min-height: $minLayoutHeight;
+    height: auto;
 }

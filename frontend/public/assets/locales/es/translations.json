@@ -5,6 +5,11 @@
     "disconnect": "desconectar",
     "menu": "menu",
     "pages": "paginas",
-    "follow_us": "siguenos",
-    "explore": "explora"
+    "follow_us": "siguenos",    
+    "footer_description": "Cook DApp, nuestro intento por hacer posible que todas las personas alrededor del mundo puedan compartir un pedacito de su identidad, cultura y costumbres, y qué mejor manera de hacerlo que desde la cocina, mediante tus recetas favoritas.",
+    "create_account": "crear cuenta",
+    "login": "iniciar sesion",
+    "or": "o",
+    "login_title": "bienvenido de vuelta",
+    "login_text": "conecta tu cartera de NEAR y accede a un sinfín de recetas, recetarios y obtén recompensas por tu increíble sazón."
 }

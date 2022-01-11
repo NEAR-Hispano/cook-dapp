@@ -14,12 +14,7 @@ const Footer = () => {
     <div className="footer-container">
       <div className="footer-section first-footer-section">
         <LogoCookDApp />
-        <small>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Delectus sit
-          ducimus maiores repellendus ab pariatur iure voluptates animi vel
-          eligendi. Nobis dolore ducimus, fugit consectetur ab saepe est
-          consequatur quidem.
-        </small>
+        <small>{translator("footer_description")}</small>
       </div>
 
       <div className="footer-section second-footer-section">
@@ -38,10 +33,12 @@ const Footer = () => {
         <div className="socials-list">
           {socials.map(({ label, link }) => (
             <Link
-              key={label}
-              target="_blank"
-              rel="noreferrer"
-              to={{ pathname: link }}
+              key={label}              
+              to=""
+              onClick={(e) => {
+                e.preventDefault();
+                window.open(link, "_blank");
+              }}
             >
               {translator(label)}
             </Link>
