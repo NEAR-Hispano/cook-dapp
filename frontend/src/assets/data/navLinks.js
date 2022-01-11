@@ -1,20 +1,21 @@
-const navLinks = [
+export const privateLinks = [
   {
-    label: "Home",
+    label: "home",
     path: "/",
   },
   {
-    label: "Profile",
-    path: "/",
+    label: "profile",
+    path: "/profile",
   },
   {
-    label: "Explore",
-    path: "/",
-  },
-  {
-    label: "About us",
-    path: "/",
+    label: "explore",
+    path: "/explore",
   },
 ];
 
-export default navLinks;
+export const publicLinks = [
+  {
+    label: "app",
+    path: "/login",
+  }
+];

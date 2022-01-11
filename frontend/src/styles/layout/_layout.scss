@@ -8,5 +8,8 @@ header {
 
 .app-container {
     padding-top: 70px;
-    height: 200vh;
+}
+
+.body-container {
+    height: calc(100vh - 70px);
 }

@@ -31,6 +31,7 @@
   .navbar-link {
     margin-left: 25px;
     color: $darkFont;
+    text-transform: capitalize;
 
     &:hover {
       color: $lightFont;

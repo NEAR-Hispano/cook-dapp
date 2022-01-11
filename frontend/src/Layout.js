@@ -1,4 +1,5 @@
 import React from "react";
+import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 
 const Layout = ({ children }) => {
@@ -6,9 +7,11 @@ const Layout = ({ children }) => {
     <main className="app-container">
       <header>
         <Navbar />
-      </header>      
-      {children}
-      <footer />
+      </header>
+      <div className="body-container">{children}</div>
+      <footer>
+        <Footer />
+      </footer>
     </main>
   );
 };

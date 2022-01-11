@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import navLinks from "../assets/data/navLinks";
+import { navLinksApp, navLinksLandingPage } from "../assets/data/navLinks";
 import SearchIcon from "../assets/svg/SearchIcon";
 import UserIcon from "../assets/svg/UserIcon";
 import NearIcon from "../assets/svg/NearIcon";
@@ -11,22 +11,28 @@ import LogoCookDApp from "../assets/svg/LogoCookDApp";
 import Languages from "./Languages";
 import LangIcon from "../assets/svg/LangIcon";
 import CarretDown from "../assets/svg/CarretDown";
+import useTranslator from "../hooks/useTranslator"
+import useNavLinks from "../hooks/useNavLinks";
+import useAuth from "../hooks/useAuth";
 
 const Navbar = () => {
   const [isAccountMenuVisible, setIsAccountMenuVisible] = useState(false);
   const [account, setAccount] = useState(null);
   const userAccountWrapperRef = useRef(null);
   const [languagesVisible, setLanguagesVisible] = useState(false);
+  const translator = useTranslator();  
+  const navLinks = useNavLinks()
+  const isLoggedIn = useAuth();
 
   useOnClickOutside(userAccountWrapperRef, () =>
     setIsAccountMenuVisible(false)
   );
 
   useEffect(() => {
-    if (window.walletConnection.isSignedIn()) {
+    if (isLoggedIn) {
       setAccount(window.accountId);
     }
-  }, []);
+  }, [isLoggedIn]);
 
   return (
     <nav className="navbar">
@@ -36,7 +42,7 @@ const Navbar = () => {
       <div className="navbar-nav-links-container">
         {navLinks.map(({ path, label }) => (
           <Link key={label} to={path} className="navbar-link">
-            {label}
+            {translator(label)}
           </Link>
         ))}
       </div>
@@ -79,7 +85,6 @@ const Navbar = () => {
               className="user-account-menu"
               style={{ display: isAccountMenuVisible ? "flex" : "none" }}
             >
-
               <div className="user-account">
                 <div className="near-account-icon">
                   <NearIcon />
@@ -91,17 +96,15 @@ const Navbar = () => {
                 <div className="disconnect-icon">
                   <DisconnectIcon />
                 </div>
-                <h6>disconnect</h6>
+                <h6>{translator("disconnect")}</h6>
               </div>
-
             </div>
           )}
         </div>
 
         <div className="hamburger-icon">
-          <small>menu</small>
+          <small>{translator("menu")}</small>
         </div>
-        
       </div>
     </nav>
   );
