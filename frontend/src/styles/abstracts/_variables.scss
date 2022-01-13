@@ -8,7 +8,10 @@ $darkGray: #3F4246;
 $lightGray: #A7A7A7;
 $white: #FFFFFF;
 $borderColor: #d1d1d1; /* Near.org - inpired */
+$borderColor: #d1d1d1; /* Near.org - inpired */
 // $borderColor: #f0f0f1; /* NEAR Wallet - inspired */
+// $navbarFooterBackground: #fcfcfc;
+$navbarFooterBackground: #FFF;
 
 /* Font */
 $lightFont: #72727a;
@@ -24,5 +27,9 @@ $purple: #6B6EF9;
 $lilac: #A463B0;
 $orange: #E3935B;
 
+$orangeLanding: #F6412F;
+$grayLanding: #333333;
+
 /* Measurements */
 $minLayoutHeight:  calc(100vh - 365px);
+$minLayoutHeight:  calc(100vh - 65px);

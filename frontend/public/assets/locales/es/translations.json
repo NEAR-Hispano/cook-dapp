@@ -11,5 +11,9 @@
     "login": "iniciar sesion",
     "or": "o",
     "login_title": "bienvenido de vuelta",
-    "login_text": "conecta tu cartera de NEAR y accede a un sinfín de recetas, recetarios y obtén recompensas por tu increíble sazón."
+    "login_text": "conecta tu cartera de NEAR y accede a un sinfín de recetas, recetarios y obtén recompensas por tu increíble sazón.",
+    "landing_banner_title": "deja que otros conozcan tu cultura",
+    "landing_banner_text": "hay muchos usuarios allá afuera esperando que te animes a compartir y explorar recetas a través de nuestra Dapp, prueba cosas nuevas, prueba CookDApp",
+    "landing_card_title_most_tiped_recipes": "recetas más apoyadas",
+    "landing_card_title_trending_recipes": "recetas en tendencia"
 }

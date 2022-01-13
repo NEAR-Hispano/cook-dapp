@@ -1,18 +1,25 @@
 .footer-container {
-  height: 300px;
+  min-height: 300px;
+  height: auto;
   width: 100%;
   border-top: solid $borderColor 1px;
   padding: 80px 10vw;
   flex-wrap: wrap;
   justify-content: space-between;
   display: flex;
+  background-color: $navbarFooterBackground;
+  box-shadow: 1.95px -1.95px 2.6px rgba(0, 0, 0, 0.05);
+  background-color: rgb(10, 10, 10);
+  color: white;
 }
 
 .footer-section {
   width: max-content;
-  h5 {
-    font-weight: bold;
-    color: #000;
+  overflow-wrap: break-word;
+  margin: 20px;
+
+  h5 { 
+    color: white;
     text-transform: capitalize;
   }
 }

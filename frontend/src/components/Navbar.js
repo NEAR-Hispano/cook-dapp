@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { navLinksApp, navLinksLandingPage } from "../assets/data/navLinks";
 import SearchIcon from "../assets/svg/SearchIcon";
 import UserIcon from "../assets/svg/UserIcon";
 import NearIcon from "../assets/svg/NearIcon";
@@ -8,20 +7,20 @@ import DisconnectIcon from "../assets/svg/Disconnect";
 import { login, logout } from "../utils";
 import useOnClickOutside from "../hooks/useOnClickOutside";
 import LogoCookDApp from "../assets/svg/LogoCookDApp";
-import Languages from "./Languages";
-import LangIcon from "../assets/svg/LangIcon";
-import CarretDown from "../assets/svg/CarretDown";
-import useTranslator from "../hooks/useTranslator"
+import useTranslator from "../hooks/useTranslator";
 import useNavLinks from "../hooks/useNavLinks";
 import useAuth from "../hooks/useAuth";
+import { useMobileMenuState } from "../context/MobileMenuProvider";
+import LangSelector from "./LangSelector";
 
 const Navbar = () => {
   const [isAccountMenuVisible, setIsAccountMenuVisible] = useState(false);
+  
+  const { isMobileMenuOpen, toggleMobileMenu } = useMobileMenuState();
   const [account, setAccount] = useState(null);
   const userAccountWrapperRef = useRef(null);
-  const [languagesVisible, setLanguagesVisible] = useState(false);
-  const translator = useTranslator();  
-  const navLinks = useNavLinks()
+  const translator = useTranslator();
+  const navLinks = useNavLinks();
   const isLoggedIn = useAuth();
 
   useOnClickOutside(userAccountWrapperRef, () =>
@@ -36,32 +35,25 @@ const Navbar = () => {
 
   return (
     <nav className="navbar">
-      <Link to="/" className="navbar-logo-container">
-        <LogoCookDApp />
-      </Link>
       <div className="navbar-nav-links-container">
-        {navLinks.map(({ path, label }) => (
+        {navLinks.map(({ path, label, Icon }) => (
           <Link key={label} to={path} className="navbar-link">
+            <div className="navbar-link-icon">{Icon && <Icon />}</div>
             {translator(label)}
           </Link>
         ))}
       </div>
+      <Link to="/" className="navbar-logo-container">
+        <LogoCookDApp />
+      </Link>
       <div className="navbar-secondary-navigation-container">
-        <div className="lang-selector">
-          <div
-            className="lang-selector-icons"
-            onClick={() => setLanguagesVisible((prev) => !prev)}
-          >
-            <LangIcon />
-            <CarretDown />
-          </div>
-          <Languages
-            setLanguagesVisible={setLanguagesVisible}
-            display={languagesVisible ? "flex" : "none"}
-          />
-        </div>
 
-        <div className="input-group">
+        <LangSelector />
+
+        <div
+          className="input-group"
+          style={{ display: isLoggedIn ? "flex" : "none" }}
+        >
           <span>
             <SearchIcon />
           </span>
@@ -102,8 +94,15 @@ const Navbar = () => {
           )}
         </div>
 
-        <div className="hamburger-icon">
+        <div
+          className={`hamburger-icon ${
+            isMobileMenuOpen && "hamburger-icon-close"
+          }`}
+          onClick={() => toggleMobileMenu()}
+        >
+          <div className="hamburger-bar-top" />
           <small>{translator("menu")}</small>
+          <div className="hamburger-bar-bottom" />
         </div>
       </div>
     </nav>

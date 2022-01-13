@@ -1,5 +1,6 @@
 import React from "react";
 import Footer from "./components/Footer";
+import MobileMenu from "./components/MobileMenu";
 import Navbar from "./components/Navbar";
 
 const Layout = ({ children }) => {
@@ -8,7 +9,10 @@ const Layout = ({ children }) => {
       <header>
         <Navbar />
       </header>
-      <div className="body-container">{children}</div>
+      <div className="body-container">
+        <MobileMenu />
+        {children}
+      </div>
       <footer>
         <Footer />
       </footer>

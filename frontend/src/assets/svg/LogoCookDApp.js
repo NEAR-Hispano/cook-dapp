@@ -31,6 +31,6 @@ const LogoCookDApp = () => {
       ></path>
     </svg>
   );
-}
+};
 
 export default LogoCookDApp;

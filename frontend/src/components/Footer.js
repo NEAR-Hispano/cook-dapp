@@ -2,9 +2,10 @@ import React from "react";
 import LogoCookDApp from "../assets/svg/LogoCookDApp";
 import { Link } from "react-router-dom";
 import useTranslator from "../hooks/useTranslator";
-import NearLogo from "../assets/svg/NearLogo";
+import NearLogoWhite from "../assets/svg/NearLogoWhite";
 import socials from "../assets/data/socialMedia";
 import useNavLinks from "../hooks/useNavLinks";
+import LogoCookDAppWhite from "../assets/svg/LogoCookDAppWhite";
 
 const Footer = () => {
   const translator = useTranslator();
@@ -13,7 +14,7 @@ const Footer = () => {
   return (
     <div className="footer-container">
       <div className="footer-section first-footer-section">
-        <LogoCookDApp />
+        <LogoCookDAppWhite />
         <small>{translator("footer_description")}</small>
       </div>
 
@@ -49,7 +50,7 @@ const Footer = () => {
       <div className="footer-section fourth-footer-section">
         <h5>Powered by:</h5>
         <div className="near-logo-container">
-          <NearLogo />
+          <NearLogoWhite />
         </div>
       </div>
     </div>

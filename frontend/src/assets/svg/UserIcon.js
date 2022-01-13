@@ -6,7 +6,7 @@ const UserIcon = () => {
       xmlns="http://www.w3.org/2000/svg"
       width="16"
       height="16"
-      fill="currentColor"
+      fill="#000"
       className="bi bi-person"
       viewBox="0 0 16 16"
     >

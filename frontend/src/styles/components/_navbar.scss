@@ -4,22 +4,26 @@
   margin-bottom: 20px;
   padding: 5px 15px;
   border-bottom: 1px solid $borderColor;
-  background-color: white;
   height: 65px;
   -webkit-box-align: center;
   align-items: center;
   display: flex;
+  background-color: $navbarFooterBackground;
+  box-shadow: rgba(0, 0, 0, 0.1) 1.95px 1.95px 2.6px;
 }
 
 .navbar-logo-container {
-  // border: solid 1px $borderColor;
   padding: 0 15px 0 0;
-  min-width: 155px;
-  width: 155px;
+  margin-right: 10px;
+  min-width: 165px;
+  width: 165px;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+
+  width: 20%;
+  margin-left: auto;
 }
 
 .navbar-nav-links-container {
@@ -32,11 +36,30 @@
     margin-left: 25px;
     color: $darkFont;
     text-transform: capitalize;
+    display: flex;
+
+    &:first-child {
+      margin-left: 0;
+    }
+
+    .navbar-link-icon {
+      margin-right: 10px;
+      height: 100%;
+      display: block;
+      justify-content: center;
+      align-items: center;
+    }
 
     &:hover {
       color: $lightFont;
     }
   }
+
+  .lang-selector {
+    margin-right: 10px;
+  }
+
+  width: 40%;
 }
 
 .navbar-secondary-navigation-container {
@@ -45,43 +68,6 @@
   justify-content: flex-end;
   flex: 1;
   height: 32px;
-
-  .lang-selector {
-    position: relative;    
-
-    .languages-list {
-      display: flex;
-      flex-direction: column;      
-      position: absolute;
-      left: 0;
-      top: calc(100% + 25px);
-      border: solid 1px $borderColor;
-      justify-content: space-between;
-      padding: 10px;
-      padding-bottom: none;
-    }
-
-    .lang-selector-icons {
-      display: flex;
-      justify-content: space-between;    
-      align-items: center;
-      cursor: pointer;    
-      height: 100%;
-      padding: 0 10px;
-      width: 70px;
-      margin-right: 10px;
-      border: solid $borderColor 1px;      
-    }
-    
-    .language {
-      user-select: none;
-      line-height: 2;
-      cursor: pointer;
-    }
-    .language-selected {      
-      text-decoration-line: line-through;
-    }
-  }
 
   .input-group {
     display: flex;
@@ -96,6 +82,7 @@
       height: 100%;
       border-radius: 4px 0px 0px 4px;
       cursor: pointer;
+      background-color: white;
     }
 
     input {
@@ -108,13 +95,12 @@
       padding: 5px 9px;
       outline: none;
     }
-
   }
 }
 
-.user-account-wrapper {  
+.user-account-wrapper {
   position: relative;
-  
+
   .user-icon-span {
     border: solid $borderColor 1px;
     height: 100%;
@@ -124,7 +110,8 @@
     width: 32px;
     border-radius: 100%;
     margin-left: 10px;
-  }  
+    background-color: white;
+  }
 
   .user-account-menu {
     position: absolute;
@@ -193,6 +180,16 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 5px 0;
+
+  .hamburger-bar-top,
+  .hamburger-bar-bottom {
+    height: 1px;
+    background-color: $darkFont;
+    width: 100%;
+  }
 
   small {
     position: relative;
@@ -201,35 +198,20 @@
     font-size: 10px;
     letter-spacing: 0.2em;
     color: $darkFont;
-
-    &::before,
-    &::after {
-      content: "";
-      position: absolute;
-      height: 1px;
-      background-color: $darkFont;
-      width: 100%;
-    }
-
-    &::before {
-      top: 0;
-      left: 0;
-    }
-    &::after {
-      bottom: 0;
-      left: 0;
-    }
   }
 }
 
 @media (max-width: 992px) {
   .navbar-nav-links-container {
-    display: none;   
+    display: none;
+  }
+
+  .user-account-wrapper {
+    margin-right: 15px;
   }
 
   .lang-selector,
-  .input-group,
-  .user-account-wrapper {
+  .input-group {
     display: none;
 
     & > * {
@@ -249,5 +231,34 @@
     span {
       display: flex;
     }
+  }
+}
+
+.hamburger-icon-close {
+  position: relative;
+  small {
+    visibility: hidden;
+    transition: all 50ms ease-in-out;
+  }
+
+  .hamburger-bar-top,
+  .hamburger-bar-bottom {
+    height: 1px;
+    background-color: $darkFont;
+    width: 100%;
+    z-index: 2;
+
+    position: absolute;
+    transition: all 200ms ease-in-out;
+    cursor: pointer;
+  }
+
+  .hamburger-bar-top {
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+  }
+  .hamburger-bar-bottom {
+    top: 50%;
+    transform: translateY(-50%) rotate(-45deg);
   }
 }

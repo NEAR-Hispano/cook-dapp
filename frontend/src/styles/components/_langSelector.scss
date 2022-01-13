@@ -1,0 +1,37 @@
+.lang-selector {
+    position: relative;
+
+    .languages-list {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      left: 0;
+      top: calc(100% + 25px);
+      border: solid 1px $borderColor;
+      justify-content: space-between;
+      padding: 10px;
+      padding-bottom: none;
+      background-color: white;
+    }
+
+    .lang-selector-icons {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      height: 100%;
+      padding: 0 10px;
+      width: 70px;
+      border: solid $borderColor 1px;
+      background-color: white;
+    }
+
+    .language {
+      user-select: none;
+      line-height: 2;
+      cursor: pointer;
+    }
+    .language-selected {
+      text-decoration-line: line-through;
+    }
+  }

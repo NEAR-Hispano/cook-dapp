@@ -1,5 +1,5 @@
 .login-screen-container {
-  height: calc(100vh - 250px);
+  height: calc(100vh - 170px);
   width: 100%;
   display: flex;
   justify-content: center;
@@ -7,6 +7,8 @@
 }
 
 .login-content-container {
+  border: solid 1px $borderColor;
+  border-radius: 10px;
   height: 450px;
   width: 450px;
   max-width: 90%;

@@ -13,4 +13,6 @@ header {
 .body-container {
     min-height: $minLayoutHeight;
     height: auto;
+    position: relative;
+    background-color: #FFF;
 }

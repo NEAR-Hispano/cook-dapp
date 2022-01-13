@@ -11,5 +11,9 @@
     "login": "login",
     "or": "or",
     "login_title": "welcome back",
-    "login_text": "connect your NEAR wallet and access an endless number of recipes, recipe books and get rewards for your awesome taste."
+    "login_text": "connect your NEAR wallet and access an endless number of recipes, recipe books and get rewards for your awesome taste.",
+    "landing_banner_title": "let others know about your culture",
+    "landing_banner_text": "there are many users out there waiting for you to share and explore recipes through our Dapp, try new things, try CookDApp.",
+    "landing_card_title_most_tiped_recipes": "most tipped recipes",
+    "landing_card_title_trending_recipes": "trending recipes"
 }

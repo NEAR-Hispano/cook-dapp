@@ -1,17 +1,34 @@
 @font-face {
-    font-family: "Near-Font-SemiBold";
-    src: url(../../assets/font/otf/Manrope-SemiBold.otf);
+  font-family: "Near-Font-SemiBold";
+  src: url(../../assets/font/otf/Manrope-SemiBold.otf);
 }
 @font-face {
-    font-family: "Near-Font-Medium";
-    src: url(../../assets/font/otf/Manrope-Medium.otf);
+  font-family: "Near-Font-Medium";
+  src: url(../../assets/font/otf/Manrope-Medium.otf);
 }
 @font-face {
-    font-family: "Near-Font-Regular";
-    src: url(../../assets/font/otf/Manrope-Regular.otf);
+  font-family: "Near-Font-Regular";
+  src: url(../../assets/font/otf/Manrope-Regular.otf);
+}
+@font-face {
+  font-family: "Near-Font-ExtraBold";
+  src: url(../../assets/font/otf/Manrope-ExtraBold.otf);
+}
+@font-face {
+  font-family: "Near-Font-Bold";
+  src: url(../../assets/font/otf/Manrope-Bold.otf);
+}
+@font-face {
+  font-family: "Near-Font-Light";
+  src: url(../../assets/font/otf/Manrope-Light.otf);
+}
+@font-face {
+  font-family: "Near-Font-ExtraLight";
+  src: url(../../assets/font/otf/Manrope-ExtraLight.otf);
 }
 
-body {    
-    font-family: "Near-Font-Regular";    
-    color: $lightGray;
+body {
+  font-family: "Near-Font-Regular";
+
+  color: $lightGray;
 }
