@@ -1,10 +1,14 @@
+import ContractContextProvider from "./ContractContextProvider";
 import MobileMenuProvider from "./MobileMenuProvider";
+import UserContextProvider from "./UserContextProvider";
 
 const AppContextProvider = ({ children }) => {
   return (
-    <>
-      <MobileMenuProvider>{children}</MobileMenuProvider>
-    </>
+    <ContractContextProvider>
+      <UserContextProvider>
+        <MobileMenuProvider>{children}</MobileMenuProvider>
+      </UserContextProvider>
+    </ContractContextProvider>
   );
 };
 

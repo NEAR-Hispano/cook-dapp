@@ -19,9 +19,9 @@ class Contract {
   getUser({ accountID = null }) {
     switch (CONTRACT_LANG) {
       case "AS":
-        return window.contract.getUser(accountID);
+        return window.contract.getUser({ accountID });
       case "RUST":
-        return window.contract.get_user(accountID);
+        return window.contract.get_user({ accountID });
       default:
         throw InvalidContractLangError;
     }
@@ -30,9 +30,9 @@ class Contract {
   createRecipeBook({ title }) {
     switch (CONTRACT_LANG) {
       case "AS":
-        return window.contract.createRecipeBook(title);
+        return window.contract.createRecipeBook({ title });
       case "RUST":
-        return window.contract.create_recipe_book(title);
+        return window.contract.create_recipe_book({ title });
       default:
         throw InvalidContractLangError;
     }
@@ -41,9 +41,9 @@ class Contract {
   getRecipeBook({ id }) {
     switch (CONTRACT_LANG) {
       case "AS":
-        return window.contract.getRecipeBook(id);
+        return window.contract.getRecipeBook({ id });
       case "RUST":
-        return window.contract.get_recipe_book(id);
+        return window.contract.get_recipe_book({ id });
       default:
         throw InvalidContractLangError;
     }
@@ -52,9 +52,9 @@ class Contract {
   updateRecipeBook({ id, title = null, banner = null }) {
     switch (CONTRACT_LANG) {
       case "AS":
-        return window.contract.updateRecipeBook(id, title, banner);
+        return window.contract.updateRecipeBook({ id, title, banner });
       case "RUST":
-        return window.contract.update_recipe_book(id, title, banner);
+        return window.contract.update_recipe_book({ id, title, banner });
       default:
         throw InvalidContractLangError;
     }
@@ -63,9 +63,9 @@ class Contract {
   deleteRecipeBook({ id }) {
     switch (CONTRACT_LANG) {
       case "AS":
-        return window.contract.deleteRecipeBook(id);
+        return window.contract.deleteRecipeBook({ id });
       case "RUST":
-        return window.contract.delete_recipe_book(id);
+        return window.contract.delete_recipe_book({ id });
       default:
         throw InvalidContractLangError;
     }
@@ -82,25 +82,25 @@ class Contract {
   }) {
     switch (CONTRACT_LANG) {
       case "AS":
-        return window.contract.createRecipe(
+        return window.contract.createRecipe({
           title,
           description,
           ingridientsList,
           instructions,
           recipeBookID,
           category,
-          chefNote
-        );
+          chefNote,
+        });
       case "RUST":
-        return window.contract.create_recipe(
+        return window.contract.create_recipe({
           title,
           description,
           ingridientsList,
           instructions,
           recipeBookID,
           category,
-          chefNote
-        );
+          chefNote,
+        });
       default:
         throw InvalidContractLangError;
     }
@@ -109,9 +109,9 @@ class Contract {
   getRecipe({ id }) {
     switch (CONTRACT_LANG) {
       case "AS":
-        return window.contract.getRecipe(id);
+        return window.contract.getRecipe({ id });
       case "RUST":
-        return window.contract.get_recipe(id);
+        return window.contract.get_recipe({ id });
       default:
         throw InvalidContractLangError;
     }
@@ -129,7 +129,7 @@ class Contract {
   }) {
     switch (CONTRACT_LANG) {
       case "AS":
-        return window.contract.updateRecipe(
+        return window.contract.updateRecipe({
           id,
           category,
           title,
@@ -137,10 +137,10 @@ class Contract {
           chefNote,
           image,
           ingridients,
-          instructions
-        );
+          instructions,
+        });
       case "RUST":
-        return window.contract.update_recipe(
+        return window.contract.update_recipe({
           id,
           category,
           title,
@@ -148,8 +148,8 @@ class Contract {
           chefNote,
           image,
           ingridients,
-          instructions
-        );
+          instructions,
+        });
       default:
         throw InvalidContractLangError;
     }
@@ -159,13 +159,13 @@ class Contract {
     switch (CONTRACT_LANG) {
       case "AS":
         return window.contract.tipRecipe(
-          recipeID,
+          { recipeID },
           gas,
           utils.format.parseNearAmount(amount)
         );
       case "RUST":
         return window.contract.tip_recipe(
-          recipeID,
+          { recipeID },
           gas,
           utils.format.parseNearAmount(amount)
         );
@@ -177,9 +177,9 @@ class Contract {
   getRecipes() {
     switch (CONTRACT_LANG) {
       case "AS":
-        return window.contract.getRecipes();
+        return window.contract.getRecipes({});
       case "RUST":
-        return window.contract.get_recipes();
+        return window.contract.get_recipes({});
       default:
         throw InvalidContractLangError;
     }
@@ -188,9 +188,9 @@ class Contract {
   getTrendingRecipes() {
     switch (CONTRACT_LANG) {
       case "AS":
-        return window.contract.getTrendingRecipes();
+        return window.contract.getTrendingRecipes({});
       case "RUST":
-        return window.contract.get_trending_recipes();
+        return window.contract.get_trending_recipes({});
       default:
         throw InvalidContractLangError;
     }
@@ -199,9 +199,9 @@ class Contract {
   getMostTipedRecipes() {
     switch (CONTRACT_LANG) {
       case "AS":
-        return window.contract.getMostTipedRecipes();
+        return window.contract.getMostTipedRecipes({});
       case "RUST":
-        return window.contract.get_most_tiped_recipes();
+        return window.contract.get_most_tiped_recipes({});
       default:
         throw InvalidContractLangError;
     }
@@ -210,9 +210,9 @@ class Contract {
   deleteRecipe({ id }) {
     switch (CONTRACT_LANG) {
       case "AS":
-        return window.contract.deleteRecipe(id);
+        return window.contract.deleteRecipe({ id });
       case "RUST":
-        return window.contract.delete_recipe(id);
+        return window.contract.delete_recipe({ id });
       default:
         throw InvalidContractLangError;
     }
@@ -222,9 +222,9 @@ class Contract {
     switch (CONTRACT_LANG) {
       case "AS":
         const assemblyRating = rating * 2;
-        return window.contract.createReview(text, assemblyRating, recipeID);
+        return window.contract.createReview({ text, assemblyRating, recipeID });
       case "RUST":
-        return window.contract.createReview(text, rating, recipeID);
+        return window.contract.create_review({ text, rating, recipeID });
       default:
         throw InvalidContractLangError;
     }
@@ -233,9 +233,9 @@ class Contract {
   getReview({ id }) {
     switch (CONTRACT_LANG) {
       case "AS":
-        return window.contract.getReview(id);
+        return window.contract.getReview({ id });
       case "RUST":
-        return window.contract.get_review(id);
+        return window.contract.get_review({ id });
       default:
         throw InvalidContractLangError;
     }
@@ -244,9 +244,9 @@ class Contract {
   updateReview({ id, text, rating }) {
     switch (CONTRACT_LANG) {
       case "AS":
-        return window.contract.updateReview(id, text, rating);
+        return window.contract.updateReview({ id, text, rating });
       case "RUST":
-        return window.contract.update_review(id, text, rating);
+        return window.contract.update_review({ id, text, rating });
       default:
         throw InvalidContractLangError;
     }
@@ -255,9 +255,9 @@ class Contract {
   getRecipeReviews({ id }) {
     switch (CONTRACT_LANG) {
       case "AS":
-        return window.contract.getRecipeReviews(id);
+        return window.contract.getRecipeReviews({ id });
       case "RUST":
-        return window.contract.get_recipe_reviews(id);
+        return window.contract.get_recipe_reviews({ id });
       default:
         throw InvalidContractLangError;
     }
@@ -266,9 +266,9 @@ class Contract {
   deleteReview({ id }) {
     switch (CONTRACT_LANG) {
       case "AS":
-        return window.contract.deleteReview(id);
+        return window.contract.deleteReview({ id });
       case "RUST":
-        return window.contract.delete_review(id);
+        return window.contract.delete_review({ id });
       default:
         throw InvalidContractLangError;
     }
@@ -277,9 +277,9 @@ class Contract {
   getShoppingList() {
     switch (CONTRACT_LANG) {
       case "AS":
-        return window.contract.getShoppingList();
+        return window.contract.getShoppingList({});
       case "RUST":
-        return window.contract.get_shopping_list();
+        return window.contract.get_shopping_list({});
       default:
         throw InvalidContractLangError;
     }
@@ -288,9 +288,9 @@ class Contract {
   updateGroceryList({ lists }) {
     switch (CONTRACT_LANG) {
       case "AS":
-        return window.contract.updateGroceryList(lists);
+        return window.contract.updateGroceryList({ lists });
       case "RUST":
-        return window.contract.update_grocery_list(lists);
+        return window.contract.update_grocery_list({ lists });
       default:
         throw InvalidContractLangError;
     }
@@ -299,9 +299,9 @@ class Contract {
   updateRecipeList({ lists }) {
     switch (CONTRACT_LANG) {
       case "AS":
-        return window.contract.updateRecipeList(lists);
+        return window.contract.updateRecipeList({ lists });
       case "RUST":
-        return window.contract.update_recipe_list(lists);
+        return window.contract.update_recipe_list({ lists });
       default:
         throw InvalidContractLangError;
     }
@@ -310,9 +310,9 @@ class Contract {
   addRecipeList({ recipeID }) {
     switch (CONTRACT_LANG) {
       case "AS":
-        return window.contract.addRecipeList(recipeID);
+        return window.contract.addRecipeList({ recipeID });
       case "RUST":
-        return window.contract.add_recipe_list(recipeID);
+        return window.contract.add_recipe_list({ recipeID });
       default:
         throw InvalidContractLangError;
     }
@@ -321,9 +321,9 @@ class Contract {
   addFavoriteRecipe({ recipeID }) {
     switch (CONTRACT_LANG) {
       case "AS":
-        return window.contract.addFavoriteRecipe(recipeID);
+        return window.contract.addFavoriteRecipe({ recipeID });
       case "RUST":
-        return window.contract.add_favorite_recipe(recipeID);
+        return window.contract.add_favorite_recipe({ recipeID });
       default:
         throw InvalidContractLangError;
     }

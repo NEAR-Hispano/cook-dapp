@@ -63,7 +63,7 @@ export async function initContract() {
         "deleteRecipe",
         "delete_recipe",
         "createReview",
-        "createReview",
+        "create_review",
         "updateReview",
         "update_review",
         "deleteReview",
@@ -75,7 +75,7 @@ export async function initContract() {
         "addRecipeList",
         "add_recipe_list",
         "addFavoriteRecipe",
-        "addFavoriteRecipe",
+        "add_favorite_recipe",
       ],
     }
   );
