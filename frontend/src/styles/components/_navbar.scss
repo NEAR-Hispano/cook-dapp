@@ -81,12 +81,12 @@
     span {
       justify-content: center;
       align-items: center;
-      border: solid $borderColor 1px;
+      border: solid black 1px;
       padding: 5px 9px;
       height: 100%;
       border-radius: 4px 0px 0px 4px;
       cursor: pointer;
-      background-color: white;
+      background-color: black;
     }
 
     input {
@@ -103,7 +103,7 @@
 }
 
 .user-account-wrapper {
-  position: relative;
+  position: relative;  
 
   .user-icon-span {
     border: solid $borderColor 1px;
@@ -115,6 +115,8 @@
     border-radius: 100%;
     margin-left: 10px;
     background-color: white;
+    background-color: black;
+    background-color:  black;
   }
 
   .user-account-menu {
@@ -129,6 +131,8 @@
     padding: 10px;
     flex-direction: column;
     justify-content: space-between;
+    background-color: white;
+    border: solid black 1px;
   }
 
   .user-account {
@@ -142,6 +146,7 @@
     align-items: center;
     word-break: break-all;
     margin-bottom: 10px;
+    border: solid black 1px;
 
     .near-account-icon {
       display: flex;
@@ -165,6 +170,7 @@
     align-items: center;
     word-break: break-all;
     cursor: pointer !important;
+    border: solid black 1px;
 
     .disconnect-icon {
       display: flex;

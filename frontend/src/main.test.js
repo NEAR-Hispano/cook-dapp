@@ -26,3 +26,5 @@ test('getGreeting', async () => {
   const message = await window.contract.getGreeting({ accountId: window.accountId })
   expect(message).toEqual('Hello')
 })
+
+export {}

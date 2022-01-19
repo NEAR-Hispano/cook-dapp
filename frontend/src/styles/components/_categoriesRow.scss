@@ -1,0 +1,112 @@
+.categories-container {
+  height: 100px;
+  flex: 1;
+  max-width: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  border-bottom: 1px solid $borderColor;
+  background-color: $orangeLanding;
+  background-color: #f5f6ea;
+  color: black;
+  padding: 0 5%;
+
+  .categories-row-title {
+    height: 100%;
+    min-width: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+
+    h1 {
+      font-size: clamp(20px, 2vw, 2.3rem);
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+    }
+  }
+
+  .categories-banners-row {
+    height: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .categorie-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-right: 20px;
+    cursor: pointer;
+    padding: 5px;
+
+    &:last-child {
+      margin-right: 0px;
+    }
+
+    .categorie-banner {
+      height: 65px;
+      width: 65px;
+
+      height: 4vw;
+      width: 4vw;
+
+      border-radius: 100%;
+      background-color: white;
+      overflow: hidden;
+
+      img {
+        max-width: 150%;
+        height: auto;
+        margin: 0 auto;
+        display: block;
+      }
+    }
+
+    .categorie-title {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      margin-top: 5px;
+
+      h4 {
+        text-transform: uppercase;
+        font-size: small;
+        font-size: clamp(10px, 10px, 10px);
+        font-weight: bold;
+        letter-spacing: 3px;
+      }
+    }
+  }
+
+  @media (max-width: 960px) {
+    .categories-row-title {
+      display: none;
+    }
+    .categories-banners-row {
+      display: flex;
+      justify-content: center;
+    }
+    .categorie-banner {
+      height: 15vw;
+      width: 15vw;
+    }
+    .categorie-title {
+      display: none;
+      h4 {
+        display: none;
+      }
+    }
+    .categorie-container {
+      max-width: 20%;
+      overflow: hidden;
+    }
+  }
+}
