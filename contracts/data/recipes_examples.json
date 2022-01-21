@@ -1,0 +1,717 @@
+[
+  {
+    "image": {
+      "name": "TTortaAhogada",
+      "cid": "asdasd",
+      "url": "https://i.imgur.com/Yoy3hpG.jpg"
+    },
+    "category": "dinner",
+    "title": "Torta Ahogada",
+    "description": "No necesitas viajar hasta Guadalajara, Jalisco para comer unas tortas ahogadas. ",
+    "chefNote": "¡Anímate a cocinarlas tú misma!",
+    "ingredients": [
+      {
+        "label": "Jitomate",
+        "amount": 1,
+        "unit": "kilo",
+        "details": "frescos"
+      },
+      {
+        "label": "Cebolla",
+        "amount": 1,
+        "unit": "pieza",
+        "details": "fresca"
+      },
+      {
+        "label": "Comino",
+        "amount": 1,
+        "unit": "cucharadita",
+        "details": "fresco"
+      },
+      {
+        "label": "Frijoles",
+        "amount": 1,
+        "unit": "taza",
+        "details": "refritos"
+      },
+      {
+        "label": "Carnitas",
+        "amount": 300,
+        "unit": "gramos",
+        "details": "cerdo"
+      },
+      {
+        "label": "Bolillos",
+        "amount": 4,
+        "unit": "píezas",
+        "details": "ancho"
+      },
+      {
+        "label": "Agua",
+        "amount": 1,
+        "unit": "taza",
+        "details": "para tomar"
+      },
+      {
+        "label": "Aceite",
+        "amount": 1,
+        "unit": "taza",
+        "details": "al gusto"
+      },
+      {
+        "label": "Sal",
+        "amount": 1,
+        "unit": "taza",
+        "details": "al gusto"
+      }
+    ],
+    "instructions": [
+      "Hierve los jitomates, retírales la cáscara y muélelos con la cebolla, ajo y comino.",
+      "Vacía la salsa en una sartén caliente con poco aceite y sazona con un poco de orégano",
+      "Unta los bolillos con los frijoles, coloca las carnitas y baña la torta con la salsa de jitomate."
+    ]
+  },
+  {
+    "image": {
+      "name": "TacosCarnitas",
+      "cid": "",
+      "url": "https://i.imgur.com/6jRszcN.jpg"
+    },
+    "category": "dinner",
+    "title": "Tacos de Carnitas",
+    "description": "Disfruta de unos tradicionales tacos de carnitas, tal y como los probaste en tu puesto favorito.",
+    "chefNote": "Si te gustaron no olvides dejar una review",
+    "ingredients": [
+      {
+        "label": "Lomo de cerdo",
+        "amount": 1,
+        "unit": "kilogramo",
+        "details": "troceado"
+      },
+      {
+        "label": "Agua",
+        "amount": 1,
+        "unit": "litro",
+        "details": "para tomar"
+      },
+      {
+        "label": "Manteca",
+        "amount": 1,
+        "unit": "taza",
+        "details": "de cerdo"
+      },
+      {
+        "label": "Salsa verde",
+        "amount": 1,
+        "unit": "taza",
+        "details": "fresca"
+      },
+      {
+        "label": "Cebolla y Cilantro",
+        "amount": 1,
+        "unit": "taza",
+        "details": "picados"
+      },
+      {
+        "label": "Tortillas",
+        "amount": 1,
+        "unit": "kilogramo",
+        "details": "maíz"
+      }
+    ],
+    "instructions": [
+      "Coloca la carne en una sartén u olla grande, cubre con el agua y la manteca.",
+      "Cuece a fuego medio hasta que toda el agua se evapore.",
+      "La carne se comenzará a freír con la grasa,mueve para dorarla de manera uniforme.",
+      "Escurre la carne, pícala y sírvela en tacos acompañada de la salsa y la mezcla de cebolla con cilantro."
+    ]
+  },
+  {
+    "image": {
+      "name": "TacosTricolor",
+      "cid": "",
+      "url": "https://i.imgur.com/MeOFKMY.jpg"
+    },
+    "category": "dinner",
+    "title": "Tacos de Pollo Tricolor",
+    "description": "Una receta única para las fiestas patrias",
+    "chefNote": "Una noche 100% mexicana debe de portar nuestros tres colores distintivos, ¡Incluso en la comida!",
+    "ingredients": [
+      {
+        "label": "Tortillas",
+        "amount": 8,
+        "unit": "piezas",
+        "details": "maíz rojo"
+      },
+      {
+        "label": "Pollo",
+        "amount": 1,
+        "unit": "taza",
+        "details": "deshebrado"
+      },
+      {
+        "label": "Aceite",
+        "amount": 1,
+        "unit": "cucharada",
+        "details": "cocina"
+      },
+      {
+        "label": "Pimientos",
+        "amount": 1,
+        "unit": "taza",
+        "details": "en julianas"
+      },
+      {
+        "label": "Cebolla",
+        "amount": 1,
+        "unit": "taza",
+        "details": "en julianas"
+      },
+      {
+        "label": "crema",
+        "amount": 1,
+        "unit": "taza",
+        "details": "blanca"
+      },
+      {
+        "label": "Queso",
+        "amount": 1,
+        "unit": "taza",
+        "details": "blanco"
+      },
+      {
+        "label": "Lechuga",
+        "amount": 1,
+        "unit": "taza",
+        "details": "picada"
+      }
+    ],
+    "instructions": [
+      "En una sartén, sofríe la cebolla con el aceite. Agrega los pimientos y el pollo hasta que doren un poco.",
+      "Forma con esta mezcla los tacos.",
+      "Sirve tres por plato. Decora con la crema, la lechuga y el queso desmoronado."
+    ]
+  },
+  {
+    "image": {
+      "name": "TingaPollo",
+      "cid": "",
+      "url": "https://i.imgur.com/fdwLXcB.jpg"
+    },
+    "category": "dinner",
+    "title": "Tinga de Pollo",
+    "description": "Prepara esta deliciosa receta fácil",
+    "chefNote": "Son de nuestros platillos favoritos porque pertenece a las recetas con pollo fáciles y económicas más deliciosas.",
+    "ingredients": [
+      {
+        "label": "Pollo",
+        "amount": 1,
+        "unit": "pechuga",
+        "details": "fresco"
+      },
+      {
+        "label": "Cebolla",
+        "amount": 1,
+        "unit": "pieza",
+        "details": "cortada en tiras"
+      },
+      {
+        "label": "Ajo",
+        "amount": 2,
+        "unit": "dientes",
+        "details": "picados"
+      },
+      {
+        "label": "Chile Chipotle",
+        "amount": 3,
+        "unit": "piezas",
+        "details": "enteros"
+      },
+      {
+        "label": "Jitomates",
+        "amount": 5,
+        "unit": "piezas",
+        "details": "frescos"
+      },
+      {
+        "label": "Laurel",
+        "amount": 1,
+        "unit": "hoja",
+        "details": "laurel"
+      },
+      {
+        "label": "Tostadas",
+        "amount": 8,
+        "unit": "piezas",
+        "details": "de maiz"
+      },
+      {
+        "label": "Frijoles",
+        "amount": 1,
+        "unit": "taza",
+        "details": "refritos"
+      },
+      {
+        "label": "Lechuga",
+        "amount": 1,
+        "unit": "pieza",
+        "details": "picada"
+      },
+      {
+        "label": "Crema",
+        "amount": 1,
+        "unit": "taza",
+        "details": "blanca"
+      },
+      {
+        "label": "Queso",
+        "amount": 1,
+        "unit": "taza",
+        "details": "crema"
+      },
+      {
+        "label": "Aguacate",
+        "amount": 1,
+        "unit": "pieza",
+        "details": "en rebandas"
+      },
+      {
+        "label": "Sal",
+        "amount": 1,
+        "unit": "sal",
+        "details": "al gusto"
+      },
+      {
+        "label": "Aceite",
+        "amount": 1,
+        "unit": "aceite",
+        "details": "al gusto"
+      }
+    ],
+    "instructions": [
+      "En una olla pon a cocer la pechuga de pollo con un poco de sal. Posteriormente deshébrala y reserva.",
+      "En una sartén con aceite sofríe el ajo y la cebolla. Mientras tanto licúa el jitomate, el chile chipotle y el caldo de pollo que sobró al hervir la pechuga.",
+      "Una vez que tengas la mezcla añádela al sartén con las cebollas y el ajo. Agrega una hoja de laurel y la pechuga de pollo deshebrada. Déjalo cocer durante 20 minutos aproximadamente.",
+      "Para servir coloca sobre las tostadas un poco de frijoles, agrega la tinga de pollo y decora con lechuga, crema, queso, aguacate y salsa de tu preferencia."
+    ]
+  },
+  {
+    "image": {
+      "name": "EnfrijoladasVeganas",
+      "cid": "",
+      "url": "https://i.imgur.com/xPFW6Bm.jpg"
+    },
+    "category": "breakfast",
+    "title": "Enfrijoladas veganas",
+    "description": "Si de recetas económicas se trata, las enfrijoladas son una muy buena opción para el día a día.",
+    "chefNote": "¿Cómo resistirse a una tortilla dorada y bañada en salsa de frijol? ¡Te encantará!",
+    "ingredients": [
+      {
+        "label": "Frijoles",
+        "amount": 1,
+        "unit": "taza",
+        "details": "cocidos"
+      },
+      {
+        "label": "Aceite de Oliva",
+        "amount": 1,
+        "unit": "cucharadita",
+        "details": "extra virgen"
+      },
+      {
+        "label": "Epazote",
+        "amount": 2,
+        "unit": "hojas",
+        "details": "recien cortado"
+      },
+      {
+        "label": "Sal",
+        "amount": 1,
+        "unit": "pizca",
+        "details": "al gusto"
+      },
+      {
+        "label": "Nopal",
+        "amount": 2,
+        "unit": "piezas",
+        "details": "medianos"
+      },
+      {
+        "label": "Calabacitas",
+        "amount": 2,
+        "unit": "piezas",
+        "details": "redondas"
+      },
+      {
+        "label": "Tortillas",
+        "amount": 20,
+        "unit": "piezas",
+        "details": "de maiz"
+      }
+    ],
+    "instructions": [
+      "Para hacer esta receta de enfrijoladas veganas fácil, primero prepara la salsa de frijol. Para ello, coloca en la licuadora los frijoles cocidos con su propia agua junto con un trozo de cebolla y una pizca de sal, licua por 3 minutos.",
+      "Calienta una cucharadita de aceite en una olla y vacía la salsa de frijol. Seguido, agrega 2 hojitas de epazote, un poco más de sal al gusto y deja cocinar hasta que hierva. Luego, reserva.",
+      "Para el relleno, pica los nopales y la calabacita. A continuación, cocina al vapor o en agua hasta que hayan ablandado.",
+      "En una sartén con un poco de aceite fríe ligeramente las tortillas de maíz. ¿Qué te está pareciendo esta receta de enfrijoladas veganas?",
+      "Para armar las enfrijoladas veganas, rellena una tortilla con los vegetales y enrolla o dobla, como prefieras.",
+      "Luego, baña con la salsa de frijol hasta cubrir. Acompaña con una rebanada de aguacate y cebolla al gusto. ¿Qué te han parecido estas enfrijoladas veganas? Déjanos en los comentarios tu opinión."
+    ]
+  },
+  {
+    "image": {
+      "name": "ChurrosMexicanos",
+      "cid": "",
+      "url": "https://i.imgur.com/0mJeq3R.jpg"
+    },
+    "category": "dessert",
+    "title": "Churros Mexicanos",
+    "description": "Los churros son uno de los antojos dulces más populares que hay en México.",
+    "chefNote": "¿Cómo resistirse al sabor de la masa frita espolvoreada con azúcar y canela? Te mostramos la presentación más sencilla de manera fácil y sin necesidad de tener una máquina churrera para preparar estos churros mexicanos.",
+    "ingredients": [
+      {
+        "label": "Mantequilla",
+        "amount": 90,
+        "unit": "gramos",
+        "details": "sin sal"
+      },
+      {
+        "label": "Sal",
+        "amount": 1,
+        "unit": "pizca",
+        "details": "al gusto"
+      },
+      {
+        "label": "Azucar",
+        "amount": 1,
+        "unit": "cucharada sopera",
+        "details": "glass"
+      },
+      {
+        "label": "Agua",
+        "amount": 360,
+        "unit": "mililitros",
+        "details": "para tomar"
+      },
+      {
+        "label": "Huevo",
+        "amount": 1,
+        "unit": "pieza",
+        "details": "fresco"
+      },
+      {
+        "label": "Harina",
+        "amount": 1,
+        "unit": "taza",
+        "details": "blanca"
+      },
+      {
+        "label": "Aceite",
+        "amount": 2,
+        "unit": "taza",
+        "details": "al gusto"
+      },
+      {
+        "label": "Azucar",
+        "amount": 1,
+        "unit": "taza",
+        "details": "morena"
+      },
+      {
+        "label": "Canela",
+        "amount": 3,
+        "unit": "cucharada sopera",
+        "details": "molida"
+      }
+    ],
+    "instructions": [
+      "Pues bien, comienza la receta de churros mexicanos calentando el agua, la mantequilla y la pizca de sal. Debes mantener a fuego medio bajo y mezclar para que la mantequilla se disuelva.",
+      "Antes de que rompa el hervor, agrega la harina y 1 cucharada de azúcar de golpe. Baja al mínimo el fuego y con ayuda de una pala de madera, mezcla con fuerza para integrar todo y que quede una masa suave y se despegue fácil de la olla.",
+      "Retira la olla del fuego y agrega uno a uno los huevos, luego, mezcla hasta integrar todo por completo. Seguido, pasa la masa a una manga o bolsa plástica con una duya de estrella.",
+      "Calienta el aceite en una olla para fritura profunda y deja caer la masa de la duya presionando para que tome su forma tradicional en tira o en espiral. Seguido, fríe moviendo los churros hasta que estén dorados. Señalamos que tomará alrededor de 40 segundos, pero dependerá del aceite caliente. ¿Qué te está pareciendo esta receta de churros mexicanos?",
+      "Cuando estén listos los churros, escurre bien el exceso de aceite para luego espolvorear con azúcar y canela en polvo. ¡Listos! "
+    ]
+  },
+  {
+    "image": {
+      "name": "Choc-mintAffogato",
+      "cid": "",
+      "url": "https://i.imgur.com/WXTQqfR.png"
+    },
+    "category": "dessert",
+    "title": "Choc-mintAffogato",
+    "description": "This is what you get when choc-mint, ice cream and liqueur collide",
+    "chefNote": "The perfect way to end the dinner party (for the adults, of course).",
+    "ingredients": [
+      {
+        "label": "Peppermint schnapps",
+        "amount": 30,
+        "unit": "ml",
+        "details": ""
+      },
+      {
+        "label": "Baileys Chocolate Luxe",
+        "amount": 30,
+        "unit": "ml",
+        "details": ""
+      },
+      {
+        "label": "Chocolate liqueur",
+        "amount": 15,
+        "unit": "ml",
+        "details": ""
+      },
+      {
+        "label": "Choc-mint ice-cream",
+        "amount": 1,
+        "unit": "unit",
+        "details": " to serve"
+      },
+      {
+        "label": "Peppermint Crisp chocolate",
+        "amount": 1,
+        "unit": "bar",
+        "details": "halved diagonally"
+      }
+    ],
+    "instructions": [
+      "Pour peppermint schnaps, baileys and chocolate liqueur in a cocktailshaker filled with ice. Shake for 30 seconds. Pour into a chilled martini glass. ",
+      "Carefully top with a large scoop of ice-cream (the ice-cream should float, not sink). Finish with pieces of the chocolate bar.",
+      "Also in top with a large scoop of ice-cream (the ice-cream should float, not sink). Finish with pieces of the bar."
+    ]
+  },
+  {
+    "image": {
+      "name": "SummerSmoothie",
+      "cid": "",
+      "url": "https://i.imgur.com/a7kj2qN.jpg"
+    },
+    "category": "breakfast",
+    "title": "Super-Simple Summer Smoothie",
+    "description": "No matter the time of year, we love to blend up an array of delicious ingredients into one creamy, colorful and nutritious smoothie.",
+    "chefNote": "Get a head-start on your day and freeze the ingredients for your smoothie the night before.",
+    "ingredients": [
+      {
+        "label": "milk",
+        "amount": 1,
+        "unit": "cup",
+        "details": "dairy or nondairy"
+      },
+      {
+        "label": "Yogurt",
+        "amount": 1,
+        "unit": "cup",
+        "details": "plain"
+      },
+      {
+        "amount": 2,
+        "unit": "pieces",
+        "details": "fresh"
+      }
+    ],
+    "instructions": [
+      "In a blender, add ingredients in the order they are listed. Purée ingredients until smooth",
+      "In a blender, add ingredients in the order they are listed. Purée ingredients until smooth",
+      "In a blender, add ingredients in the order they are listed. Purée ingredients until smooth"
+    ]
+  },
+  {
+    "image": {
+      "name": "InstantOatmeal",
+      "cid": "",
+      "url": "https://i.imgur.com/MKDF10H.jpg"
+    },
+    "category": "breakfast",
+    "title": "Instant Oatmeal",
+    "description": "Try instant oatmeal from scratch rather than relying on store-bought ",
+    "chefNote": "Make a big batch at the beginning of the week!",
+    "ingredients": [
+      {
+        "label": "Quick Oat",
+        "amount": 1,
+        "unit": "cup",
+        "details": ""
+      },
+      {
+        "label": "Cranberries",
+        "amount": 1,
+        "unit": "tablespoon",
+        "details": "dried"
+      },
+      {
+        "label": "Toasted pecans",
+        "amount": 1,
+        "unit": "tablespoon",
+        "details": "chopped"
+      },
+      {
+        "label": "Sugar",
+        "amount": 1,
+        "unit": "tablespoon",
+        "details": "brown"
+      },
+      {
+        "label": "Ground cinnamon",
+        "amount": 1,
+        "unit": "tablespoon",
+        "details": ""
+      },
+      {
+        "label": "Salt",
+        "amount": 1,
+        "unit": "tablespoon",
+        "details": "Kosher"
+      },
+      {
+        "label": "Orange zest",
+        "amount": 1,
+        "unit": "tablespoon",
+        "details": "grated"
+      }
+    ],
+    "instructions": [
+      "In bowl, place quick oats, dried cranberries and chopped toasted pecans, brown sugar and pinch each of ground cinnamon, grated orange zest and salt.",
+      "Add 1/2 to 3/4 cup just-boiling water. Let sit 1 min. Stir and eat.",
+      "Add 1/2 to 3/4 cup just-boiling water. Let sit 1 min. Stir and eat."
+    ]
+  },
+  {
+    "image": {
+      "name": "SmashedAvocadoToast",
+      "cid": "",
+      "url": "https://i.imgur.com/YfojhEG.jpg"
+    },
+    "category": "breakfast",
+    "title": "Smashed Avocado",
+    "description": "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ad, facere pariatur aperiam at beatae.",
+    "chefNote": "This avocado toast will be the star of brunch.",
+    "ingredients": [
+      {
+        "label": "Avocado",
+        "amount": 1,
+        "unit": "piece",
+        "details": "riped"
+      },
+      {
+        "label": "Lemon juice",
+        "amount": 1,
+        "unit": "tablespoom",
+        "details": "fresh"
+      },
+      {
+        "label": "Kosher salt and pepper",
+        "amount": 1,
+        "unit": "unit",
+        "details": "to serve"
+      },
+      {
+        "label": "Bread",
+        "amount": 4,
+        "unit": "slices",
+        "details": "toasted"
+      },
+      {
+        "label": "Eggs",
+        "amount": 4,
+        "unit": "pieces",
+        "details": "hard boiled"
+      },
+      {
+        "label": "Small multicolored radishes",
+        "amount": 1,
+        "unit": "bunch",
+        "details": "thinly sliced"
+      },
+      {
+        "label": "Chopped fresh chives and sesame seeds",
+        "amount": 1,
+        "unit": "bunch",
+        "details": "for serving"
+      }
+    ],
+    "instructions": [
+      "In medium bowl, smash avocado with lemon juice and 1/4 teaspoon each salt and pepper.",
+      "Spread on toast and top with eggs and radishes and sprinkle with chives and sesame seeds.",
+      "Spread on toast and top with eggs and radishes and sprinkle with chives and sesame seeds."
+    ]
+  },
+  {
+    "image": {
+      "name": "ScrambledEggs",
+      "cid": "",
+      "url": "https://i.imgur.com/KkMZosA.jpg"
+    },
+    "category": "breakfast",
+    "title": "Scrambled Eggs",
+    "description": "Eggs are super nutritious, add a whole lot of protein to your diet and offer the perfect canvas for any mix-ins to boost your dinner.",
+    "chefNote": "You'll need a nonstick skillet and a rubber spatula to make a fluffy and creamy pan of this fan-favorite breakfast.",
+    "ingredients": [
+      {
+        "label": "Eggs",
+        "amount": 8,
+        "unit": "pieces",
+        "details": "large"
+      },
+      {
+        "label": "Kosher salt and pepper",
+        "amount": 1,
+        "unit": "bunch",
+        "details": "for serving"
+      },
+      {
+        "label": "Unsalted butter",
+        "amount": 1,
+        "unit": "tablespoom",
+        "details": "salt free"
+      }
+    ],
+    "instructions": [
+      "Heat butter (or oil) in a 10 to 12-in non-stick skillet on medium-low.",
+      "In a bowl, whisk together, eggs and ½ tsp each salt and pepper.",
+      "Add eggs to skillet and cook, stirring often until eggs are beginning to set.",
+      "Once the eggs are nearly set, add desired toppings (think cheese, cooked veggies, herbs, tender greens like spinach or baby kale)."
+    ]
+  },
+  {
+    "image": {
+      "name": "Sunny-SideEggs",
+      "cid": "",
+      "url": "https://i.imgur.com/Vy3VCnS.jpg"
+    },
+    "category": "breakfast",
+    "title": "Sunny-Side Eggs",
+    "description": "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ad, facere pariatur aperiam at beatae.",
+    "chefNote": "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ad, facere pariatur aperiam at beatae.",
+    "ingredients": [
+      {
+        "label": "Bell pepper",
+        "amount": 1,
+        "unit": "piece",
+        "details": "large"
+      },
+      {
+        "label": "Vegetable oil",
+        "amount": 1,
+        "unit": "tablespoon",
+        "details": "big"
+      },
+      {
+        "label": "Eggs",
+        "amount": 4,
+        "unit": "pieces",
+        "details": "large"
+      },
+      {
+        "label": "Chopped parsley",
+        "amount": 1,
+        "unit": "bunch",
+        "details": "for garnish"
+      }
+    ],
+    "instructions": [
+      "Slice bell pepper (or 4 in different colors) horizontally to make four 1/2-inch-thick rings and remove inner white flesh and seeds.",
+      "In 12-inch nonstick skillet, heat vegetable oil on medium. Cook peppers 2 minutes. Turn peppers over,crack 1 egg into center of each ring. Cook, covered, until eggs have reached desired doneness. Season with 1/4 teaspoon each salt and pepper.",
+      "To serve, garnish with chopped parsley."
+    ]
+  }
+]

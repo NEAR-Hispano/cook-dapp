@@ -25,7 +25,7 @@ export interface screenInterface {
   Component: FC<{}>;
 }
 
-export interface Image {
+export interface imageInterface {
   name: string;
   cid: string;
   url: string;
@@ -33,7 +33,7 @@ export interface Image {
 
 export interface ingridientInterface {
   label: string;
-  amount: number;
+  amount: number | string;
   unit: string;
   details: string;
 }
@@ -61,4 +61,22 @@ export interface userInterface {
 export interface socialInterface {
   label: string;
   link: string;
+}
+
+export interface recipeInterface {
+  id: string;
+  recipeBookID: string;
+  image: imageInterface;
+  creator: AccountID;
+  category: string;
+  title: string;
+  description: string;
+  chefNote: string;
+  ingredients: Array<ingridientInterface>;
+  instructions: Array<string>;
+  reviews: Array<string>;
+  ratings: Array<number>;
+  averageRating: number;
+  totalTips: number;
+  createdAt: string;
 }

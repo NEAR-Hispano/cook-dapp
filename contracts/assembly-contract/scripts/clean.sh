@@ -14,7 +14,7 @@ echo
 echo "Eliminando carpeta \"neardev\"."
 echo 
 
-rm -rf ./neardev
+rm -rf ../../../neardev
 
 echo
 echo "Eliminando carpeta \"dist\"."

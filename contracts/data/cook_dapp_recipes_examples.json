@@ -1,0 +1,215 @@
+[
+  {
+    "image": {
+      "name": "PureYautia",
+      "cid": "",
+      "url": "https://i.imgur.com/uQ6d0PE.jpg"
+    },
+    "category": "breakfast",
+    "title": "Puré de yautía",
+    "description": "Si te interesa la cocina fácil, seguro que no puedes hacer nada mejor que un puré de yautía , aprende también todo sobre la yautía, nuestro querido tubérculo.",
+    "chefNote": "Si te gustaron no olvides dejar una review",
+    "ingredients": [
+      {
+        "label": "Yautía",
+        "amount": 1,
+        "unit": "kilogramo",
+        "details": "fresca"
+      },
+      {
+        "label": "Sal",
+        "amount": 1,
+        "unit": "chucharada",
+        "details": "de mesa"
+      },
+      {
+        "label": "Mantequilla",
+        "amount": 1,
+        "unit": "barra",
+        "details": "sin sal"
+      },
+      {
+        "label": "Leche",
+        "amount": 1,
+        "unit": "taza",
+        "details": "fresca"
+      },
+      {
+        "label": "Ajo",
+        "amount": 1,
+        "unit": "cucharada",
+        "details": "en polvo"
+      },
+      {
+        "label": "Cebolla",
+        "amount": 1,
+        "unit": "al gusto",
+        "details": "salteada con vinagre"
+      }
+    ],
+    "instructions": [
+      "Pela la yautía con un pelador de papas o un cuchillo de pelar, quitando la fina piel marrón.",
+      "Picar la yautía y enjuagar.",
+      "Pon la yautía en una olla y agrega agua hasta que esté cubierta más un par de pulgadas [5 cm] agrega ¾ cucharada de sal.",
+      "Hierve hasta que estén bien blandas, prueba pinchando con un tenedor. Una vez hervida, retírala del agua y desecha el agua.",
+      "Maja hasta que la mezcla esté suave y sin grumos.",
+      "Incorpora la mantequilla y, a continuación, la leche. Incorpora el ajo en polvo. Prueba y agrega sal al gusto si lo consideras necesario."
+    ]
+  },
+  {
+    "image": {
+      "name": "MofongoYuca",
+      "cid": "",
+      "url": "https://i.imgur.com/xXUPg10.jpg"
+    },
+    "category": "dinner",
+    "title": "Mofongo de yuca con queso",
+    "description": "Crujiente yuca con ajo, sabroso chicharrón y una cremosa salsa de queso cheddar combinados en un encantador mofongo de yuca.",
+    "chefNote": "Se convertirá en una leyenda familiar instantánea.",
+    "ingredients": [
+      {
+        "label": "Yuca",
+        "amount": 3,
+        "unit": "libras",
+        "details": "picada"
+      },
+      {
+        "label": "Sal",
+        "amount": 1,
+        "unit": "cucharada",
+        "details": "al gusto"
+      },
+      {
+        "label": "Ajo",
+        "amount": 1,
+        "unit": "cucharada",
+        "details": "machacado"
+      },
+      {
+        "label": "Chicharron",
+        "amount": 1,
+        "unit": "taza",
+        "details": "picado"
+      },
+      {
+        "label": "Mantequilla",
+        "amount": 2,
+        "unit": "cucharadas",
+        "details": "con sal"
+      },
+      {
+        "label": "Harina",
+        "amount": 2,
+        "unit": "cucharadas",
+        "details": "todo uso"
+      },
+      {
+        "label": "Leche",
+        "amount": 1,
+        "unit": "taza",
+        "details": "sin o con deslactosada"
+      },
+      {
+        "label": "Queso cheddar",
+        "amount": 1,
+        "unit": "taza",
+        "details": "rayado"
+      },
+      {
+        "label": "Puerrito",
+        "amount": 2,
+        "unit": "cucharadas",
+        "details": "picado"
+      }
+    ],
+    "instructions": [
+      "En un recipiente hondo combina la yuca, la sal y suficiente agua para cubrir la yuca. Déjala reposar entre 30 minutos y una hora.",
+      "Una vez pasado este tiempo, saca la yuca del agua (desecha el agua), y deja reposar la yuca sobre una toalla de papel durante 10 minutos para secar el exceso de agua",
+      " En una cacerola pequeña, calienta el aceite a fuego medio-alto (300 ºF [150 ºC]).",
+      "Fríe la yuca en pequeñas cantidades (no la amontones) hasta que se dore por todos lados (5-7 minutos).",
+      "Saca la yuca del aceite y ponla en una toalla de papel para que absorba el exceso de aceite.",
+      "En un pilón (enlace afiliado a Amazon) junta ¼ del ajo y ¼ del chicharrón y machaca para combinar. Agrega ¼ de la yuca frita y machácala.",
+      "Forma una media bola con ella y colócala en un plato de servir.",
+      "Repite esto 3 veces más con el resto del ajo, el cerdo y la yuca para un total de 4 porciones.",
+      "En una cacerola pequeña, calienta la mantequilla a fuego medio-bajo hasta que se derrita. Añade inmediatamente la harina y remueve enérgicamente para combinarla y cocinarla hasta que haya cambiado el color a uno ligeramente más oscuro.",
+      "Vierte la leche y remueve enérgicamente para combinar todo y evitar que se formen grumos.",
+      "Una vez que la leche y la harina se hayan combinado, incorpora el queso cheddar y cocina removiendo hasta que el queso se haya derretido. Retira del fuego.",
+      "Adorna con el puerrito, rocía con la salsa de cheddar y sirve en cuanto esté listo."
+    ]
+  },
+  {
+    "image": {
+      "name": "Kipes",
+      "cid": "",
+      "url": "https://i.imgur.com/g7cgUNd.jpg"
+    },
+    "category": "dinner",
+    "title": "Kipes de carne molida",
+    "description": "El kipe es la versión dominicana del kibbeh libanés, y se hace con carne molida y bulgur.",
+    "chefNote": "Es uno de nuestras picaderas más populares.",
+    "ingredients": [
+      {
+        "label": "Trigo",
+        "amount": 1,
+        "unit": "taza",
+        "details": "entero"
+      },
+      {
+        "label": "Carne de Res",
+        "amount": 1,
+        "unit": "lb",
+        "details": "Molida"
+      },
+      {
+        "label": "Aji cubanela",
+        "amount": 1,
+        "unit": "pieza",
+        "details": "picado"
+      },
+      {
+        "label": "Albaca",
+        "amount": 2,
+        "unit": "hojas",
+        "details": "fresca"
+      },
+      {
+        "label": "Cebolla ",
+        "amount": 1,
+        "unit": "pieza",
+        "details": "pequeña"
+      },
+      {
+        "label": "Pimienta",
+        "amount": 1,
+        "unit": "cucharadita",
+        "details": "al gusto"
+      },
+      {
+        "label": "Sal",
+        "amount": 2,
+        "unit": "cucharaditas",
+        "details": "al gusto"
+      },
+      {
+        "label": "Aceite",
+        "amount": 2,
+        "unit": "cucharadas",
+        "details": "al gusto"
+      },
+      {
+        "label": "Salsa de Tomate",
+        "amount": 1,
+        "unit": "cucharadita",
+        "details": "o pasta"
+      }
+    ],
+    "instructions": [
+      "Pon el trigo en un tazón y agrega suficiente agua para cubrir, luego agrega otras cuatro tazas más de agua y remoja en la nevera durante la noche .",
+      "Pica el ají, albahaca y cebolla en el procesador de alimento para obtener una pasta gruesa.",
+      "Pon la carne en un recipiente profundo, mezcla con el sazón que preparaste.",
+      "Usando tus manos mezcla la carne con los ingredientes con un movimiento similar al que se usa para amasar harina.",
+      " Reserva dos tercios de la carne cruda.",
+      "Después de freír, los quipes deben estar dorado oscuro por fuera, cuando frías el primero abre y asegúrate que no esté crudo por dentro. La carne molida cruda es un tanto peligrosa, así que debes cuidarte que queden bien cocidos."
+    ]
+  }
+]

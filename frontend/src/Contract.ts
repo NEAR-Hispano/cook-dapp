@@ -1,10 +1,11 @@
 import {
+  AccountID,
   groceryListInterface,
   ingridientInterface,
   recipeListInterface,
 } from "./types/index";
 import { utils } from "near-api-js";
-import { Image } from "./types";
+import { imageInterface } from "./types";
 
 // Gas.
 const gas = 300000000000000;
@@ -62,7 +63,7 @@ export class Contract {
   }: {
     id: string;
     title: string | null;
-    banner: Image | null;
+    banner: imageInterface | null;
   }) {
     switch (CONTRACT_LANG) {
       case "AS":
@@ -383,6 +384,28 @@ export class Contract {
         return (window as any).contract.addFavoriteRecipe({ recipeID });
       case "RUST":
         return (window as any).contract.add_favorite_recipe({ recipeID });
+      default:
+        throw InvalidContractLangError;
+    }
+  }
+
+  getUserRecipeBooks({ accountID }:  { accountID: AccountID }) {
+    switch (CONTRACT_LANG) {
+      case "AS":
+        return (window as any).contract.getUserRecipeBooks({ accountID });
+      case "RUST":
+        return (window as any).contract.get_user_recipe_books({ accountID });
+      default:
+        throw InvalidContractLangError;
+    }
+  }
+
+  getUserRecipes({ accountID }:  { accountID: AccountID }) {
+    switch (CONTRACT_LANG) {
+      case "AS":
+        return (window as any).contract.getUserRecipes({ accountID });
+      case "RUST":
+        return (window as any).contract.get_user_recipes({ accountID });
       default:
         throw InvalidContractLangError;
     }

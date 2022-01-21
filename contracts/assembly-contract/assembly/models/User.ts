@@ -3,9 +3,9 @@ import { AccountID } from "../utils";
 @nearBindgen
 class User {
   accountID: AccountID;
-  favoriteRecipes: Set<String>;
-  recipesCreated: Array<String>;
-  recipeBooksCreated: Array<String>;
+  favoriteRecipes: Set<string>;
+  recipesCreated: Array<string>;
+  recipeBooksCreated: Array<string>;
   totalTipped: f64;
   tipsReceived: f64;
 

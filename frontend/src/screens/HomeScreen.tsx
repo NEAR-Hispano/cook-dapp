@@ -1,30 +1,20 @@
-import { FC, useEffect } from "react";
-import CategoriesRow from "../components/CategoriesRow";
+import { FC, useEffect, useState } from "react";
+import { recipeInterface, userInterface } from "../types";
 import useContract from "../hooks/useContract";
 import useUser from "../hooks/useUser";
-import { userInterface } from "../types";
-import useTranslator from "../hooks/useTranslator";
-
-
-import { Swiper, SwiperSlide } from 'swiper/react/swiper-react';
-import SwiperCore, { Pagination } from "swiper";
-import "swiper/swiper-bundle.min.css";
-import "swiper/swiper.min.css";
-import "swiper/modules/navigation/navigation";
-import "swiper/modules/pagination/pagination";
-import SliderImage from "../assets/images/plato2.jpg"
-import SliderImageOne from "../assets/images/plato3.jpg"
-import SliderImageTwo from "../assets/images/plato2.jpg"
-
-SwiperCore.use([Pagination]);
-
-
-
+import CategoriesRow from "../components/CategoriesRow";
+import RecipesRow from "../components/RecipesRow";
+import CookDappRecipes from "../components/CookDappRecipes";
 
 const HomeScreen: FC = () => {
   const [user, setUser] = useUser();
   const contract = useContract();
-  const translate = useTranslator();
+  const [trendingRecipes, setTrendingRecipes] = useState<
+    Array<recipeInterface>
+  >([]);
+  const [mostTipedRecipes, setMostTipedRecipes] = useState<
+    Array<recipeInterface>
+  >([]);
 
   useEffect(() => {
     if (!user && contract && setUser) {
@@ -32,11 +22,19 @@ const HomeScreen: FC = () => {
         .getUser({ accountID: null })
         .then((res: userInterface) => setUser(res));
     }
+    if (contract) {
+      contract
+        .getMostTipedRecipes()
+        .then((list: Array<recipeInterface>) => setMostTipedRecipes(list));
+      contract
+        .getTrendingRecipes()
+        .then((list: Array<recipeInterface>) => setTrendingRecipes(list));
+    }
   }, []);
 
   useEffect(() => {
-    if (user) {
-      console.log(user);
+    if (mostTipedRecipes && trendingRecipes) {
+      console.log({ mostTipedRecipes, trendingRecipes });
     }
   }, [user]);
 
@@ -44,38 +42,17 @@ const HomeScreen: FC = () => {
     <div className="homescreen-container">
       <CategoriesRow />
 
-      <Swiper
-        breakpoints={{
-          // when window width is >= 640px
-          640: {            
-            slidesPerView: 1,
-          },
-          // when window width is >= 768px
-          768: {            
-            slidesPerView: 2,
-          },
-          // when window width is >= 768px
-          1000: {            
-            slidesPerView: 3,
-          },
-        }}
-        spaceBetween={30}
-        pagination={{
-          clickable: true,
-        }}
-        className="mySwiper"
-      >
-        <SwiperSlide  ><img alt="" src={SliderImage} /></SwiperSlide>
-        <SwiperSlide  ><img alt="" src={SliderImageOne} /></SwiperSlide>
-        <SwiperSlide  ><img alt="" src={SliderImageTwo} /></SwiperSlide>
-        <SwiperSlide  ><img alt="" src={SliderImage} /></SwiperSlide>
-        <SwiperSlide  ><img alt="" src={SliderImageOne} /></SwiperSlide>
-        <SwiperSlide  ><img alt="" src={SliderImageTwo} /></SwiperSlide>
-        <SwiperSlide  ><img alt="" src={SliderImage} /></SwiperSlide>
-        <SwiperSlide  ><img alt="" src={SliderImageOne} /></SwiperSlide>
-        <SwiperSlide  ><img alt="" src={SliderImageTwo} /></SwiperSlide>
-      </Swiper>
+      <CookDappRecipes />
 
+      <RecipesRow
+        swiperTitle="landing_card_title_most_tiped_recipes"
+        recipes={mostTipedRecipes}
+      />
+      <RecipesRow
+        swiperTitle="landing_card_title_trending_recipes"
+        recipes={trendingRecipes}
+        styles={{ paddingBottom: "60px" }}
+      />
     </div>
   );
 };

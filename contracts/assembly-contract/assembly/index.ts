@@ -111,6 +111,26 @@ export function createRecipeBook(title: string): RecipeBook {
 }
 
 /**
+ * Method to get all recipe books created.
+ * @returns Array of all recipe books created.
+ */
+
+export function getRecipeBooks(): Array<RecipeBook> {
+  //Get all the keys the recipes are stored with.
+  const keys = recipeBooks.keys();
+  //Initialize var that will hold list of recipes.
+  const list = new Array<RecipeBook>();
+
+  for (let i = 0; i < keys.length; i++) {
+    // loop through the keys, get and push each recipe the key is holding as pair.
+    list.push(getRecipeBook(keys[i]));
+  }
+
+  // return list or recipes created.
+  return list;
+}
+
+/**
  * Method to get recipe book information.
  * @param id ID of recipe book to get.
  * @returns Recipe book if found, else throws "Not found".
@@ -215,7 +235,8 @@ export function createRecipe(
   instructions: Array<string>,
   recipeBookID: string,
   category: string,
-  chefNote: string
+  chefNote: string,
+  image: Image
 ): Recipe {
   // The title of the recipe must be descriptive.
   assert(title.length > MIN_TITLE_LENGTH, "Recipe title to short.");
@@ -269,7 +290,8 @@ export function createRecipe(
     instructions,
     recipeBookID,
     category,
-    chefNote
+    chefNote,
+    image
   );
 
   // Get user:
@@ -402,9 +424,11 @@ export function tipRecipe(recipeID: string): void {
   const userBeingTipped = getUser(recipe.creator);
 
   // Increment Creator of recipe tips recived.
-  if(userBeingTipped) {
+  if (userBeingTipped) {
     // Update user total tips recived .
-    userBeingTipped.setTipsRecived(f64.add(userBeingTipped.tipsReceived, nearToF64(amount)));
+    userBeingTipped.setTipsRecived(
+      f64.add(userBeingTipped.tipsReceived, nearToF64(amount))
+    );
     // Update user in persistent collection.
     users.set(recipe.creator, userBeingTipped);
   }
@@ -626,7 +650,7 @@ export function updateReview(id: string, text: string, rating: i32): Review {
 
   // Update new rating from review
   recipe.addRating(review.rating);
-  recipe.updateAverageRating();  
+  recipe.updateAverageRating();
 
   // Update persistent collections.
   reviews.set(`${Context.sender}-${review.recipeID}`, review);
@@ -747,4 +771,48 @@ export function addFavoriteRecipe(recipeID: string): void {
     user.addToFavoriteRecipes(recipeID);
     users.set(Context.sender, user);
   }
+}
+
+
+
+/**
+ * Method to get all user recipe books created.
+ * @returns Array of all user recipe books created.
+ */
+
+ export function getUserRecipeBooks(accountID: AccountID): Array<RecipeBook> {
+  const user = getUser(accountID);
+  //Get all the users recipebooks keys.
+  const keys = user ? user.recipeBooksCreated : [];
+  //Initialize var that will hold list of recipes.
+  const list = new Array<RecipeBook>();
+
+  for (let i = 0; i < keys.length; i++) {
+    // loop through the keys, get and push each recipe the key is holding as pair.
+    list.push(getRecipeBook(keys[i]));
+  }
+
+  // return list or recipes created.
+  return list;
+}
+
+/**
+ * Method to get all user recipes created.
+ * @returns Array of all user recipes created.
+ */
+
+export function getUserRecipes(accountID: AccountID): Array<Recipe> {
+  const user = getUser(accountID);
+  //Get all the users recipebooks keys.
+  const keys = user ? user.recipesCreated : [];
+  //Initialize var that will hold list of recipes.
+  const list = new Array<Recipe>();
+
+  for (let i = 0; i < keys.length; i++) {
+    // loop through the keys, get and push each recipe the key is holding as pair.
+    list.push(getRecipe(keys[i]));
+  }
+
+  // return list or recipes created.
+  return list;
 }

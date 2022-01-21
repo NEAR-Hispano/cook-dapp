@@ -11,8 +11,6 @@ import {
 import Image from "./Image";
 import Ingridient from "./Ingridient";
 
-const defaultRecipeImage: Image = new Image("", "", "");
-
 @nearBindgen
 class Recipe {
   id: string;
@@ -39,11 +37,12 @@ class Recipe {
     instructions: Array<string>,
     recipeBookID: string,
     category: string,
-    chefNote: string
+    chefNote: string,
+    image: Image
   ) {
     this.id = getID();
     this.recipeBookID = recipeBookID;
-    this.image = defaultRecipeImage;
+    this.image = image;
     this.creator = creator;
     this.category = category;
     this.title = title;
@@ -86,9 +85,9 @@ class Recipe {
   }
 
   // sets the recipe image banner.
-  setImage(image: Image | null = null): void {
+  setImage(image: Image | null): void {
     if (image) {
-      this.image = new Image(image.name, image.cid, image.url);
+      this.image = image;
     }
   }
 

@@ -43,6 +43,10 @@ export async function initContract() {
         "get_recipe_reviews",
         "getShoppingList",
         "get_shopping_list",
+        "getUserRecipeBooks",
+        "get_user_recipe_books",
+        "getUserRecipes",
+        "get_user_recipes",
       ],
       // Change methods can modify the state. But you don't receive the returned value when called.
       changeMethods: [
@@ -84,7 +88,9 @@ export async function initContract() {
 export function logout() {
   (window as any).walletConnection.signOut();
   // reload page
-  (window as any).location.replace((window as any).location.origin + (window as any).location.pathname);
+  (window as any).location.replace(
+    (window as any).location.origin + (window as any).location.pathname
+  );
 }
 
 export function login() {

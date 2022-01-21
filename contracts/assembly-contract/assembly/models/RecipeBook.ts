@@ -1,9 +1,6 @@
 import { AccountID, getID } from "../utils";
 import Image from "./Image";
 
-
-const defaultBanner: Image = new Image("", "", "")
-
 @nearBindgen
 class RecipeBook {
   id: string;
@@ -16,7 +13,11 @@ class RecipeBook {
     this.id = getID();
     this.creator = accountID;
     this.title = title;
-    this.banner = defaultBanner;
+    this.banner = {
+      name: "",
+      cid: "",
+      url: "",
+    };
     this.recipes = new Array();
   }
 
@@ -26,7 +27,7 @@ class RecipeBook {
   }
   // set banner.
   setBanner(banner: Image): void {
-    this.banner = new Image(banner.name, banner.cid, banner.url);
+    this.banner = banner;
   }
 
   // add recipe to book.
