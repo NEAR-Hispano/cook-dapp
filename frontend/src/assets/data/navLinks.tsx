@@ -12,7 +12,7 @@ export const privateLinks: Array<navLinkInterface> = [
   },
   {
     label: "profile",
-    path: "/profile",
+    path: "/profile/books",
     Icon: ProfileIcon
   },
   {

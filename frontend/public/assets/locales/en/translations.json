@@ -21,5 +21,6 @@
     "breakfast": "breakfast",
     "lunch": "lunch",
     "dessert": "dessert",
-    "snacks": "snacks"
+    "snacks": "snacks",
+    "cookdapp_selected": "cookdapp selected"
 }

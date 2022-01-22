@@ -1,0 +1,113 @@
+.profile-container {
+  height: auto;
+  min-height: 100%;
+  width: 100%;
+
+  .header {
+    flex: 1;
+    border-bottom: 1px solid $borderColor;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .avatar-container {
+      position: relative;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      padding: 20px 0;
+      padding-bottom: 0;
+      border-bottom: 1px solid $borderColor;
+
+      .avatar {
+        width: calc(7vw + 10px);
+        height: calc(7vw + 10px);
+        border-radius: 100%;
+        border: solid 1px black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        small {
+          text-transform: uppercase;
+          font-size: clamp(20px, 2vw, 2.3rem);
+          color: black;
+        }
+      }
+
+      .accountID-container {
+        height: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .accountID {
+          font-weight: bold;
+          font-size: medium;
+          color: black;
+        }
+      }
+
+      .totalTipped-container,
+      .tipsReceived-container {
+        position: absolute;        
+        display: flex;
+        justify-content: center;
+        margin: 10px;
+
+        small {
+          font-weight: bold;
+          font-size: small;
+          color: black;
+          text-transform: uppercase;
+          margin-left: 5px;
+        }
+      }
+
+      .tipsReceived-container {
+        bottom: 0;
+        left: 0;
+      }
+      .totalTipped-container {
+        bottom: 0;
+        right: 0;
+      }
+    }
+
+    .tabs-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      padding: 20px 0;
+
+      .tab {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 0 25px;
+        border-right: 1px solid $borderColor;
+
+        &:last-child {
+          border: none;
+        }
+
+        small {
+          letter-spacing: 2px;
+          font-weight: bold;
+          font-size: small;
+          text-transform: uppercase;
+        }
+      }
+    }
+  }
+
+  .profile-content-container {
+    width: 100%;
+    height: auto;
+  }
+}

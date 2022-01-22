@@ -14,8 +14,8 @@ export const PrivateScreens: Array<screenInterface> = [
     Component: HomeScreen,
   },
   {
-    path: "/Profile",
-    exact: true,
+    path: "/profile/*",
+    exact: false,
     Component: ProfileScreen,
   },
   {

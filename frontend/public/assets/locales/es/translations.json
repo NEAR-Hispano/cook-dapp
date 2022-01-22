@@ -21,5 +21,6 @@
     "breakfast": "desayuno",
     "lunch": "almuerzo",
     "dessert": "postre",
-    "snacks": "merienda"
+    "snacks": "merienda",
+    "cookdapp_selected": "selección de cookdapp"
 }

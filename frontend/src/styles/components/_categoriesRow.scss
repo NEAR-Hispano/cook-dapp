@@ -45,27 +45,24 @@
     margin-right: 20px;
     cursor: pointer;
     padding: 5px;
+    
 
     &:last-child {
       margin-right: 0px;
     }
 
-    .categorie-banner {
-      height: 65px;
-      width: 65px;
-
-      height: 6vh;
-      width: 6vh;
-
-      border-radius: 100%;
-      background-color: white;
+    .categorie-banner {      
+      width: 3vw;
+      height: 3vw;
+      border-radius: 100%;      
       overflow: hidden;
-
-      img {
-        max-width: 150%;
+      
+      img {        
+        max-width: 150%;        
         height: auto;
+        min-height: 100%;
         margin: 0 auto;
-        display: block;
+        display: block;        
       }
     }
 
@@ -94,10 +91,6 @@
       display: flex;
       justify-content: center;
     }
-    .categorie-banner {
-      height: 15vw;
-      width: 15vw;
-    }
     .categorie-title {
       display: none;
       h4 {
@@ -106,9 +99,11 @@
     }
     .categorie-container {
       max-width: 20%;
-      overflow: hidden;
-      height: 7vh;
-      width: 7vh;
+    }
+    .categorie-banner {
+      width: 8vw !important;
+      height: 8vw !important;
+      border-radius: 100%;
     }
   }
 }
