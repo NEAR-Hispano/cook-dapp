@@ -19,21 +19,21 @@
       flex-direction: column;
       padding: 20px 0;
       padding-bottom: 0;
-      border-bottom: 1px solid $borderColor;
+      border-bottom: 1px solid $borderColor;      
 
       .avatar {
         width: calc(7vw + 10px);
         height: calc(7vw + 10px);
         border-radius: 100%;
-        border: solid 1px black;
+        border: solid 3px black;
         display: flex;
         justify-content: center;
         align-items: center;
-
+        
+        
         small {
           text-transform: uppercase;
-          font-size: clamp(20px, 2vw, 2.3rem);
-          color: black;
+          font-size: clamp(20px, 2vw, 2.3rem);          
         }
       }
 
@@ -47,6 +47,7 @@
           font-weight: bold;
           font-size: medium;
           color: black;
+          cursor: pointer;
         }
       }
 
@@ -83,6 +84,7 @@
       align-items: center;
       width: 100%;
       padding: 20px 0;
+      background-color: #F5F6EA;
 
       .tab {
         display: flex;

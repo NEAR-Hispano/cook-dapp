@@ -16,12 +16,7 @@ const HomeScreen: FC = () => {
     Array<recipeInterface>
   >([]);
 
-  useEffect(() => {
-    if (!user && contract && setUser) {
-      contract
-        .getUser({ accountID: null })
-        .then((res: userInterface) => setUser(res));
-    }
+  useEffect(() => {    
     if (contract) {
       contract
         .getMostTipedRecipes()

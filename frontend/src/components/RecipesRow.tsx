@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import FullStarIcon from "../assets/svg/FullStarIcon";
 import NEARCurrencyIcon from "../assets/svg/NEARCurrencyIcon";
 import { v4 as uuid } from "uuid";
+import RecipeTile from "./RecipeTile";
 
 interface Props {
   swiperTitle: string | null;
@@ -24,7 +25,7 @@ const RecipesRow: FC<Props> = ({ swiperTitle, recipes, styles }) => {
       return false;
     } else if (recipe.creator === "cook_dapp_recipes.near") {
       return false;
-    }    
+    }
     return true;
   };
 
@@ -54,38 +55,11 @@ const RecipesRow: FC<Props> = ({ swiperTitle, recipes, styles }) => {
         {recipes &&
           recipes
             .filter((recipe) => customFilter(recipe))
-            .map(
-              ({
-                id,
-                image,
-                title,
-                averageRating = 0.0,
-                description,
-                totalTips,
-              }) => (
-                <SwiperSlide key={uuid()}>
-                  <Link to={`/recipe/${id}`}>
-                    <img src={image.url} alt={image.name} />
-                    <div className="recipe-slide-information-wrapper">
-                      <div className="averageRating">
-                        <FullStarIcon />
-                        <small>{averageRating}</small>
-                      </div>
-                      <div className="tipsRecived">
-                        <NEARCurrencyIcon size={20} />
-                        <small>{totalTips}</small>
-                      </div>
-                      <div className="title">
-                        <h6>{title}</h6>
-                      </div>
-                      <div className="description">
-                        <p>{description}</p>
-                      </div>
-                    </div>
-                  </Link>
-                </SwiperSlide>
-              )
-            )}
+            .map((recipe) => (
+              <SwiperSlide key={uuid()}>
+                <RecipeTile recipe={recipe} />
+              </SwiperSlide>
+            ))}
       </Swiper>
     </div>
   );

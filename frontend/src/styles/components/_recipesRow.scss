@@ -21,72 +21,9 @@
       max-width: 100%;      
     }
 
-    .recipe-slide-information-wrapper {
-      height: auto;
-      width: 100%;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      color: black;
-      box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
-        rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    
 
-      .tipsRecived, .averageRating {
-        position: absolute;
-        display: flex;
-        flex-direction: row;
-        background-color: #000;
-        padding: 10px;
-        color: white;               
-      }
-
-      .averageRating {
-        top: -25%;
-        left: 0;
-        small {
-          margin-left: 5px;
-        }
-      }
-
-      .tipsRecived {
-        top: -50%;
-        left: 0;
-        small {
-          margin-left: 5px;
-        }
-      }
-
-      .title {
-        width: 90%;
-        margin: auto;
-        padding: 10px;
-        height: 70px;
-        max-height: 70px;
-        min-height: 70px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        h6 {
-          text-transform: uppercase;
-          color: black;
-          letter-spacing: 2px;
-          font-weight: bold;
-        }
-        border-bottom: solid 1px rgb(186, 186, 186);
-      }
-      .description {
-        padding: 30px;
-        height: 140px;
-        max-height: 140px;
-        min-height: 140px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        p {
-          font-size: small;
-        }
-      }
-    }
+    
   }
 
   .recipes-row-title {

@@ -8,17 +8,17 @@ export const privateLinks: Array<navLinkInterface> = [
   {
     label: "home",
     path: "/",
-    Icon: HomeIcon
+    Icon: HomeIcon,
   },
   {
     label: "profile",
     path: "/profile/books",
-    Icon: ProfileIcon
+    Icon: ProfileIcon,
   },
   {
     label: "explore",
     path: "/explore",
-    Icon: ExploreIcon
+    Icon: ExploreIcon,
   },
 ];
 
@@ -26,6 +26,6 @@ export const publicLinks: Array<navLinkInterface> = [
   {
     label: "app",
     path: "/login",
-    Icon: AppIcon
-  }
+    Icon: AppIcon,
+  },
 ];
