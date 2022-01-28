@@ -80,3 +80,11 @@ export interface recipeInterface {
   totalTips: number;
   createdAt: string;
 }
+
+export interface recipeBookInterface {
+  id: string;
+  creator: AccountID;
+  title: string;
+  banner: imageInterface;
+  recipes: Array<string>;
+}

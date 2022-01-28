@@ -6,6 +6,7 @@ import useCopyToClipboard from "../hooks/useCopyToClipboard";
 import { userInterface } from "../types";
 import useContract from "../hooks/useContract";
 import useUser from "../hooks/useUser";
+import useTranslator from "../hooks/useTranslator";
 
 const ProfileScreen: FC = () => {
   const [user] = useUser();
@@ -13,6 +14,7 @@ const ProfileScreen: FC = () => {
   const [_, copy] = useCopyToClipboard();
   const { username, section } = useParams();
   const contract = useContract();
+  const translate = useTranslator();
 
   function copyAccountID() {
     if (profile) copy(profile.accountID);
@@ -35,32 +37,20 @@ const ProfileScreen: FC = () => {
           <div className="avatar">
             <small>{profile && profile.accountID.split("")[0]}</small>
           </div>
+          
           <div className="accountID-container">
             <small onClick={() => copyAccountID()} className="accountID">
               {profile && profile.accountID}
             </small>
           </div>
-          <div
-            className="totalTipped-container"
-            title="Total amount of tips given."
-          >
-            <NEARCurrencyIcon size={20} fillCircle="#000" fillLetter="#FFF" />
-            <small>{profile && profile.totalTipped}</small>
-          </div>
-          <div
-            className="tipsReceived-container"
-            title="Total amount of tips received."
-          >
-            <NEARCurrencyIcon size={20} fillCircle="#000" fillLetter="#FFF" />
-            <small>{profile && profile.tipsReceived}</small>
-          </div>
+
         </div>
 
         <div className="tabs-container">
-          {profileTabs.map(({ label }) => (
+          {profileTabs.filter(({ label }) => label !== "book").map(({ label }) => (
             <div className="tab">
-              <Link to={`/profile/${label}${username? "/" + username : ""}`}>
-                <small>{label}</small>
+              <Link to={`/profile/${label}${username ? "/" + username : ""}`}>
+                <small>{translate(label)}</small>
               </Link>
             </div>
           ))}
@@ -74,7 +64,6 @@ const ProfileScreen: FC = () => {
               <Component profile={profile} />
             </div>
           ))}
-        {username}
       </div>
     </div>
   );

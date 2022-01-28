@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
+import useTranslator from "./useTranslator";
 
 type CopiedValue = string | null;
 type CopyFn = (text: string) => Promise<boolean>; // Return success
 
 function useCopyToClipboard(): [CopiedValue, CopyFn] {
   const [copiedText, setCopiedText] = useState<CopiedValue>(null);
+  const translate = useTranslator();
 
   const copy: CopyFn = async (text) => {
     if (!navigator?.clipboard) {
@@ -14,7 +16,7 @@ function useCopyToClipboard(): [CopiedValue, CopyFn] {
     }
     try {
       await navigator.clipboard.writeText(text).then();
-      toast("📋 Copied to clipboard", {
+      toast(translate("copied_to_clipboard"), {
         position: "bottom-right",
         autoClose: 5000,
         hideProgressBar: false,

@@ -1,0 +1,13 @@
+.profile-recipes-books {
+  height: auto;
+  width: 100%;
+}
+
+.books-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 20px;
+  height: auto;
+  max-width: 100%;
+  padding: 20px;
+}

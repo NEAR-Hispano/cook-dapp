@@ -1,0 +1,121 @@
+.recipe-screen-container {
+  height: auto;
+  margin: auto;
+  color: black;
+  max-width: 90%;
+  padding: 80px 0;
+
+  & .recipe-banner {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+
+    & .title {
+      width: max-content;
+      border-bottom: 1px solid $borderColor;
+      margin-bottom: 30px;
+      h1 {
+        line-height: 2;
+        font-size: clamp(20px, 30px, 40px);
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+      }
+    }
+
+    & .summary-info {
+      display: flex;
+      flex-direction: row;
+
+      & .reviews-quantity-wrapper,
+      .ingridients-quantity-wrapper,
+      .rating-stars-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 20px;
+
+        small {
+          position: relative;
+          text-transform: uppercase;
+          letter-spacing: 2px;
+          font-weight: bold;
+          font-size: small;
+
+          &::after {
+            position: absolute;
+            content: "";
+            height: 100%;
+            width: 1px;
+            background-color: black;
+            margin-left: 10px;
+          }
+        }
+      }
+
+      & .rating-stars-wrapper {
+        small {
+          &::after {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+
+  & .recipe-image-user-description-wrapper {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: row;
+
+    & .image-wrapper,
+    .user-description-wrapper {
+      width: 50%;
+      border-left: solid 1px $borderColor;      
+    }
+
+    & .image-wrapper {
+    //   padding-right: 10%;
+      & img {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+    }
+
+    & .user-description-wrapper {
+        border: solid 1px $borderColor;
+        border-left: none;
+
+      & .creator-account-wrapper {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        border-bottom: solid 1px $borderColor;
+        padding: 20px;        
+        font-weight: bold;
+
+
+        .circle-letter-wrapper {
+          height: 50px;
+          width: 50px;
+          border-radius: 100%;
+          border: solid 1px $borderColor;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          text-transform: uppercase;
+          margin-right: 10px;
+        }
+      }
+
+      & .description-container {
+        padding: 10%;        
+        // border: solid 1px $borderColor;
+      }
+    }
+  }
+
+  //   border: solid 1px;
+}

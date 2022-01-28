@@ -2,17 +2,22 @@ import { FC } from "react";
 import { Link } from "react-router-dom";
 import FullStarIcon from "../assets/svg/FullStarIcon";
 import NEARCurrencyIcon from "../assets/svg/NEARCurrencyIcon";
+import useTranslator from "../hooks/useTranslator";
 import { recipeInterface } from "../types";
 
 interface Props {
   recipe: recipeInterface;
 }
 
-const RecipeTile: FC<Props> = ({
-  recipe: { id, image, averageRating, totalTips, title, description },
-}) => {
+const RecipeTile: FC<Props> = ({ recipe }) => {
+  const { id, image, averageRating, totalTips, title, description } = recipe;
+  const translate = useTranslator();
+
   return (
     <Link to={`/recipe/${id}`} className="recipe-tile-container">
+      <div className="recipe-message">
+        <small>{translate("recipe")}</small>
+      </div>
       <img src={image.url} alt={image.name} />
       <div className="recipe-slide-information-wrapper">
         <div className="averageRating">

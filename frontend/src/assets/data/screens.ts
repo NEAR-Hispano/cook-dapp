@@ -34,7 +34,12 @@ export const PrivateScreens: Array<screenInterface> = [
     Component: CategorieScreen,
   },
   {
-    path: "/recipe/*",
+    path: "/recipe/:id/:edit",
+    exact: false,
+    Component: RecipeScreen,
+  },
+  {
+    path: "/recipe/:id",
     exact: false,
     Component: RecipeScreen,
   },

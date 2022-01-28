@@ -15,6 +15,10 @@ const profileTabs = [
     label: "favorites",
     Component: ProfileFavorites,
   },
+  {
+    label: "book",
+    Component: ProfileBooks,
+  },
 ];
 
 export default profileTabs

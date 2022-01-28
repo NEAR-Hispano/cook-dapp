@@ -18,7 +18,7 @@
     width: 33.33%;
     cursor: grab;
     overflow: hidden;
-    
+
     .title {
       position: absolute;
       height: auto;
@@ -30,7 +30,7 @@
       transform: translate(-50%, -50%);
       letter-spacing: 2px;
       font-weight: bold;
-      font-size: medium;      
+      font-size: medium;
       text-transform: uppercase;
     }
 
@@ -48,12 +48,12 @@
       left: 0;
       margin-top: 10px;
       padding: 10px;
-      text-transform: uppercase;
-      color: white;
       background-color: black;
       width: max-content;
 
       small {
+        text-transform: uppercase;
+        color: white;
         letter-spacing: 2px;
         font-weight: bold;
         font-size: small;

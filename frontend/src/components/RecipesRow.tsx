@@ -4,9 +4,6 @@ import { Swiper, SwiperSlide } from "swiper/react/swiper-react";
 import "swiper/swiper-bundle.min.css";
 import "swiper/swiper.min.css";
 import useTranslator from "../hooks/useTranslator";
-import { Link } from "react-router-dom";
-import FullStarIcon from "../assets/svg/FullStarIcon";
-import NEARCurrencyIcon from "../assets/svg/NEARCurrencyIcon";
 import { v4 as uuid } from "uuid";
 import RecipeTile from "./RecipeTile";
 

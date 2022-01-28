@@ -1,0 +1,83 @@
+.profile-book-info {
+  .profile-book-info-header {
+    margin: 30px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex: 1;
+    flex-direction: row;
+    border-bottom: solid 1px $borderColor;
+    border-top: solid 1px $borderColor;
+    position: relative;
+
+    .go-back-arrow-container {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      width: 20%;
+
+      svg {
+        cursor: pointer;
+      }
+    }
+
+    .project-open-book-title {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 60%;
+
+      h3 {
+        text-transform: uppercase;
+        font-size: small;
+        font-size: clamp(18px, 2vw, 20px);
+        font-weight: bold;
+        color: black;
+        letter-spacing: 3px;
+        position: relative;
+        line-height: 4;
+      }
+    }
+
+    .filter-container {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      width: 20%;
+
+      svg {
+        cursor: pointer;
+      }
+    }
+
+    .filter-menu-container {
+      position: absolute;
+      padding: 20px;
+      right: 0;
+      top: calc(100% + 10px);
+      border: solid 1px $borderColor;
+      display: flex;
+      flex-direction: column;
+      background-color: white;
+      z-index: 2;
+
+      small {
+        user-select: none;
+        line-height: 2;
+        cursor: pointer;
+        text-transform: capitalize;
+        font-size: small;
+        line-height: 2;
+
+        &:first-child {
+          padding-bottom: 10px;
+        }
+
+        &:last-child {
+          padding-top: 10px;
+          border-top: solid 1px $borderColor;
+        }
+      }
+    }
+  }
+}

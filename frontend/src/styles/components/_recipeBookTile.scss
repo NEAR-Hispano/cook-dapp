@@ -1,47 +1,27 @@
-.recipe-slide-information-wrapper {
+.recipe-book-tile-container {
+  position: relative;
   height: auto;
   width: 100%;
   position: relative;
   display: flex;
   flex-direction: column;
-  color: black;  
+  color: black;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
     rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
-
-.recipe-slide-information-wrapper .tipsRecived,
-.recipe-slide-information-wrapper .averageRating {
-  position: absolute;
-  display: flex;
-  flex-direction: row;
-  background-color: #000;
-  padding: 10px;
-  color: white;
+.recipe-book-tile-container img {
+  display: block;
+  height: auto;
+  max-width: 100%;
 }
 
-.recipe-slide-information-wrapper .averageRating {
-  top: -25%;
-  left: 0;
-  small {
-    margin-left: 5px;
-  }
-}
-
-.recipe-slide-information-wrapper .tipsRecived {
-  top: -50%;
-  left: 0;
-  small {
-    margin-left: 5px;
-  }
-}
-
-.recipe-slide-information-wrapper .title {
+.recipe-book-tile-container .title {
   width: 90%;
   margin: auto;
   padding: 10px;
-  height: 70px;
-  max-height: 70px;
-  min-height: 70px;
+  height: 60px;
+  max-height: 60px;
+  min-height: 60px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -53,21 +33,29 @@
   }
   border-bottom: solid 1px rgb(186, 186, 186);
 }
-.recipe-slide-information-wrapper .description {
-  padding: 30px;
-  height: 140px;
-  max-height: 140px;
-  min-height: 140px;
+
+.recipe-book-tile-container .explore-option-container {
+  width: 90%;
+  margin: auto;
+  padding: 10px;
+  height: 60px;
+  max-height: 60px;
+  min-height: 60px;
   display: flex;
   justify-content: center;
   align-items: center;
-  text-align: center;
-  p {
-    font-size: small;
+  cursor: pointer;
+
+  small {
+    margin-right: 15px;
+    text-transform: uppercase;
+    color: black;
+    letter-spacing: 2px;
+    font-weight: bold;
   }
 }
 
-.recipe-tile-container .recipe-message {
+.recipe-book-tile-container .recipe-book-message {
   position: absolute;
   top: 0;
   left: 0;
@@ -75,7 +63,7 @@
   padding: 10px;
   background-color: black;
   width: max-content;
-
+  
   small {
     color: white;
     text-transform: uppercase;
@@ -85,7 +73,7 @@
   }
 }
 
-.create-recipe-tile {
+.create-recipe-book-tile {  
   height: auto;
   display: flex;
   justify-content: center;
