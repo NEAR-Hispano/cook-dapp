@@ -1,0 +1,29 @@
+.ingredient-container {
+  display: flex;
+  margin-top: 10px;
+  .ingredient-quality-container {
+    &-amount,
+    &-unit,
+    &-label,
+    &-details {
+      color: black;
+      text-transform: lowercase;
+    }
+
+    &-amount,
+    &-unit {
+      font-weight: bold;
+      margin-right: 5px;
+    }
+
+    &-amount {
+    }
+    &-unit {
+    }
+    &-label {
+        margin-right: 5px;
+    }
+    &-details {        
+    }
+  }
+}

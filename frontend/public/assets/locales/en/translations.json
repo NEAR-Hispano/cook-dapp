@@ -27,5 +27,6 @@
   "books": "books",
   "recipes": "recipes",
   "favorites": "favorites",
-  "recipe_book": "recipe book"
+  "recipe_book": "recipe book",
+  "added_to_recipe_list": "Added to recipe list"
 }

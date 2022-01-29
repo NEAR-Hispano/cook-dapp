@@ -5,6 +5,10 @@ import useUser from "../hooks/useUser";
 import { recipeInterface } from "../types";
 import { Rating as RatingStars } from "react-simple-star-rating";
 import useTranslator from "../hooks/useTranslator";
+import useCopyToClipboard from "../hooks/useCopyToClipboard";
+import IngredientsTable from "../components/IngredientsTable";
+import ListIcon from "../assets/svg/ListIcon";
+import TextIcon from "../assets/svg/TextIcon";
 
 interface Props {}
 
@@ -15,12 +19,17 @@ const RecipeScreen: FC<Props> = () => {
   const [user] = useUser();
   const contract = useContract();
   const translate = useTranslator();
+  const [_, copy] = useCopyToClipboard();
 
   const checkIsEditing = () => {
     return Boolean(
       edit === "edit" && user && id && user.recipesCreated.includes(id)
     );
   };
+
+  function copyAccountID() {
+    if (recipe) copy(recipe.creator);
+  }
 
   const getRecipe = async () => {
     if (contract && id) {
@@ -33,6 +42,7 @@ const RecipeScreen: FC<Props> = () => {
   }, [user, id, edit]);
 
   useEffect(() => {
+    window.scrollTo({ left: 0, top: 0, behavior: "smooth" });
     getRecipe();
   }, []);
 
@@ -71,6 +81,10 @@ const RecipeScreen: FC<Props> = () => {
         </div>
       </div>
 
+      <div className="account-id-wrapper" onClick={() => copyAccountID()}>
+        {recipe && recipe.creator}
+      </div>
+
       <div className="recipe-image-user-description-wrapper">
         <div className="image-wrapper">
           <img
@@ -80,15 +94,23 @@ const RecipeScreen: FC<Props> = () => {
         </div>
 
         <div className="user-description-wrapper">
-          <div className="creator-account-wrapper">
-            <div className="circle-letter-wrapper">
-              {recipe && recipe.creator.split("")[0]}
-            </div>
-            <small>{recipe && recipe.creator}</small>
+          <div className="description-title">
+            <h2>description</h2>
+            <TextIcon size={30} />
           </div>
           <div className="description-container">
             <p>{recipe && recipe.description}</p>
           </div>
+        </div>
+      </div>
+
+      <div className="ingridients-content-wrapper">
+        <div className="ingridients-title">
+          <h2>ingredients</h2>
+          <ListIcon size={30} />
+        </div>
+        <div className="ingridients-recipe-table-container">
+          {recipe && <IngredientsTable recipeID={recipe.id} ingredientsList={recipe.ingredients} />}
         </div>
       </div>
     </div>

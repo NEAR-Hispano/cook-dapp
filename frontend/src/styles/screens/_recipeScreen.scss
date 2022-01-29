@@ -2,13 +2,25 @@
   height: auto;
   margin: auto;
   color: black;
-  max-width: 90%;
-  padding: 80px 0;
+  max-width: 70%;
+  padding-top: 40px;
+  padding-bottom: 80px;
+
+  border: solid 1px $borderColor;
+  border-top: none;
+  border-bottom: none;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 
   & .recipe-banner {
     height: auto;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
     & .title {
       width: max-content;
@@ -16,7 +28,7 @@
       margin-bottom: 30px;
       h1 {
         line-height: 2;
-        font-size: clamp(20px, 30px, 40px);
+        font-size: clamp(14px, 2vw, 2vw);
         font-weight: bold;
         text-transform: uppercase;
         letter-spacing: 3px;
@@ -41,13 +53,14 @@
           letter-spacing: 2px;
           font-weight: bold;
           font-size: small;
+          font-size: clamp(10px, 0.6vw, 0.6vw);
 
           &::after {
             position: absolute;
             content: "";
             height: 100%;
             width: 1px;
-            background-color: black;
+            background-color: $borderColor;
             margin-left: 10px;
           }
         }
@@ -63,19 +76,28 @@
     }
   }
 
+  & .account-id-wrapper {
+    margin-top: 30px;
+    padding: 10px;
+    background-color: rgb(0, 0, 0);
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+
   & .recipe-image-user-description-wrapper {
     margin-top: 30px;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
     & .image-wrapper,
     .user-description-wrapper {
-      width: 50%;
-      border-left: solid 1px $borderColor;      
+      width: 90%;
     }
 
     & .image-wrapper {
-    //   padding-right: 10%;
       & img {
         display: block;
         width: 100%;
@@ -84,38 +106,64 @@
     }
 
     & .user-description-wrapper {
-        border: solid 1px $borderColor;
-        border-left: none;
+      margin-top: 60px;
+      display: flex;
+      flex-direction: column;
+      border-top: solid 1px $borderColor;
 
-      & .creator-account-wrapper {
+      & .description-title {
+        margin-top: 20px;  
+        width: 100%;
+        max-width: 100%;
         display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-        align-items: center;
-        border-bottom: solid 1px $borderColor;
-        padding: 20px;        
-        font-weight: bold;
-
-
-        .circle-letter-wrapper {
-          height: 50px;
-          width: 50px;
-          border-radius: 100%;
-          border: solid 1px $borderColor;
-          display: flex;
-          justify-content: center;
-          align-items: center;
+        justify-content: space-between;
+        align-items: center;  
+        
+        h2 {
+          line-height: 2;
+          font-size: clamp(14px, 2vw, 2vw);
+          font-weight: bold;
           text-transform: uppercase;
-          margin-right: 10px;
+          letter-spacing: 3px;
         }
       }
 
       & .description-container {
-        padding: 10%;        
-        // border: solid 1px $borderColor;
+        padding-top: 20px;
+        max-width: 80ch;
       }
     }
   }
 
-  //   border: solid 1px;
+  & .ingridients-content-wrapper {
+    border-top: solid 1px $borderColor;
+    margin-top: 60px;
+    display: flex;
+    flex-direction: column;    
+    width: 90%;
+    max-width: 90%;
+
+    & .ingridients-title {
+      margin-top: 20px;  
+      width: 100%;
+      max-width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;    
+      h2 {
+        line-height: 2;
+        font-size: clamp(14px, 2vw, 2vw);
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+      }
+    }
+
+    & .ingridients-recipe-table-container {
+        margin-top: 30px;
+        width: 100%;
+        max-width: 100%;
+        height: auto;        
+    }
+  }
 }

@@ -4,6 +4,7 @@ const useAuth = () => {
   const [auth, setAuth] = useState<boolean>(false);
 
   useEffect(() => setAuth((window as any).walletConnection.isSignedIn()), []);
+  
   return auth;
 };
 
