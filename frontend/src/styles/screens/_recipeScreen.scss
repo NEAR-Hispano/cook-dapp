@@ -6,9 +6,9 @@
   padding-top: 40px;
   padding-bottom: 80px;
 
-  border: solid 1px $borderColor;
-  border-top: none;
-  border-bottom: none;
+  // border: solid 1px $borderColor;
+  // border-top: none;
+  // border-bottom: none;
 
   display: flex;
   justify-content: center;
@@ -85,71 +85,34 @@
     cursor: pointer;
   }
 
-  & .recipe-image-user-description-wrapper {
+  & .image-wrapper,
+  .user-description-wrapper {
+    width: 90%;
+  }
+
+  & .image-wrapper {
     margin-top: 30px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    & .image-wrapper,
-    .user-description-wrapper {
-      width: 90%;
-    }
-
-    & .image-wrapper {
-      & img {
-        display: block;
-        width: 100%;
-        height: auto;
-      }
-    }
-
-    & .user-description-wrapper {
-      margin-top: 60px;
-      display: flex;
-      flex-direction: column;
-      border-top: solid 1px $borderColor;
-
-      & .description-title {
-        margin-top: 20px;  
-        width: 100%;
-        max-width: 100%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;  
-        
-        h2 {
-          line-height: 2;
-          font-size: clamp(14px, 2vw, 2vw);
-          font-weight: bold;
-          text-transform: uppercase;
-          letter-spacing: 3px;
-        }
-      }
-
-      & .description-container {
-        padding-top: 20px;
-        max-width: 80ch;
-      }
+    & img {
+      display: block;
+      width: 100%;
+      height: auto;
     }
   }
 
-  & .ingridients-content-wrapper {
-    border-top: solid 1px $borderColor;
+  & .user-description-wrapper {
     margin-top: 60px;
     display: flex;
-    flex-direction: column;    
-    width: 90%;
-    max-width: 90%;
+    flex-direction: column;
+    border-top: solid 1px $borderColor;
 
-    & .ingridients-title {
-      margin-top: 20px;  
+    & .description-title {
+      margin-top: 20px;
       width: 100%;
       max-width: 100%;
       display: flex;
       justify-content: space-between;
-      align-items: center;    
+      align-items: center;
+
       h2 {
         line-height: 2;
         font-size: clamp(14px, 2vw, 2vw);
@@ -159,11 +122,74 @@
       }
     }
 
-    & .ingridients-recipe-table-container {
-        margin-top: 30px;
-        width: 100%;
-        max-width: 100%;
-        height: auto;        
+    & .description-container {
+      padding-top: 20px;
+      max-width: 80ch;
+    }
+  }
+
+  & .content-wrapper {
+    border-top: solid 1px $borderColor;
+    margin-top: 60px;
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    max-width: 90%;
+
+    & .title {
+      margin-top: 20px;
+      width: 100%;
+      max-width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      h2 {
+        line-height: 2;
+        font-size: clamp(14px, 2vw, 2vw);
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+      }
+    }
+
+    & .information-container {
+      margin-top: 30px;
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+    }
+  }
+
+  .step-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 30px;
+
+    .step-label-information {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;      
+      margin-bottom: 15px;
+      padding: 15px;
+      background-color: black;
+      color: white;
+      width: max-content;
+
+      & .step-label {
+        margin-right: 10px;
+        font-size: small;
+        text-transform: uppercase;        
+      } 
+
+      & .step-number {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+    .step-description {
+      padding: 15px;
+      background-color: wheat;
     }
   }
 }

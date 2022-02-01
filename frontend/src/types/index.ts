@@ -63,6 +63,15 @@ export interface socialInterface {
   link: string;
 }
 
+export interface reviewInterface {
+  id: string;
+  creator: AccountID;
+  text: string;
+  rating: number;
+  recipeID: string;
+  createdAt: string;
+}
+
 export interface recipeInterface {
   id: string;
   recipeBookID: string;

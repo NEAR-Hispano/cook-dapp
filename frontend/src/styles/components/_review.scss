@@ -1,0 +1,43 @@
+.review-wrapper {
+  display: flex;
+  flex-direction: column;
+  margin-top: 15px;
+  padding: 25px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  border: solid 1px $borderColor;
+//   width: max-content;
+
+  .review-header {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+  }
+  .review-header-top-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .revie-header-stars-wrapper {
+    margin-right: 10px;
+  }
+  .review-header-rating-status-wrapper {
+    font-size: small;
+    font-weight: bold;
+    background-color: black;
+    color: white;
+    padding: 8px;
+    border-radius: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.review-header-bottom-wrapper {    
+    font-size: small;
+    font-weight: bold;
+}
+.review-description {
+      font-size: small;
+  }
+}

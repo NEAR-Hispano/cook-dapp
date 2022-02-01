@@ -9,6 +9,7 @@ import useCopyToClipboard from "../hooks/useCopyToClipboard";
 import IngredientsTable from "../components/IngredientsTable";
 import ListIcon from "../assets/svg/ListIcon";
 import TextIcon from "../assets/svg/TextIcon";
+import Review from "../components/Review";
 
 interface Props {}
 
@@ -85,32 +86,87 @@ const RecipeScreen: FC<Props> = () => {
         {recipe && recipe.creator}
       </div>
 
-      <div className="recipe-image-user-description-wrapper">
-        <div className="image-wrapper">
-          <img
-            src={(recipe && recipe.image.url) || ""}
-            alt={(recipe && recipe.image.name) || ""}
-          />
-        </div>
+      <div className="image-wrapper">
+        <img
+          src={(recipe && recipe.image.url) || ""}
+          alt={(recipe && recipe.image.name) || ""}
+        />
+      </div>
 
-        <div className="user-description-wrapper">
-          <div className="description-title">
-            <h2>description</h2>
-            <TextIcon size={30} />
-          </div>
-          <div className="description-container">
-            <p>{recipe && recipe.description}</p>
-          </div>
+      <div className="user-description-wrapper">
+        <div className="description-title">
+          <h2>description</h2>
+          <TextIcon size={30} />
+        </div>
+        <div className="description-container">
+          <p>{recipe && recipe.description}</p>
         </div>
       </div>
 
-      <div className="ingridients-content-wrapper">
-        <div className="ingridients-title">
+      <div className="content-wrapper">
+        <div className="title">
           <h2>ingredients</h2>
           <ListIcon size={30} />
         </div>
-        <div className="ingridients-recipe-table-container">
-          {recipe && <IngredientsTable recipeID={recipe.id} ingredientsList={recipe.ingredients} />}
+        <div className="information-container">
+          {recipe && (
+            <IngredientsTable
+              recipeID={recipe.id}
+              ingredientsList={recipe.ingredients}
+            />
+          )}
+        </div>
+      </div>
+
+      <div className="content-wrapper">
+        <div className="title">
+          <h2>instructions</h2>
+          <ListIcon size={30} />
+        </div>
+        <div className="information-container">
+          {recipe &&
+            recipe.instructions.map((instruction, index) => (
+              <div className="step-container">
+                <div className="step-label-information">
+                  <div className="step-label">step</div>
+                  <div className="step-number">{index + 1}</div>
+                </div>
+                <div
+                  className="step-description cursor-pointer"
+                  onClick={() => copy(instruction)}
+                >
+                  {instruction}
+                </div>
+              </div>
+            ))}
+        </div>
+      </div>
+
+      {recipe && recipe.chefNote && (
+        <div className="content-wrapper">
+          <div className="title">
+            <h2>chef's note</h2>
+            <ListIcon size={30} />
+          </div>
+          <div className="information-container">
+            {recipe && recipe.chefNote}
+          </div>
+        </div>
+      )}
+
+      <div className="content-wrapper">
+        <div className="title">
+          <h2>reviews</h2>
+          <ListIcon size={30} />
+        </div>
+        <div className="information-container">
+          {recipe && recipe.reviews.length > 0 ? (
+            recipe.reviews.map((reviewID, index) => (
+              <Review key={index} reviewID={reviewID} />
+            ))
+          ) : (
+            <h1>Recipe does not have any reviews yet.</h1>
+          )}          
         </div>
       </div>
     </div>

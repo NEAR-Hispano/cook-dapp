@@ -1,4 +1,5 @@
 import { FC } from "react";
+import useCopyToClipboard from "../hooks/useCopyToClipboard";
 import { ingridientInterface } from "../types";
 
 interface Props {
@@ -7,8 +8,13 @@ interface Props {
 
 const Ingredient: FC<Props> = ({ ingredient }) => {
   const { amount, unit, label, details } = ingredient;
+  const [_, copy] = useCopyToClipboard();
+
   return (
-    <div className="ingredient-container">
+    <div
+      className="ingredient-container cursor-pointer"
+      onClick={() => copy(`${amount} ${unit}: ${label}, ${details}.`)}
+    >
       {amount && (
         <div className="ingredient-quality-container-amount">{amount}</div>
       )}
