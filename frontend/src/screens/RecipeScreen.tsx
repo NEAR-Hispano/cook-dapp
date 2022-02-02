@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useContract from "../hooks/useContract";
 import useUser from "../hooks/useUser";
-import { recipeInterface } from "../types";
+import { imageInterface, recipeInterface } from "../types";
 import { Rating as RatingStars } from "react-simple-star-rating";
 import useTranslator from "../hooks/useTranslator";
 import useCopyToClipboard from "../hooks/useCopyToClipboard";
@@ -10,6 +10,12 @@ import IngredientsTable from "../components/IngredientsTable";
 import ListIcon from "../assets/svg/ListIcon";
 import TextIcon from "../assets/svg/TextIcon";
 import Review from "../components/Review";
+import EditableText from "../components/EditableText";
+import { toast } from "react-toastify";
+import EditIcon from "../assets/svg/EditIcon";
+import CrossIcon from "../assets/svg/CrossIcon";
+import SaveIcon from "../assets/svg/SaveIcon";
+import { v4 as uuid } from "uuid";
 
 interface Props {}
 
@@ -21,37 +27,240 @@ const RecipeScreen: FC<Props> = () => {
   const contract = useContract();
   const translate = useTranslator();
   const [_, copy] = useCopyToClipboard();
+  const [hasCheckedForEditPermissions, setHasCheckedForEditPermissions] =
+    useState<Boolean>(false);
+  const [resetChangesID, setResetChangesID] = useState<string>("");
 
   const checkIsEditing = () => {
-    return Boolean(
+    const result = Boolean(
       edit === "edit" && user && id && user.recipesCreated.includes(id)
     );
+
+    /* Check for edit permissions */
+    if (edit === "edit") {
+      if (result) {
+        toast.dismiss();
+        toast(translate("Edit mode enabled"), {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          delay: 1000,
+        });
+      } else if (!result && hasCheckedForEditPermissions) {
+        toast.dismiss();
+        toast(translate("You can not edit this recipe."), {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          delay: 1000,
+        });
+      } else {
+        setHasCheckedForEditPermissions(true);
+        toast(translate("checking for edit permissions"), {
+          position: "bottom-right",
+          autoClose: false,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+    }
+    return result;
   };
 
   function copyAccountID() {
     if (recipe) copy(recipe.creator);
   }
 
-  const getRecipe = async () => {
+  async function getRecipe() {
     if (contract && id) {
-      setRecipe(await contract.getRecipe({ id }));
+      const result = await contract.getRecipe({ id });
+      setRecipe(result);
     }
-  };
+  }
 
   useEffect(() => {
     setEditingMode(checkIsEditing());
-  }, [user, id, edit]);
+  }, [user, id]);
 
   useEffect(() => {
     window.scrollTo({ left: 0, top: 0, behavior: "smooth" });
     getRecipe();
-  }, []);
+  }, [resetChangesID]);
+
+  /* Editable Recipe functions below */
+
+  function resetChanges() {
+    setResetChangesID(uuid());
+    setEditingMode(false);
+  }
+
+  function refreshPage() {
+    (window as any).location.reload(false);
+  }
+
+  function saveChanges() {
+    if (contract && recipe) {
+      const {
+        id,
+        title,
+        description,
+        ingredients,
+        instructions,
+        recipeBookID,
+        category,
+        chefNote,
+      } = recipe;
+
+      toast(translate("Saving changes."), {
+        position: "bottom-right",
+        autoClose: false,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        delay: 1000,
+      });
+
+      contract
+        .updateRecipe({
+          id,
+          title,
+          description,
+          ingridientsList: ingredients,
+          instructions,
+          recipeBookID,
+          category,
+          chefNote,
+        })
+        .then(() => refreshPage());
+    }
+  }
+
+  function editTitle(text: string) {
+    if (recipe) {
+      const editedRecipe = recipe;
+      editedRecipe.title = text;
+      setRecipe(editedRecipe);
+    }
+  }
+
+  function editImage() {
+    // parameter to be determined
+    if (recipe) {
+      const editedRecipe = recipe;
+
+      /* To be continued */
+
+      setRecipe(editedRecipe);
+    }
+  }
+
+  function editDescription(text: string) {
+    if (recipe) {
+      const editedRecipe = recipe;
+      editedRecipe.description = text;
+      setRecipe(editedRecipe);
+    }
+  }
+
+  function editIngridientLabel(index: number, label: string) {
+    if (recipe) {
+      const editedRecipe = recipe;
+      editedRecipe.ingredients[index].label = String(label);
+      setRecipe(editedRecipe);
+    }
+  }
+
+  function editIngridientAmount(index: number, amount: number) {
+    if (recipe) {
+      const editedRecipe = recipe;
+      editedRecipe.ingredients[index].amount = String(amount);
+      setRecipe(editedRecipe);
+    }
+  }
+
+  function editIngridientUnit(index: number, unit: string) {
+    if (recipe) {
+      const editedRecipe = recipe;
+      editedRecipe.ingredients[index].unit = String(unit);
+      setRecipe(editedRecipe);
+    }
+  }
+  function editIngridientDetails(index: number, details: string) {
+    if (recipe) {
+      const editedRecipe = recipe;
+      editedRecipe.ingredients[index].details = String(details);
+      setRecipe(editedRecipe);
+    }
+  }
+
+  function editInstructions(index: number, text: string) {
+    if (recipe) {
+      const editedRecipe = recipe;
+      editedRecipe.instructions[index] = text;
+      setRecipe(editedRecipe);
+    }
+  }
+
+  function editChefNote(chefNote: string) {
+    if (recipe) {
+      const editedRecipe = recipe;
+      editedRecipe.chefNote = chefNote;
+      setRecipe(editedRecipe);
+    }
+  }
+
+  /* Editable Recipe functions above */
 
   return (
     <div className="recipe-screen-container">
+      {recipe && user && recipe.creator === user.accountID && !editingMode && (
+        <div className="edit-recipe-action-buttons-wrapper">
+          <div
+            className="edit-button-wrapper cursor-pointer"
+            onClick={() => setEditingMode(true)}
+          >
+            <EditIcon size={30} />
+          </div>
+        </div>
+      )}
+
+      {recipe && user && recipe.creator === user.accountID && editingMode && (
+        <div className="edit-recipe-action-buttons-wrapper">
+          <div
+            className="reset-button-wrapper cursor-pointer"
+            onClick={() => resetChanges()}
+            >
+            <CrossIcon size={30} />
+          </div>
+          <div className="save-button-wrapper cursor-pointer"
+            onClick={() => saveChanges()}
+          >
+            <SaveIcon size={30} />
+          </div>
+        </div>
+      )}
+
       <div className="recipe-banner">
         <div className="title">
-          <h1>{recipe && recipe.title}</h1>
+          <EditableText
+            onBlur={(e) => editTitle(e.currentTarget.innerText)}
+            isEditable={editingMode}
+          >
+            {recipe && recipe.title}
+          </EditableText>
         </div>
 
         <div className="summary-info">
@@ -99,7 +308,12 @@ const RecipeScreen: FC<Props> = () => {
           <TextIcon size={30} />
         </div>
         <div className="description-container">
-          <p>{recipe && recipe.description}</p>
+          <EditableText
+            onBlur={(e) => editDescription(e.currentTarget.innerText)}
+            isEditable={editingMode}
+          >
+            {recipe && recipe.description}
+          </EditableText>
         </div>
       </div>
 
@@ -166,7 +380,7 @@ const RecipeScreen: FC<Props> = () => {
             ))
           ) : (
             <h1>Recipe does not have any reviews yet.</h1>
-          )}          
+          )}
         </div>
       </div>
     </div>

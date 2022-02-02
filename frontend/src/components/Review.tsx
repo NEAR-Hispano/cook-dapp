@@ -52,13 +52,12 @@ const Review: FC<Props> = ({ reviewID }) => {
               alignItems: "center",
             }}
           >
-            <div className="revie-header-stars-wrapper">
+            <div className="review-header-stars-wrapper">
               <RatingStars
                 ratingValue={(review && review.rating * 2 * 10) || 0}
                 initialValue={0}
                 size={25}
-                iconsCount={5}
-                // readonly={isCreator ? false : undefined}
+                iconsCount={5}                
                 readonly
                 allowHalfIcon
               />

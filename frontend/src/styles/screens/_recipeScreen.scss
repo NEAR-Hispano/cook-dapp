@@ -5,15 +5,45 @@
   max-width: 70%;
   padding-top: 40px;
   padding-bottom: 80px;
+  position: relative;
 
-  // border: solid 1px $borderColor;
-  // border-top: none;
-  // border-bottom: none;
+  border: solid 1px $borderColor;
+  border-top: none;
+  border-bottom: none;
 
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+
+  & .edit-recipe-action-buttons-wrapper {
+    display: flex;
+    width: auto;
+    height: auto;    
+    position: absolute;
+    right: 0;
+    top: 0;
+    flex-direction: row;
+    padding: 20px;
+
+    & .edit-button-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    & .reset-button-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    & .save-button-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-left: 15px;
+    }
+  }
 
   & .recipe-banner {
     height: auto;
@@ -26,13 +56,11 @@
       width: max-content;
       border-bottom: 1px solid $borderColor;
       margin-bottom: 30px;
-      h1 {
-        line-height: 2;
-        font-size: clamp(14px, 2vw, 2vw);
-        font-weight: bold;
-        text-transform: uppercase;
-        letter-spacing: 3px;
-      }
+      line-height: 2;
+      font-size: clamp(14px, 2vw, 2vw);
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 3px;
     }
 
     & .summary-info {
@@ -143,6 +171,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+
       h2 {
         line-height: 2;
         font-size: clamp(14px, 2vw, 2vw);
@@ -168,7 +197,7 @@
     .step-label-information {
       display: flex;
       justify-content: flex-start;
-      align-items: center;      
+      align-items: center;
       margin-bottom: 15px;
       padding: 15px;
       background-color: black;
@@ -178,8 +207,8 @@
       & .step-label {
         margin-right: 10px;
         font-size: small;
-        text-transform: uppercase;        
-      } 
+        text-transform: uppercase;
+      }
 
       & .step-number {
         display: flex;
