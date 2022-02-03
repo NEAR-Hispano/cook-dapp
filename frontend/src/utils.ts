@@ -100,3 +100,7 @@ export function login() {
   // the private key in localStorage.
   (window as any).walletConnection.requestSignIn(nearConfig.contractName);
 }
+
+export function isNumeric(n: string) {
+  return !isNaN(parseFloat(n)) && isFinite(parseFloat(n));
+}

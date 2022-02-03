@@ -148,7 +148,7 @@ export class Contract {
     id,
     title = null,
     description = null,
-    ingridientsList = null,
+    ingridients = null,
     instructions = null,
     recipeBookID = null,
     category = null,
@@ -157,7 +157,7 @@ export class Contract {
     id: string;
     title: string | null;
     description: string | null;
-    ingridientsList: Array<ingridientInterface> | null;
+    ingridients: Array<ingridientInterface> | null;
     instructions: Array<string> | null;
     recipeBookID: string | null;
     category: string | null;
@@ -169,7 +169,7 @@ export class Contract {
           id,
           title,
           description,
-          ingridientsList,
+          ingridients,
           instructions,
           recipeBookID,
           category,
@@ -180,7 +180,7 @@ export class Contract {
           id,
           title,
           description,
-          ingridientsList,
+          ingridients,
           instructions,
           recipeBookID,
           category,
@@ -389,7 +389,7 @@ export class Contract {
     }
   }
 
-  getUserRecipeBooks({ accountID }:  { accountID: AccountID }) {
+  getUserRecipeBooks({ accountID }: { accountID: AccountID }) {
     switch (CONTRACT_LANG) {
       case "AS":
         return (window as any).contract.getUserRecipeBooks({ accountID });
@@ -400,7 +400,7 @@ export class Contract {
     }
   }
 
-  getUserRecipes({ accountID }:  { accountID: AccountID }) {
+  getUserRecipes({ accountID }: { accountID: AccountID }) {
     switch (CONTRACT_LANG) {
       case "AS":
         return (window as any).contract.getUserRecipes({ accountID });

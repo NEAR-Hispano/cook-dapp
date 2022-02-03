@@ -1,6 +1,15 @@
+.ingredient-wrapper {
+  display: flex;
+  // border: solid;
+  width: 100%;
+  max-width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+}
+
 .ingredient-container {
   display: flex;
-  margin-top: 10px;
   .ingredient-quality-container {
     &-amount,
     &-unit,
@@ -16,14 +25,8 @@
       margin-right: 5px;
     }
 
-    &-amount {
-    }
-    &-unit {
-    }
     &-label {
-        margin-right: 5px;
-    }
-    &-details {        
+      margin-right: 5px;
     }
   }
 }

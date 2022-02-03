@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useContract from "../hooks/useContract";
 import useUser from "../hooks/useUser";
-import { imageInterface, recipeInterface } from "../types";
+import { imageInterface, ingridientInterface, recipeInterface } from "../types";
 import { Rating as RatingStars } from "react-simple-star-rating";
 import useTranslator from "../hooks/useTranslator";
 import useCopyToClipboard from "../hooks/useCopyToClipboard";
@@ -16,6 +16,7 @@ import EditIcon from "../assets/svg/EditIcon";
 import CrossIcon from "../assets/svg/CrossIcon";
 import SaveIcon from "../assets/svg/SaveIcon";
 import { v4 as uuid } from "uuid";
+import { isNumeric } from "../utils";
 
 interface Props {}
 
@@ -138,7 +139,7 @@ const RecipeScreen: FC<Props> = () => {
           id,
           title,
           description,
-          ingridientsList: ingredients,
+          ingridients: ingredients,
           instructions,
           recipeBookID,
           category,
@@ -175,33 +176,53 @@ const RecipeScreen: FC<Props> = () => {
     }
   }
 
+  function editDeleteIngredient(index: number) {
+    if (recipe) {
+      const editedRecipe = recipe;
+      editedRecipe.ingredients.splice(index, 1)
+      setRecipe(editedRecipe);
+    }
+  }
+  
   function editIngridientLabel(index: number, label: string) {
     if (recipe) {
       const editedRecipe = recipe;
-      editedRecipe.ingredients[index].label = String(label);
+      editedRecipe.ingredients[index].label = label;
       setRecipe(editedRecipe);
     }
   }
 
-  function editIngridientAmount(index: number, amount: number) {
-    if (recipe) {
+  function editIngridientAmount(index: number, amount: string) {
+    if (recipe && isNumeric(amount)) {
       const editedRecipe = recipe;
-      editedRecipe.ingredients[index].amount = String(amount);
+      editedRecipe.ingredients[index].amount = parseInt(amount);
       setRecipe(editedRecipe);
+    }
+
+    if (!isNumeric(amount)) {
+      toast(translate("Please note ingridient amounts must be numbers."), {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }
   }
 
   function editIngridientUnit(index: number, unit: string) {
     if (recipe) {
       const editedRecipe = recipe;
-      editedRecipe.ingredients[index].unit = String(unit);
+      editedRecipe.ingredients[index].unit = unit;
       setRecipe(editedRecipe);
     }
   }
   function editIngridientDetails(index: number, details: string) {
     if (recipe) {
       const editedRecipe = recipe;
-      editedRecipe.ingredients[index].details = String(details);
+      editedRecipe.ingredients[index].details = details;
       setRecipe(editedRecipe);
     }
   }
@@ -242,10 +263,11 @@ const RecipeScreen: FC<Props> = () => {
           <div
             className="reset-button-wrapper cursor-pointer"
             onClick={() => resetChanges()}
-            >
+          >
             <CrossIcon size={30} />
           </div>
-          <div className="save-button-wrapper cursor-pointer"
+          <div
+            className="save-button-wrapper cursor-pointer"
             onClick={() => saveChanges()}
           >
             <SaveIcon size={30} />
@@ -325,8 +347,14 @@ const RecipeScreen: FC<Props> = () => {
         <div className="information-container">
           {recipe && (
             <IngredientsTable
+              editingMode={editingMode}
               recipeID={recipe.id}
               ingredientsList={recipe.ingredients}
+              editIngridientLabel={editIngridientLabel}
+              editIngridientAmount={editIngridientAmount}
+              editIngridientUnit={editIngridientUnit}
+              editIngridientDetails={editIngridientDetails}
+              editDeleteIngredient={editDeleteIngredient}
             />
           )}
         </div>
@@ -345,28 +373,38 @@ const RecipeScreen: FC<Props> = () => {
                   <div className="step-label">step</div>
                   <div className="step-number">{index + 1}</div>
                 </div>
-                <div
+                <EditableText
                   className="step-description cursor-pointer"
-                  onClick={() => copy(instruction)}
+                  isEditable={editingMode}
+                  onBlur={(e) =>
+                    editInstructions(index, e.currentTarget.innerText)
+                  }
                 >
                   {instruction}
-                </div>
+                </EditableText>
               </div>
             ))}
         </div>
       </div>
 
-      {recipe && recipe.chefNote && (
-        <div className="content-wrapper">
-          <div className="title">
-            <h2>chef's note</h2>
-            <ListIcon size={30} />
-          </div>
-          <div className="information-container">
-            {recipe && recipe.chefNote}
-          </div>
+      <div className="content-wrapper">
+        <div className="title">
+          <h2>chef's note</h2>
+          <ListIcon size={30} />
         </div>
-      )}
+        <div className="information-container">
+          {recipe && recipe.chefNote ? (
+            <EditableText
+              isEditable={editingMode}
+              onBlur={(e) => editChefNote(e.currentTarget.innerText)}
+            >
+              {recipe.chefNote}
+            </EditableText>
+          ) : (
+            "Not yet added."
+          )}
+        </div>
+      </div>
 
       <div className="content-wrapper">
         <div className="title">

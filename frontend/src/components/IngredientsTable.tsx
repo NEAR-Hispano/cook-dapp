@@ -4,14 +4,29 @@ import { ingridientInterface } from "../types";
 import Ingredient from "./Ingredient";
 import { toast } from "react-toastify";
 import useTranslator from "../hooks/useTranslator";
-import AddIcon from "../assets/svg/AddIcon";
 import PlusIcon from "../assets/svg/PlusIcon";
+
 interface Props {
   ingredientsList: Array<ingridientInterface>;
+  editingMode: boolean;
   recipeID: string;
+  editIngridientLabel: (index: number, label: string) => void;
+  editIngridientAmount: (index: number, amount: string) => void;
+  editIngridientUnit: (index: number, unit: string) => void;
+  editIngridientDetails: (index: number, details: string) => void;
+  editDeleteIngredient: (index: number) => void;
 }
 
-const IngredientsTable: FC<Props> = ({ ingredientsList, recipeID }) => {
+const IngredientsTable: FC<Props> = ({
+  ingredientsList,
+  recipeID,
+  editIngridientLabel,
+  editIngridientAmount,
+  editIngridientUnit,
+  editIngridientDetails,
+  editDeleteIngredient,
+  editingMode
+}) => {
   const contract = useContract();
   const translate = useTranslator();
 
@@ -34,8 +49,17 @@ const IngredientsTable: FC<Props> = ({ ingredientsList, recipeID }) => {
   return (
     <div className="ingredients-recipe-table-wrapper">
       <div className="ingridients-recipe-table">
-        {ingredientsList.map((ingredient) => (
-          <Ingredient ingredient={ingredient} />
+        {ingredientsList.map((ingredient, index) => (
+          <Ingredient
+            index={index}
+            editingMode={editingMode}
+            editIngridientLabel={editIngridientLabel}
+            editIngridientAmount={editIngridientAmount}
+            editIngridientUnit={editIngridientUnit}
+            editIngridientDetails={editIngridientDetails}
+            editDeleteIngredient={editDeleteIngredient}
+            ingredient={ingredient}
+          />
         ))}
       </div>
       <div className="ingredients-action-button-container">
