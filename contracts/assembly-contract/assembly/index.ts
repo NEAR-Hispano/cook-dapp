@@ -773,14 +773,24 @@ export function addFavoriteRecipe(recipeID: string): void {
   }
 }
 
-
+/**
+ * Method that removes a recipe id from the users list of favorite recipes.
+ * @param recipeID ID of recipe to be removed from the User favoriteRecipes.
+ */
+export function removeFavoriteRecipe(recipeID: string): void {
+  const user = getUser();
+  if (user) {
+    user.removeFromFavoritesRecipes(recipeID);
+    users.set(Context.sender, user);
+  }
+}
 
 /**
  * Method to get all user recipe books created.
  * @returns Array of all user recipe books created.
  */
 
- export function getUserRecipeBooks(accountID: AccountID): Array<RecipeBook> {
+export function getUserRecipeBooks(accountID: AccountID): Array<RecipeBook> {
   const user = getUser(accountID);
   //Get all the users recipebooks keys.
   const keys = user ? user.recipeBooksCreated : [];

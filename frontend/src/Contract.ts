@@ -410,6 +410,17 @@ export class Contract {
         throw InvalidContractLangError;
     }
   }
+
+  removeFavoriteRecipe({ recipeID }: { recipeID: string }) {
+    switch (CONTRACT_LANG) {
+      case "AS":
+        return (window as any).contract.removeFavoriteRecipe({ recipeID });
+      case "RUST":
+        return (window as any).contract.remove_favorite_recipe({ recipeID });
+      default:
+        throw InvalidContractLangError;
+    }
+  }
 }
 
 export default getContract;

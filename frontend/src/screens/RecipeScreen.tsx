@@ -17,6 +17,10 @@ import CrossIcon from "../assets/svg/CrossIcon";
 import SaveIcon from "../assets/svg/SaveIcon";
 import { v4 as uuid } from "uuid";
 import { isNumeric } from "../utils";
+import BookmarkStar from "../assets/svg/BookmarkStar";
+import BookmarkPlus from "../assets/svg/BookmarkPlus";
+import HeartIcon from "../assets/svg/HeartIcon";
+import HeartFillIcon from "../assets/svg/HeartFillIcon";
 
 interface Props {}
 
@@ -31,6 +35,7 @@ const RecipeScreen: FC<Props> = () => {
   const [hasCheckedForEditPermissions, setHasCheckedForEditPermissions] =
     useState<Boolean>(false);
   const [resetChangesID, setResetChangesID] = useState<string>("");
+  const [isFavorite, setIsFavorite] = useState<boolean>(false);
 
   const checkIsEditing = () => {
     const result = Boolean(
@@ -99,6 +104,12 @@ const RecipeScreen: FC<Props> = () => {
     getRecipe();
   }, [resetChangesID]);
 
+  useEffect(() => {
+    if (recipe && user) {
+      setIsFavorite(Array.from(user.favoriteRecipes).includes(recipe.id));
+    }
+  }, [recipe, user]);
+
   /* Editable Recipe functions below */
 
   function resetChanges() {
@@ -149,6 +160,40 @@ const RecipeScreen: FC<Props> = () => {
     }
   }
 
+  function toggleIsFavorite() {
+    if (recipe && user && contract) {
+      if (isFavorite) {
+        // remove recipe from favorite
+        contract.removeFavoriteRecipe({ recipeID: recipe.id }).then(() => {
+          setIsFavorite((prev) => !prev);
+          toast(translate("Recipe removed from favorites."), {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        });
+      } else {
+        // add recipe to favorite
+        contract.addFavoriteRecipe({ recipeID: recipe.id }).then(() => {
+          setIsFavorite((prev) => !prev);
+          toast(translate("Recipe added to favorites."), {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        });
+      }
+    }
+  }
+
   function editTitle(text: string) {
     if (recipe) {
       const editedRecipe = recipe;
@@ -179,11 +224,11 @@ const RecipeScreen: FC<Props> = () => {
   function editDeleteIngredient(index: number) {
     if (recipe) {
       const editedRecipe = recipe;
-      editedRecipe.ingredients.splice(index, 1)
+      editedRecipe.ingredients.splice(index, 1);
       setRecipe(editedRecipe);
     }
   }
-  
+
   function editIngridientLabel(index: number, label: string) {
     if (recipe) {
       const editedRecipe = recipe;
@@ -247,6 +292,21 @@ const RecipeScreen: FC<Props> = () => {
 
   return (
     <div className="recipe-screen-container">
+      <div
+        className="favorite-recipe-status-wrapper"
+        style={{ display: recipe && user ? "flex" : "none" }}
+      >
+        {recipe && user && isFavorite ? (
+          <div onClick={() => toggleIsFavorite()}>
+            <HeartFillIcon size={30} />
+          </div>
+        ) : (
+          <div onClick={() => toggleIsFavorite()}>
+            <HeartIcon size={30} />
+          </div>
+        )}
+      </div>
+
       {recipe && user && recipe.creator === user.accountID && !editingMode && (
         <div className="edit-recipe-action-buttons-wrapper">
           <div

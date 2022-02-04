@@ -80,6 +80,8 @@ export async function initContract() {
         "add_recipe_list",
         "addFavoriteRecipe",
         "add_favorite_recipe",
+        "removeFavoriteRecipe",
+        "remove_favorite_recipe",
       ],
     }
   );

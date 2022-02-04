@@ -16,6 +16,17 @@
   align-items: center;
   flex-direction: column;
 
+  & .favorite-recipe-status-wrapper {
+    display: flex;
+    width: auto;
+    height: auto;    
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding: 20px;
+    cursor: pointer;
+  }
+
   & .edit-recipe-action-buttons-wrapper {
     display: flex;
     width: auto;
