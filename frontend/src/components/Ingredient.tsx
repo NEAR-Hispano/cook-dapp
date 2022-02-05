@@ -1,12 +1,12 @@
 import { FC } from "react";
 import TrashIcon from "../assets/svg/TrashIcon";
 import useCopyToClipboard from "../hooks/useCopyToClipboard";
-import { ingridientInterface } from "../types";
+import { ingredientInterface } from "../types";
 import EditableText from "./EditableText";
 
 interface Props {
   index: number;
-  ingredient: ingridientInterface;
+  ingredient: ingredientInterface;
   editIngridientLabel: (index: number, label: string) => void;
   editIngridientAmount: (index: number, amount: string) => void;
   editIngridientUnit: (index: number, unit: string) => void;

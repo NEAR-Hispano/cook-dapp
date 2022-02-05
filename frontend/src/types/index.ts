@@ -31,7 +31,7 @@ export interface imageInterface {
   url: string;
 }
 
-export interface ingridientInterface {
+export interface ingredientInterface {
   label: string;
   amount: number | string;
   unit: string;
@@ -40,13 +40,13 @@ export interface ingridientInterface {
 
 export interface groceryListInterface {
   label: string;
-  ingridients: Array<ingridientInterface>;
+  ingridients: Array<ingredientInterface>;
 }
 
 export interface recipeListInterface {
   label: string;
   recipeID: string;
-  ingridients: Array<ingridientInterface>;
+  ingridients: Array<ingredientInterface>;
 }
 
 export interface userInterface {
@@ -81,7 +81,7 @@ export interface recipeInterface {
   title: string;
   description: string;
   chefNote: string;
-  ingredients: Array<ingridientInterface>;
+  ingredients: Array<ingredientInterface>;
   instructions: Array<string>;
   reviews: Array<string>;
   ratings: Array<number>;

@@ -1,7 +1,7 @@
 import {
   AccountID,
   groceryListInterface,
-  ingridientInterface,
+  ingredientInterface,
   recipeListInterface,
 } from "./types/index";
 import { utils } from "near-api-js";
@@ -101,7 +101,7 @@ export class Contract {
   }: {
     title: string;
     description: string;
-    ingridientsList: Array<ingridientInterface>;
+    ingridientsList: Array<ingredientInterface>;
     instructions: Array<string>;
     recipeBookID: string;
     category: string;
@@ -157,7 +157,7 @@ export class Contract {
     id: string;
     title: string | null;
     description: string | null;
-    ingridients: Array<ingridientInterface> | null;
+    ingridients: Array<ingredientInterface> | null;
     instructions: Array<string> | null;
     recipeBookID: string | null;
     category: string | null;

@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useContract from "../hooks/useContract";
 import useUser from "../hooks/useUser";
-import { imageInterface, ingridientInterface, recipeInterface } from "../types";
+import { imageInterface, ingredientInterface, recipeInterface } from "../types";
 import { Rating as RatingStars } from "react-simple-star-rating";
 import useTranslator from "../hooks/useTranslator";
 import useCopyToClipboard from "../hooks/useCopyToClipboard";
@@ -28,7 +28,7 @@ const RecipeScreen: FC<Props> = () => {
   const [editingMode, setEditingMode] = useState<boolean>(false);
   const [recipe, setRecipe] = useState<recipeInterface | null>();
   const { id, edit } = useParams();
-  const [user] = useUser();
+  const [user, setUser] = useUser();
   const contract = useContract();
   const translate = useTranslator();
   const [_, copy] = useCopyToClipboard();
@@ -36,6 +36,7 @@ const RecipeScreen: FC<Props> = () => {
     useState<Boolean>(false);
   const [resetChangesID, setResetChangesID] = useState<string>("");
   const [isFavorite, setIsFavorite] = useState<boolean>(false);
+  const [newStep, setNewStep] = useState<string>("");
 
   const checkIsEditing = () => {
     const result = Boolean(
@@ -102,7 +103,11 @@ const RecipeScreen: FC<Props> = () => {
   useEffect(() => {
     window.scrollTo({ left: 0, top: 0, behavior: "smooth" });
     getRecipe();
-  }, [resetChangesID]);
+  }, []);
+
+  // useEffect(() => {
+  //   getRecipe();
+  // }, [resetChangesID]);
 
   useEffect(() => {
     if (recipe && user) {
@@ -161,11 +166,26 @@ const RecipeScreen: FC<Props> = () => {
   }
 
   function toggleIsFavorite() {
-    if (recipe && user && contract) {
+    if (recipe && user && contract && setUser) {
       if (isFavorite) {
         // remove recipe from favorite
+
+        toast(translate("Removing recipe from favorites."), {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+
         contract.removeFavoriteRecipe({ recipeID: recipe.id }).then(() => {
           setIsFavorite((prev) => !prev);
+          let updatedUser = user;
+          updatedUser.favoriteRecipes.delete(recipe.id);
+          setUser(updatedUser);
+          toast.dismiss();
           toast(translate("Recipe removed from favorites."), {
             position: "bottom-right",
             autoClose: 5000,
@@ -174,12 +194,28 @@ const RecipeScreen: FC<Props> = () => {
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
+            delay: 1000,
           });
         });
       } else {
         // add recipe to favorite
+
+        toast(translate("Adding recipe to favorites."), {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+
         contract.addFavoriteRecipe({ recipeID: recipe.id }).then(() => {
           setIsFavorite((prev) => !prev);
+          let updatedUser = user;
+          updatedUser.favoriteRecipes.add(recipe.id);
+          setUser(updatedUser);
+          toast.dismiss();
           toast(translate("Recipe added to favorites."), {
             position: "bottom-right",
             autoClose: 5000,
@@ -188,6 +224,7 @@ const RecipeScreen: FC<Props> = () => {
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
+            delay: 1000,
           });
         });
       }
@@ -226,6 +263,7 @@ const RecipeScreen: FC<Props> = () => {
       const editedRecipe = recipe;
       editedRecipe.ingredients.splice(index, 1);
       setRecipe(editedRecipe);
+      setResetChangesID(uuid());
     }
   }
 
@@ -285,6 +323,32 @@ const RecipeScreen: FC<Props> = () => {
       const editedRecipe = recipe;
       editedRecipe.chefNote = chefNote;
       setRecipe(editedRecipe);
+    }
+  }
+
+  function editAddIngredient(
+    label: string,
+    amount: string,
+    unit: string,
+    details: string
+  ) {
+    if (recipe) {
+      const editedRecipe = recipe;
+      editedRecipe.ingredients.push({
+        label,
+        amount: parseInt(amount),
+        unit,
+        details,
+      });
+    }
+    setResetChangesID(uuid());
+  }
+
+  function editAddStep(text: string) {
+    if (recipe) {
+      const editedRecipe = recipe;
+      editedRecipe.instructions.push(text);
+      setResetChangesID(uuid());
     }
   }
 
@@ -415,6 +479,7 @@ const RecipeScreen: FC<Props> = () => {
               editIngridientUnit={editIngridientUnit}
               editIngridientDetails={editIngridientDetails}
               editDeleteIngredient={editDeleteIngredient}
+              editAddIngredient={editAddIngredient}
             />
           )}
         </div>
@@ -445,6 +510,35 @@ const RecipeScreen: FC<Props> = () => {
               </div>
             ))}
         </div>
+
+        {editingMode && (
+          <>
+            <div className="title">
+              <h2>add new step</h2>
+            </div>
+            <div className="information-container">
+              <div className="add-step-field-container">
+                <div className="label-wrapper">
+                  <small>step</small>
+                </div>
+                <div className="input-wrapper">
+                  <input
+                    type="text"
+                    name="label"
+                    id={"label"}
+                    onChange={(e) => setNewStep(e.currentTarget.value)}
+                  />
+                </div>
+              </div>
+
+              <div className="add-step-button-wrapper">
+                <button onClick={() => editAddStep(newStep)}>
+                  <small>add new step</small>
+                </button>
+              </div>
+            </div>
+          </>
+        )}
       </div>
 
       <div className="content-wrapper">

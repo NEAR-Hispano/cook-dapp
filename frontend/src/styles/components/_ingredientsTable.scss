@@ -14,7 +14,7 @@
     // border: solid 1px $borderColor;
   }
 
-  & .ingredients-action-button-container {    
+  & .ingredients-action-button-container {
     display: flex;
 
     & .button {
@@ -25,9 +25,9 @@
       padding: 9px 18px;
       margin-top: 30px;
       background-color: black;
-      cursor: pointer;      
-      
-      small {        
+      cursor: pointer;
+
+      small {
         text-transform: uppercase;
         font-weight: bold;
         font-size: small;
@@ -37,6 +37,121 @@
       svg {
         margin-left: 10px;
         stroke: white;
+      }
+    }
+  }
+
+  .add-ingridient-wrapper {
+    height: auto;
+    // border: solid 1px;
+    display: flex;
+    flex-direction: column;
+    padding-top: 10px;
+    flex: 1;
+    width: 100%;
+    max-width: 100%;
+
+    & .add-ingredient-title-wrapper {
+      margin-top: 10px;
+      width: 100%;
+      max-width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      h2 {
+        line-height: 2;
+        font-size: clamp(14px, 2vw, 2vw);
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+      }
+    }
+
+    & .add-ingridient-properties-wrapper {
+      height: auto;
+      // border: solid 1px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      width: 100%;
+      max-width: 100%;
+
+      & .add-ingridient-property {
+        margin-top: 10px;
+        height: auto;
+        border: solid 1px $borderColor;
+        box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+        display: flex;
+        flex-direction: row;
+        background-color: red;
+        flex: 1;
+        width: 100%;
+        max-width: 100%;
+
+        .label-wrapper {
+          width: max-content;
+          width: 20%;
+          height: 100%;
+          padding: 15px;
+          background-color: black;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          user-select: none;
+
+          small {
+            font-size: small;
+            text-transform: uppercase;
+            color: white;
+            letter-spacing: 3px;
+          }
+        }
+        .input-wrapper {
+          flex: 1;
+          width: 100%;
+          max-width: 100%;
+
+          & input {
+            flex: 1;
+            width: 100%;
+            max-width: 100%;
+            height: 100%;
+            padding: 7px 15px;
+            border: none;
+            outline: none;
+          }
+        }
+      }
+    }
+
+    & .add-ingridient-button-wrapper {
+      & button {
+        outline: none;
+        border: none;
+        border: solid 1px black;
+        background-color: black;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 15px;
+        flex: 1;
+        width: 100%;
+        max-width: 100%;
+        padding: 14px 30px;
+        cursor: pointer;
+
+        small {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100%;
+          font-size: small;
+          text-transform: uppercase;
+          color: white;
+          letter-spacing: 2px;
+        }
       }
     }
   }
