@@ -285,8 +285,7 @@
     .step-label-information {
       display: flex;
       justify-content: flex-start;
-      align-items: center;
-      margin-bottom: 15px;
+      align-items: center;      
       padding: 15px;
       background-color: black;
       color: white;
@@ -307,6 +306,14 @@
     .step-description {
       padding: 15px;
       background-color: wheat;
+    }
+
+    .delete-step-icon-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      svg {
+      }
     }
   }
 }

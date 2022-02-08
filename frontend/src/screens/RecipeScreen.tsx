@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useContract from "../hooks/useContract";
 import useUser from "../hooks/useUser";
-import { imageInterface, ingredientInterface, recipeInterface } from "../types";
+import { recipeInterface } from "../types";
 import { Rating as RatingStars } from "react-simple-star-rating";
 import useTranslator from "../hooks/useTranslator";
 import useCopyToClipboard from "../hooks/useCopyToClipboard";
@@ -17,10 +17,9 @@ import CrossIcon from "../assets/svg/CrossIcon";
 import SaveIcon from "../assets/svg/SaveIcon";
 import { v4 as uuid } from "uuid";
 import { isNumeric } from "../utils";
-import BookmarkStar from "../assets/svg/BookmarkStar";
-import BookmarkPlus from "../assets/svg/BookmarkPlus";
 import HeartIcon from "../assets/svg/HeartIcon";
 import HeartFillIcon from "../assets/svg/HeartFillIcon";
+import TrashIcon from "../assets/svg/TrashIcon";
 
 interface Props {}
 
@@ -104,10 +103,6 @@ const RecipeScreen: FC<Props> = () => {
     window.scrollTo({ left: 0, top: 0, behavior: "smooth" });
     getRecipe();
   }, []);
-
-  // useEffect(() => {
-  //   getRecipe();
-  // }, [resetChangesID]);
 
   useEffect(() => {
     if (recipe && user) {
@@ -322,6 +317,7 @@ const RecipeScreen: FC<Props> = () => {
     if (recipe) {
       const editedRecipe = recipe;
       editedRecipe.chefNote = chefNote;
+
       setRecipe(editedRecipe);
     }
   }
@@ -340,14 +336,25 @@ const RecipeScreen: FC<Props> = () => {
         unit,
         details,
       });
+      setRecipe(editedRecipe);
+      setResetChangesID(uuid());
     }
-    setResetChangesID(uuid());
   }
 
   function editAddStep(text: string) {
     if (recipe) {
       const editedRecipe = recipe;
       editedRecipe.instructions.push(text);
+      setRecipe(editedRecipe);
+      setResetChangesID(uuid());
+    }
+  }
+
+  function editDeleteStep(index: number) {
+    if (recipe) {
+      const editedRecipe = recipe;
+      editedRecipe.instructions.splice(index, 1);
+      setRecipe(editedRecipe);
       setResetChangesID(uuid());
     }
   }
@@ -494,9 +501,27 @@ const RecipeScreen: FC<Props> = () => {
           {recipe &&
             recipe.instructions.map((instruction, index) => (
               <div className="step-container">
-                <div className="step-label-information">
-                  <div className="step-label">step</div>
-                  <div className="step-number">{index + 1}</div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "flex-start",
+                    alignItems: "center",
+                    marginBottom: "15px",
+                  }}
+                >
+                  <div className="step-label-information">
+                    <div className="step-label">step</div>
+                    <div className="step-number">{index + 1}</div>
+                  </div>
+                  {editingMode && (
+                    <div
+                      className="delete-step-icon-wrapper cursor-pointer"
+                      style={{ marginLeft: "10px" }}
+                      onClick={() => editDeleteStep(index)}
+                    >
+                      <TrashIcon size={20} />
+                    </div>
+                  )}
                 </div>
                 <EditableText
                   className="step-description cursor-pointer"

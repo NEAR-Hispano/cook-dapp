@@ -174,7 +174,7 @@ export class Contract {
           recipeBookID,
           category,
           chefNote,
-        });
+        }, 300000000000000);
       case "RUST":
         return (window as any).contract.update_recipe({
           id,
@@ -185,7 +185,7 @@ export class Contract {
           recipeBookID,
           category,
           chefNote,
-        });
+        }, 300000000000000);
       default:
         throw InvalidContractLangError;
     }
