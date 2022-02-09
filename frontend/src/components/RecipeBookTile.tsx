@@ -9,7 +9,7 @@ interface Props {
 }
 
 const RecipeBookTile: FC<Props> = ({ recipeBook, selectBook }) => {
-  const { id, title, banner, recipes } = recipeBook;
+  const { title, banner } = recipeBook;
   const translate = useTranslator();
   return (
     <div className="recipe-book-tile-container">

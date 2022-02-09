@@ -43,12 +43,12 @@ const ProfileScreen: FC = () => {
               {profile && profile.accountID}
             </small>
           </div>
-
+ 
         </div>
 
         <div className="tabs-container">
-          {profileTabs.filter(({ label }) => label !== "book").map(({ label }) => (
-            <div className="tab">
+          {profileTabs.filter(({ label }) => label !== "book").map(({ label }, index) => (
+            <div className="tab" key={index}>
               <Link to={`/profile/${label}${username ? "/" + username : ""}`}>
                 <small>{translate(label)}</small>
               </Link>
@@ -59,8 +59,8 @@ const ProfileScreen: FC = () => {
 
       <div className="profile-content-container">
         {profileTabs &&
-          profileTabs.map(({ Component, label }) => (
-            <div style={{ display: section === label ? "flex" : "none" }}>
+          profileTabs.map(({ Component, label }, index) => (
+            <div style={{ display: section === label ? "flex" : "none" }} key={index}>
               <Component profile={profile} />
             </div>
           ))}

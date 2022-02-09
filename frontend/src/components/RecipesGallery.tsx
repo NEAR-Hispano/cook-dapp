@@ -24,7 +24,7 @@ const RecipesGallery: FC<Props> = ({
   const [user] = useUser();
   const translate = useTranslator();
   const contract = useContract();
-  const [recipes, setRecipes] = useState<Array<recipeInterface>>([]);
+  const [recipes, setRecipes] = useState<Array<recipeInterface> | null>(null);
 
   const getRecipes = async () => {
     if (contract) {
@@ -43,8 +43,8 @@ const RecipesGallery: FC<Props> = ({
 
   return (
     <div className="recipes-gallery">
-      {allowCreate && profile && user && profile.accountID === user.accountID && (
-        <Link to="" className="recipe-tile-container create-recipe-tile">
+      {allowCreate && profile && user && profile.accountID === user.accountID && recipes && (
+        <Link to="/recipe/create" className="recipe-tile-container create-recipe-tile">
           <div className="recipe-message">
             <small>{translate("recipe")}</small>
           </div>

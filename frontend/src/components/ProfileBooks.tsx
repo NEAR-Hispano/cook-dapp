@@ -1,10 +1,12 @@
 import { FC, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import AddIcon from "../assets/svg/AddIcon";
 import ArrowRight from "../assets/svg/ArrowRight";
 import useContract from "../hooks/useContract";
 import useTranslator from "../hooks/useTranslator";
 import useUser from "../hooks/useUser";
 import { recipeBookInterface, userInterface } from "../types";
+import CreateRecipeBook from "./CreateRecipeBook";
 import ProfileBookInfo from "./ProfileBookInfo";
 import RecipeBookTile from "./RecipeBookTile";
 
@@ -45,17 +47,12 @@ const ProfileBooks: FC<Props> = ({ profile }) => {
     <div className="profile-recipes-books">
       {recipeBooks && !isBookOpen && (
         <div className="books-wrapper">
-          {user && profile && user.accountID === profile.accountID && (
-            <div className="recipe-book-tile-container create-recipe-book-tile">
-              <div className="recipe-book-message">
-                <small>{translate("recipe_book")}</small>
-              </div>
-              <AddIcon size={50} />
-            </div>
+          {user && profile && user.accountID === profile.accountID && recipeBooks && (
+            <CreateRecipeBook />
           )}
 
-          {recipeBooks.map((recipeBook) => (
-            <div className="book-wrapper">
+          {recipeBooks.map((recipeBook, index) => (
+            <div className="book-wrapper" key={index}>
               <RecipeBookTile recipeBook={recipeBook} selectBook={selectBook} />
             </div>
           ))}
