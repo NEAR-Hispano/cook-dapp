@@ -1,14 +1,21 @@
 import { FC, useEffect, useState } from "react";
 import { NFTStorage } from "nft.storage";
 import { imageInterface } from "../types";
+import { Token } from "nft.storage/dist/src/token";
+import ImageUploadIcon from "../assets/svg/ImageUploadIcon";
+import imageResizer from "../utils/imageResizer";
 
 interface Props {
   setImage: React.Dispatch<React.SetStateAction<imageInterface | null>>;
-  preview: string;
-  setPreview: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const DragOrDrop: FC<Props> = ({ setImage, preview, setPreview }) => {
+type metadataType = Token<{
+  name: string;
+  description: string;
+  image: File;
+}>;
+
+const ImageUploader: FC<Props> = ({ setImage }) => {
   const [name, setName] = useState<string | null>(null);
   const [cid, setCid] = useState<string | null>(null);
   const [url, setUrl] = useState<string | null>(null);
@@ -19,30 +26,34 @@ const DragOrDrop: FC<Props> = ({ setImage, preview, setPreview }) => {
     }
   }, [cid, name, url]);
 
-  function uploadImage(file: File) {
-    console.log(file);
+  function formatImageUrl(metadata: metadataType) {
+    return `https://ipfs.io/ipfs/${
+      metadata.ipnft
+    }/image/${metadata.data.name.replaceAll(" ", "%20")}`;
+  }
+
+  async function uploadImage(file: File) {
     setName(file.name);
+    // const resizedImage = await imageResizer({ file, imageType: "recipeBook" });
+    const resizedImage = file;
 
     const client = new NFTStorage({
       token: process.env.REACT_APP_IPFS_TOKEN || "",
     });
+
     client
       .store({
         name: file.name,
         description: "cook-dapp-recipe-book-image",
-        image: file,
+        image: resizedImage,
       })
       .then((metadata) => {
-        console.log(metadata);
+        setUrl(formatImageUrl(metadata));
+        setCid(metadata.ipnft);
       });
   }
 
   function handleIsImage(file: File) {
-    setPreview(
-      (window as any).URL.createObjectURL(
-        new Blob([file], { type: "application/zip" })
-      )
-    );
     uploadImage(file);
   }
 
@@ -79,22 +90,14 @@ const DragOrDrop: FC<Props> = ({ setImage, preview, setPreview }) => {
       onDragOver={(e) => handleDragOver(e)}
       onDragLeave={(e) => handleDragLeave(e)}
       onDrop={(e) => handleDrop(e)}
+      className="image-uploader-wrapper"
     >
-      <div>
-        <h5>Drop</h5>
-        <i className="fas fa-fist-raised" />
-        <div>
-          <h5>Drag</h5>
-          <i className="fas fa-hand-holding" />
-          <label htmlFor="file">
-            <h4>Upload Img</h4>
-            <i className="fas fa-cloud-upload-alt" />
-          </label>
-          <input onChange={(e) => handleInput(e)} type="file" id="file" />
-        </div>
-      </div>
+      <label className="image-upload" htmlFor="image-upload">
+        <ImageUploadIcon size={40} />
+        <input onChange={(e) => handleInput(e)} type="file" id="image-upload" />
+      </label>
     </div>
   );
 };
 
-export default DragOrDrop;
+export default ImageUploader;

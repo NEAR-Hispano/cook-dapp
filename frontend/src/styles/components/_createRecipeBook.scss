@@ -13,13 +13,27 @@
     display: block;
     height: auto;
     max-width: 100%;
-}
+  }
 
-& .image-input-placeholder {
-    display: flex;
-    
+  & input[type="file"] {
+    display: none;
+  }
+
+  & .image-uploader-wrapper {
     height: 100%;
-    max-width: 100%; 
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border: solid 1px $borderColor;
+  }
+
+  & .image-input-placeholder {
+    display: flex;
+
+    height: 100%;
+    max-width: 100%;
   }
 
   & .title {
