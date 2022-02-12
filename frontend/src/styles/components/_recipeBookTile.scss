@@ -8,6 +8,30 @@
   color: black;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
     rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+
+  & .edit-icons {
+    position: absolute;
+    top: 0;
+    right: 0;    
+    border: solid 1px $borderColor;
+    border-right: none;
+    width: max-content;
+    background-color: white;
+    
+    
+    & .edit-icon-container {
+      cursor: pointer; 
+      padding: 10px;
+      border: solid 1px $borderColor;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      & input[type="file"] {
+        display: none;
+      }
+    }
+  }
 }
 .recipe-book-tile-container img {
   display: block;
@@ -26,6 +50,12 @@
   justify-content: center;
   align-items: center;
   h6 {
+    text-transform: uppercase;
+    color: black;
+    letter-spacing: 2px;
+    font-weight: bold;
+  }
+  & .edit-recipe-book-title {
     text-transform: uppercase;
     color: black;
     letter-spacing: 2px;

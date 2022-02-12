@@ -53,7 +53,7 @@ const ProfileBooks: FC<Props> = ({ profile }) => {
 
           {recipeBooks.map((recipeBook, index) => (
             <div className="book-wrapper" key={index}>
-              <RecipeBookTile recipeBook={recipeBook} selectBook={selectBook} />
+              <RecipeBookTile key={index} recipeBook={recipeBook} selectBook={selectBook} profile={profile} />
             </div>
           ))}
         </div>

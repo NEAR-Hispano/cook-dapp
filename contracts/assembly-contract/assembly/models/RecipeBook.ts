@@ -9,15 +9,11 @@ class RecipeBook {
   banner: Image;
   recipes: Array<string>;
 
-  constructor(accountID: string, title: string) {
+  constructor(accountID: string, title: string, banner: Image) {
     this.id = getID();
     this.creator = accountID;
     this.title = title;
-    this.banner = {
-      name: "",
-      cid: "",
-      url: "",
-    };
+    this.banner = banner;
     this.recipes = new Array();
   }
 

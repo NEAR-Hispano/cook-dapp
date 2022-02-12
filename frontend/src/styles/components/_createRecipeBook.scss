@@ -27,6 +27,7 @@
     align-items: center;
     cursor: pointer;
     border: solid 1px $borderColor;
+    min-height: 200px;
   }
 
   & .image-input-placeholder {

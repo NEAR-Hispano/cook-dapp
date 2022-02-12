@@ -88,11 +88,11 @@ function createUser(): void {
  * @param title title for the recipe book.
  */
 
-export function createRecipeBook(title: string): RecipeBook {
+export function createRecipeBook(title: string, banner: Image): RecipeBook {
   assert(title.length > 5, "Recipe book title to short.");
 
   // Create new recipe book.
-  const newRecipeBook = new RecipeBook(Context.sender, title);
+  const newRecipeBook = new RecipeBook(Context.sender, title, banner);
 
   // get user
   const user = getUser();

@@ -34,12 +34,18 @@ export class Contract {
     }
   }
 
-  createRecipeBook({ title }: { title: string }) {
+  createRecipeBook({
+    title = null,
+    banner = null,
+  }: {
+    title: string | null;
+    banner: imageInterface | null;
+  }) {
     switch (CONTRACT_LANG) {
       case "AS":
-        return (window as any).contract.createRecipeBook({ title });
+        return (window as any).contract.createRecipeBook({ title, banner });
       case "RUST":
-        return (window as any).contract.create_recipe_book({ title });
+        return (window as any).contract.create_recipe_book({ title, banner });
       default:
         throw InvalidContractLangError;
     }
@@ -153,6 +159,7 @@ export class Contract {
     recipeBookID = null,
     category = null,
     chefNote = null,
+    image = null,
   }: {
     id: string;
     title: string | null;
@@ -162,30 +169,39 @@ export class Contract {
     recipeBookID: string | null;
     category: string | null;
     chefNote: string | null;
+    image: imageInterface | null;
   }) {
     switch (CONTRACT_LANG) {
       case "AS":
-        return (window as any).contract.updateRecipe({
-          id,
-          title,
-          description,
-          ingridients,
-          instructions,
-          recipeBookID,
-          category,
-          chefNote,
-        }, 300000000000000);
+        return (window as any).contract.updateRecipe(
+          {
+            id,
+            title,
+            description,
+            ingridients,
+            instructions,
+            recipeBookID,
+            category,
+            chefNote,
+            image,
+          },
+          300000000000000
+        );
       case "RUST":
-        return (window as any).contract.update_recipe({
-          id,
-          title,
-          description,
-          ingridients,
-          instructions,
-          recipeBookID,
-          category,
-          chefNote,
-        }, 300000000000000);
+        return (window as any).contract.update_recipe(
+          {
+            id,
+            title,
+            description,
+            ingridients,
+            instructions,
+            recipeBookID,
+            category,
+            chefNote,
+            image,
+          },
+          300000000000000
+        );
       default:
         throw InvalidContractLangError;
     }

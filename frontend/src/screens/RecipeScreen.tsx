@@ -1,8 +1,8 @@
 import { FC, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useContract from "../hooks/useContract";
 import useUser from "../hooks/useUser";
-import { recipeInterface } from "../types";
+import { imageInterface, recipeInterface } from "../types";
 import { Rating as RatingStars } from "react-simple-star-rating";
 import useTranslator from "../hooks/useTranslator";
 import useCopyToClipboard from "../hooks/useCopyToClipboard";
@@ -20,6 +20,9 @@ import { isNumeric } from "../utils";
 import HeartIcon from "../assets/svg/HeartIcon";
 import HeartFillIcon from "../assets/svg/HeartFillIcon";
 import TrashIcon from "../assets/svg/TrashIcon";
+import refreshPage from "../utils/refreshPage";
+import ImageUploadIcon from "../assets/svg/ImageUploadIcon";
+import uploadImage from "../utils/uploadImage";
 
 interface Props {}
 
@@ -36,6 +39,8 @@ const RecipeScreen: FC<Props> = () => {
   const [resetChangesID, setResetChangesID] = useState<string>("");
   const [isFavorite, setIsFavorite] = useState<boolean>(false);
   const [newStep, setNewStep] = useState<string>("");
+  const navigate = useNavigate();
+  const [editedImage, setEditedImage] = useState<imageInterface | null>(null);
 
   const checkIsEditing = () => {
     const result = Boolean(
@@ -117,8 +122,21 @@ const RecipeScreen: FC<Props> = () => {
     setEditingMode(false);
   }
 
-  function refreshPage() {
-    (window as any).location.reload(false);
+  function deleteRecipe() {
+    if (contract && id) {
+      contract.deleteRecipe({ id }).then(() => {
+        navigate("/", { replace: true });
+        toast(translate("Recipe Deleted."), {
+          position: "bottom-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      });
+    }
   }
 
   function saveChanges() {
@@ -132,6 +150,7 @@ const RecipeScreen: FC<Props> = () => {
         recipeBookID,
         category,
         chefNote,
+        image
       } = recipe;
 
       toast(translate("Saving changes."), {
@@ -155,6 +174,7 @@ const RecipeScreen: FC<Props> = () => {
           recipeBookID,
           category,
           chefNote,
+          image
         })
         .then(() => refreshPage());
     }
@@ -164,7 +184,6 @@ const RecipeScreen: FC<Props> = () => {
     if (recipe && user && contract && setUser) {
       if (isFavorite) {
         // remove recipe from favorite
-
         toast(translate("Removing recipe from favorites."), {
           position: "bottom-right",
           autoClose: 5000,
@@ -359,6 +378,22 @@ const RecipeScreen: FC<Props> = () => {
     }
   }
 
+  async function editUpdateImage(e: React.ChangeEvent<HTMLInputElement>) {
+    e.preventDefault();
+    if (e && e.target && e.target.files && e.target.files[0]) {
+      let file = e.target.files[0];
+      uploadImage({ file }).then((newImage) => {
+        if (recipe && newImage) {
+          const editedRecipe = recipe;
+          editedRecipe.image = newImage;
+          setRecipe(editedRecipe);
+          setResetChangesID(uuid());
+          console.log(recipe.image);
+        }
+      });
+    }
+  }
+
   /* Editable Recipe functions above */
 
   return (
@@ -385,6 +420,12 @@ const RecipeScreen: FC<Props> = () => {
             onClick={() => setEditingMode(true)}
           >
             <EditIcon size={30} />
+          </div>
+          <div
+            className="delete-button-wrapper cursor-pointer"
+            onClick={() => deleteRecipe()}
+          >
+            <TrashIcon size={30} />
           </div>
         </div>
       )}
@@ -453,6 +494,17 @@ const RecipeScreen: FC<Props> = () => {
           src={(recipe && recipe.image.url) || ""}
           alt={(recipe && recipe.image.name) || ""}
         />
+        {editingMode && (
+          <label className="edit-icon-container" htmlFor="updated-banner-image">
+            <ImageUploadIcon size={20} />
+            <input
+              onChange={(e) => editUpdateImage(e)}
+              type="file"
+              id="updated-banner-image"
+              accept="image/x-png, image/gif, image/jpeg"
+            />
+          </label>
+        )}
       </div>
 
       <div className="user-description-wrapper">
@@ -605,3 +657,6 @@ const RecipeScreen: FC<Props> = () => {
 };
 
 export default RecipeScreen;
+function editedRecipe(editedRecipe: any): any {
+  throw new Error("Function not implemented.");
+}

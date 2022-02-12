@@ -19,7 +19,7 @@
   & .favorite-recipe-status-wrapper {
     display: flex;
     width: auto;
-    height: auto;    
+    height: auto;
     position: absolute;
     left: 0;
     top: 0;
@@ -30,7 +30,7 @@
   & .edit-recipe-action-buttons-wrapper {
     display: flex;
     width: auto;
-    height: auto;    
+    height: auto;
     position: absolute;
     right: 0;
     top: 0;
@@ -41,6 +41,13 @@
       display: flex;
       justify-content: center;
       align-items: center;
+    }
+
+    & .delete-button-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-left: 10px;
     }
 
     & .reset-button-wrapper {
@@ -130,6 +137,24 @@
   }
 
   & .image-wrapper {
+    position: relative;
+
+    & .edit-icon-container {
+      position: absolute;
+      top: 0;
+      left: 0;      
+      width: max-content;
+      background-color: white;
+      border: dotted 1px;      
+      cursor: pointer;
+      padding: 10px;
+      z-index: 100;
+
+      & input[type="file"] {
+        display: none;
+      }
+    }
+
     margin-top: 30px;
     & img {
       display: block;
@@ -203,7 +228,8 @@
       margin-top: 10px;
       height: auto;
       border: solid 1px $borderColor;
-      box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+      box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+        rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
       display: flex;
       flex-direction: row;
       background-color: red;

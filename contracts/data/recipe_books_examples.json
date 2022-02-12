@@ -1,5 +1,26 @@
 [
-  { "title": "Dominican Food" },
-  { "title": "Venezuelan Food" },
-  { "title": "Mexican Food" }
+  {
+    "title": "Dominican Food",
+    "banner": {
+      "name": "Dominican Food",
+      "url": "",
+      "cid": "Dominican Food"
+    }
+  },
+  {
+    "title": "Venezuelan Food",
+    "banner": {
+      "name": "Venezuelan Food",
+      "url": "",
+      "cid": "Venezuelan Food"
+    }
+  },
+  {
+    "title": "Mexican Food",
+    "banner": {
+      "name": "Mexican Food",
+      "url": "",
+      "cid": "Mexican Food"
+    }
+  }
 ]

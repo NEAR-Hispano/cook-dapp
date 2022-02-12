@@ -61,7 +61,7 @@ const ProfileScreen: FC = () => {
         {profileTabs &&
           profileTabs.map(({ Component, label }, index) => (
             <div style={{ display: section === label ? "flex" : "none" }} key={index}>
-              <Component profile={profile} />
+              <Component profile={profile} key={index} />
             </div>
           ))}
       </div>

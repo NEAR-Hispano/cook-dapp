@@ -11,8 +11,6 @@ interface Props {
 }
 
 async function imageResizer({ file, imageType }: Props) {
-  const result: File = new File([], "default");
-
   const recipeSize: imageSize = {
     height: 1200,
     width: 800,
@@ -35,21 +33,32 @@ async function imageResizer({ file, imageType }: Props) {
     return recipeSize;
   }
 
-  Resizer.imageFileResizer(
-    file,
-    getSize().width,
-    getSize().height,
-    "JPEG",
-    100,
-    0,
-    (result) => {
-      console.log(result);
-      result = file;
-    },
-    "file"
-  );
+  const size = getSize();
 
-  return result;
-};
+  return new Promise<File | Blob>((resolve) => {
+   Resizer.imageFileResizer(
+      file,
+      size.width,
+      size.height,
+      "PNG",
+      100,
+      0,
+      (uri) => {
+        if (uri instanceof File) {
+          console.log(uri)
+          return uri;
+        }
+        if (uri instanceof Blob) {
+          console.log(uri)
+          return uri;
+        }        
+        return new File([], "");
+      },
+      "file",
+      size.width,
+      size.height
+    );  
+  });  
+}
 
 export default imageResizer;
