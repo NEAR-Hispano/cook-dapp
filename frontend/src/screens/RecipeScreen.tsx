@@ -657,6 +657,3 @@ const RecipeScreen: FC<Props> = () => {
 };
 
 export default RecipeScreen;
-function editedRecipe(editedRecipe: any): any {
-  throw new Error("Function not implemented.");
-}

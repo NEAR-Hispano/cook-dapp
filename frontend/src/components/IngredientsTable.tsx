@@ -9,7 +9,7 @@ import PlusIcon from "../assets/svg/PlusIcon";
 interface Props {
   ingredientsList: Array<ingredientInterface>;
   editingMode: boolean;
-  recipeID: string;
+  recipeID?: string;
   editIngridientLabel: (index: number, label: string) => void;
   editIngridientAmount: (index: number, amount: string) => void;
   editIngridientUnit: (index: number, unit: string) => void;
@@ -42,7 +42,7 @@ const IngredientsTable: FC<Props> = ({
   const [details, setDetails] = useState<string>("");
 
   function addRecipeList() {
-    if (contract) {
+    if (contract && recipeID) {
       contract.addRecipeList({ recipeID }).then(() => {
         toast(translate("added_to_recipe_list"), {
           position: "bottom-right",
@@ -152,14 +152,14 @@ const IngredientsTable: FC<Props> = ({
             </button>
           </div>
         </div>
-      ) : (
+      ) : recipeID? (
         <div className="ingredients-action-button-container">
           <div className="button" onClick={() => addRecipeList()}>
             <small>add recipe list</small>
             <PlusIcon size={20} />
           </div>
         </div>
-      )}
+      ) : null}
     </div>
   );
 };
