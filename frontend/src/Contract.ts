@@ -104,6 +104,7 @@ export class Contract {
     recipeBookID,
     category,
     chefNote,
+    image
   }: {
     title: string;
     description: string;
@@ -112,6 +113,7 @@ export class Contract {
     recipeBookID: string;
     category: string;
     chefNote: string;
+    image: imageInterface;
   }) {
     switch (CONTRACT_LANG) {
       case "AS":
@@ -123,6 +125,7 @@ export class Contract {
           recipeBookID,
           category,
           chefNote,
+          image
         });
       case "RUST":
         return (window as any).contract.create_recipe({
@@ -133,6 +136,7 @@ export class Contract {
           recipeBookID,
           category,
           chefNote,
+          image
         });
       default:
         throw InvalidContractLangError;

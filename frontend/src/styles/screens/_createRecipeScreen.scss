@@ -1,0 +1,358 @@
+.create-recipe-screen-container {
+  height: auto;
+  margin: auto;
+  color: black;
+  max-width: 70%;
+  padding-top: 40px;
+  padding-bottom: 80px;
+  position: relative;
+
+  border: solid 1px $borderColor;
+  border-top: none;
+  border-bottom: none;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  & .create-recipe-button-wrapper {
+    display: flex;
+    width: auto;
+    height: auto;
+    position: absolute;
+    right: 0;
+    top: 0;
+    flex-direction: row;
+    padding: 20px;
+
+    & .create-recipe-button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: row;
+      border: solid 1px;
+      color: black;
+      padding-left: 10px;
+      text-transform: uppercase;
+      font-size: small;
+      letter-spacing: 3px;
+
+      & .create-recipe-icon-wrapper {
+        padding: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        margin-left: 10px;
+        background-color: black;
+        cursor: pointer;
+
+        & svg {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100%;
+          color: white !important;
+        }
+      }
+    }
+  }
+
+  & .recipe-banner {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    & .title {
+      width: max-content;
+      border-bottom: 1px solid $borderColor;
+      margin-bottom: 30px;
+      line-height: 2;
+      font-size: clamp(14px, 2vw, 2vw);
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+    }
+
+    & .summary-info {
+      display: flex;
+      flex-direction: row;
+
+      & .reviews-quantity-wrapper,
+      .ingridients-quantity-wrapper,
+      .rating-stars-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 20px;
+
+        small {
+          position: relative;
+          text-transform: uppercase;
+          letter-spacing: 2px;
+          font-weight: bold;
+          font-size: small;
+          font-size: clamp(10px, 0.6vw, 0.6vw);
+
+          &::after {
+            position: absolute;
+            content: "";
+            height: 100%;
+            width: 1px;
+            background-color: $borderColor;
+            margin-left: 10px;
+          }
+        }
+      }
+
+      & .rating-stars-wrapper {
+        small {
+          &::after {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+
+  & .create-recipe-selectors-wrapper {
+    margin-top: 30px;
+    padding: 10px;    
+    
+    display: flex;
+
+
+    & select {
+        padding: 7px 10px;
+        text-transform: capitalize;
+        
+        & option {
+            text-transform: capitalize;
+            font-size: small;
+        }
+        
+        &:first-of-type {
+            margin-right: 10px;
+        }
+    }
+  }
+
+  & .image-wrapper,
+  .user-description-wrapper {
+    width: 90%;
+  }
+
+  & .image-wrapper {
+    position: relative;
+
+    & .edit-icon-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: white;
+      border: dotted 1px;
+      cursor: pointer;
+      padding: 10px;
+      z-index: 100;
+
+
+      & input[type="file"] {
+        display: none;
+      }
+    }
+
+    margin-top: 30px;
+    & img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  & .user-description-wrapper {
+    margin-top: 60px;
+    display: flex;
+    flex-direction: column;
+    border-top: solid 1px $borderColor;
+
+    & .description-title {
+      margin-top: 20px;
+      width: 100%;
+      max-width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      h2 {
+        line-height: 2;
+        font-size: clamp(14px, 2vw, 2vw);
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+      }
+    }
+
+    & .description-container {
+      padding-top: 20px;
+      max-width: 80ch;
+    }
+  }
+
+  & .content-wrapper {
+    border-top: solid 1px $borderColor;
+    margin-top: 60px;
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    max-width: 90%;
+
+    & .title {
+      margin-top: 20px;
+      width: 100%;
+      max-width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      h2 {
+        line-height: 2;
+        font-size: clamp(14px, 2vw, 2vw);
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+      }
+    }
+
+    & .information-container {
+      margin-top: 30px;
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+    }
+
+    & .add-step-field-container {
+      margin-top: 10px;
+      height: auto;
+      border: solid 1px $borderColor;
+      box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+        rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+      display: flex;
+      flex-direction: row;
+      background-color: red;
+      flex: 1;
+      width: 100%;
+      max-width: 100%;
+
+      .label-wrapper {
+        width: max-content;
+        width: 20%;
+        height: 100%;
+        padding: 15px;
+        background-color: black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        user-select: none;
+
+        small {
+          font-size: small;
+          text-transform: uppercase;
+          color: white;
+          letter-spacing: 3px;
+        }
+      }
+      .input-wrapper {
+        flex: 1;
+        width: 100%;
+        max-width: 100%;
+
+        & input {
+          flex: 1;
+          width: 100%;
+          max-width: 100%;
+          height: 100%;
+          padding: 7px 15px;
+          border: none;
+          outline: none;
+        }
+      }
+    }
+
+    & .add-step-button-wrapper {
+      & button {
+        outline: none;
+        border: none;
+        border: solid 1px black;
+        background-color: black;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 15px;
+        flex: 1;
+        width: 100%;
+        max-width: 100%;
+        padding: 14px 30px;
+        cursor: pointer;
+
+        small {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100%;
+          font-size: small;
+          text-transform: uppercase;
+          color: white;
+          letter-spacing: 2px;
+        }
+      }
+    }
+  }
+
+  .step-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 30px;
+
+    .step-label-information {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 15px;
+      background-color: black;
+      color: white;
+      width: max-content;
+
+      & .step-label {
+        margin-right: 10px;
+        font-size: small;
+        text-transform: uppercase;
+      }
+
+      & .step-number {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+    .step-description {
+      padding: 15px;
+      background-color: wheat;
+    }
+
+    .delete-step-icon-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      svg {
+      }
+    }
+  }
+}

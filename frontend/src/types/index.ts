@@ -97,3 +97,18 @@ export interface recipeBookInterface {
   banner: imageInterface;
   recipes: Array<string>;
 }
+
+export type RecipeCategory =
+  | "dinner"
+  | "breakfast"
+  | "lunch"
+  | "dessert"
+  | "snacks";
+  
+export const recipeCategories = [
+  "dinner",
+  "breakfast",
+  "lunch",
+  "dessert",
+  "snacks",
+];

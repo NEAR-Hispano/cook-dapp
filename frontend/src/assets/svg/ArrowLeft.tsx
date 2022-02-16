@@ -6,7 +6,7 @@ const ArrowLeft: iconElement = ({ size = 16 }) => {
       xmlns="http://www.w3.org/2000/svg"
       width={size}
       height={size}
-      fill="#000"
+      fill="currentColor"
       className="bi bi-arrow-left-short"
       viewBox="0 0 16 16"
     >

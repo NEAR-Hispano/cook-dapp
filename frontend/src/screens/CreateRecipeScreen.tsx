@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import EditIcon from "../assets/svg/EditIcon";
 import ListIcon from "../assets/svg/ListIcon";
 import TrashIcon from "../assets/svg/TrashIcon";
@@ -6,23 +6,38 @@ import EditableText from "../components/EditableText";
 import IngredientsTable from "../components/IngredientsTable";
 import useContract from "../hooks/useContract";
 import { Rating as RatingStars } from "react-simple-star-rating";
-import { imageInterface, ingredientInterface } from "../types";
+import {
+  imageInterface,
+  ingredientInterface,
+  recipeBookInterface,
+  recipeCategories,
+  recipeInterface,
+} from "../types";
 import useUser from "../hooks/useUser";
 import useCopyToClipboard from "../hooks/useCopyToClipboard";
 import ImageUploadIcon from "../assets/svg/ImageUploadIcon";
 import TextIcon from "../assets/svg/TextIcon";
+import PlusIcon from "../assets/svg/PlusIcon";
 import uploadImage from "../utils/uploadImage";
 import { v4 as uuid } from "uuid";
+import ArrowLeft from "../assets/svg/ArrowLeft";
+import ArrowRight from "../assets/svg/ArrowRight";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import contractErrorHandler from "../utils/contractErrorHandler";
 
 interface Props {}
 
 const CreateRecipeScreen: FC<Props> = () => {
   const [user] = useUser();
+  const navigate = useNavigate();
   const contract = useContract();
   const [_, copy] = useCopyToClipboard();
-  const [recipeBookID, setRecipeBookID] = useState<string>();
+  const [userRecipeBooks, setUserRecipeBooks] =
+    useState<Array<recipeBookInterface> | null>(null);
+  const [recipeBookID, setRecipeBookID] = useState<string | null>(null);
   const [image, setImage] = useState<imageInterface | null>(null);
-  const [category, setCategory] = useState<string>();
+  const [category, setCategory] = useState<string>("");
   const [title, setTitle] = useState<string>("Click to edit title");
   const [description, setDescription] = useState<string>(
     "Click to edit description, make sure to leave every detail clear for those who rely on your recipe!"
@@ -36,10 +51,63 @@ const CreateRecipeScreen: FC<Props> = () => {
   const [instructions, setInstructions] = useState<Array<string>>([]);
   const [resetChangesID, setResetChangesID] = useState<string>("");
 
-  const [newIngridientLabel, setNewIngridientLabel] = useState<string>("");
-  const [newIngridientAmount, setNewIngridientAmount] = useState<string>("");
-  const [newIngridientUnit, setNewIngridientUnit] = useState<string>("");
-  const [newIngridientDetails, setNewIngridientDetails] = useState<string>("");
+  useEffect(() => {
+    if (contract && user && !userRecipeBooks) {
+      contract
+        .getUserRecipeBooks({ accountID: user.accountID })
+        .then((recipeBooks: Array<recipeBookInterface>) =>
+          setUserRecipeBooks(recipeBooks)
+        );
+    }
+  }, [user, contract, userRecipeBooks]);
+
+  function createRecipe() {
+    if (contract && recipeBookID && image) {
+      toast("Creating recipe...", {
+        position: "bottom-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      let ingridientsList = ingredients;
+      ingridientsList = ingridientsList.map((ingridient) => {
+        const amount = parseInt(String(ingridient.amount));
+        const updatedIngridient = { ...ingridient, amount };
+        return updatedIngridient;
+      });
+      contract
+        .createRecipe({
+          recipeBookID,
+          category,
+          title,
+          description,
+          chefNote,
+          ingridientsList,
+          instructions,
+          image,
+        })
+        .then((recipe: recipeInterface) => {
+          toast("Recipe created.", {
+            position: "bottom-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+          setTimeout(() => {
+            navigate(`/recipe/${recipe.id}`);
+          }, 3000);
+        })
+        .catch((error: Error) => {
+          contractErrorHandler(error)
+        });
+    }
+  }
 
   // Ingredients
   function editIngridientLabel(index: number, label: string) {
@@ -146,7 +214,19 @@ const CreateRecipeScreen: FC<Props> = () => {
   }
 
   return (
-    <div className="recipe-screen-container" key={resetChangesID}>
+    <div className="create-recipe-screen-container" key={resetChangesID}>
+      <div className="create-recipe-button-wrapper">
+        <div className="create-recipe-button">
+          create
+          <div
+            className="create-recipe-icon-wrapper"
+            onClick={() => createRecipe()}
+          >
+            <ArrowRight size={25} />
+          </div>
+        </div>
+      </div>
+
       <div className="recipe-banner">
         <div className="title">
           <EditableText
@@ -181,8 +261,37 @@ const CreateRecipeScreen: FC<Props> = () => {
         </div>
       </div>
 
-      <div className="account-id-wrapper" onClick={() => copyAccountID()}>
-        {user && user.accountID}
+      <div className="create-recipe-selectors-wrapper">
+        <select
+          name="recipe book id"
+          id="cars"
+          required
+          onChange={(e) => setRecipeBookID(e.target.value)}
+        >
+          <option className="select-label" value="" disabled selected>
+            select recipe book
+          </option>
+          {userRecipeBooks &&
+            userRecipeBooks.map((recipeBook: recipeBookInterface) => (
+              <option value={recipeBook.id}>
+                {recipeBook.title.toLocaleLowerCase()}
+              </option>
+            ))}
+        </select>
+
+        <select
+          name="cars"
+          id="cars"
+          required
+          onChange={(e) => setCategory(e.target.value)}
+        >
+          <option className="select-label" value="" disabled selected>
+            select recipe category
+          </option>
+          {recipeCategories.map((category) => (
+            <option value={category}>{category}</option>
+          ))}
+        </select>
       </div>
 
       <div className="image-wrapper">
@@ -191,15 +300,17 @@ const CreateRecipeScreen: FC<Props> = () => {
           alt={(image && image.name) || ""}
         />
 
-        <label className="edit-icon-container" htmlFor="updated-banner-image">
-          <ImageUploadIcon size={20} />
-          <input
-            onChange={(e) => editUpdateImage(e)}
-            type="file"
-            id="updated-banner-image"
-            accept="image/x-png, image/gif, image/jpeg"
-          />
-        </label>
+        {!image && (
+          <label className="edit-icon-container" htmlFor="updated-banner-image">
+            <ImageUploadIcon size={20} />
+            <input
+              onChange={(e) => editUpdateImage(e)}
+              type="file"
+              id="updated-banner-image"
+              accept="image/x-png, image/gif, image/jpeg"
+            />
+          </label>
+        )}
       </div>
 
       <div className="user-description-wrapper">
