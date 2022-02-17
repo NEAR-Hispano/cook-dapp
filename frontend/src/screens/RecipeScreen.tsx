@@ -23,6 +23,10 @@ import TrashIcon from "../assets/svg/TrashIcon";
 import refreshPage from "../utils/refreshPage";
 import ImageUploadIcon from "../assets/svg/ImageUploadIcon";
 import uploadImage from "../utils/uploadImage";
+import TipsIcon from "../assets/svg/TipsIcon";
+import PopUp from "../components/PopUp";
+import contractErrorHandler from "../utils/contractErrorHandler";
+import NearIcon from "../assets/svg/NearIcon";
 
 interface Props {}
 
@@ -41,6 +45,8 @@ const RecipeScreen: FC<Props> = () => {
   const [newStep, setNewStep] = useState<string>("");
   const navigate = useNavigate();
   const [editedImage, setEditedImage] = useState<imageInterface | null>(null);
+  const [tipsPopUpOpened, setTipsPopUpOpened] = useState<boolean>(false);
+  const [tipsAmount, setTipsAmount] = useState<string>("0");
 
   const checkIsEditing = () => {
     const result = Boolean(
@@ -150,7 +156,7 @@ const RecipeScreen: FC<Props> = () => {
         recipeBookID,
         category,
         chefNote,
-        image
+        image,
       } = recipe;
 
       toast(translate("Saving changes."), {
@@ -174,7 +180,7 @@ const RecipeScreen: FC<Props> = () => {
           recipeBookID,
           category,
           chefNote,
-          image
+          image,
         })
         .then(() => refreshPage());
     }
@@ -394,21 +400,72 @@ const RecipeScreen: FC<Props> = () => {
     }
   }
 
+  function tipRecipe() {
+    if (contract && recipe) {
+      toast(translate("Sending tips!"), {
+        position: "bottom-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+      contract
+        .tipRecipe({ recipeID: recipe.id, amount: tipsAmount })
+        .then(() => {
+          toast(translate("Succesfully tiped recipe creator!"), {
+            position: "bottom-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        })
+        .catch((error: Error) => {
+          contractErrorHandler(error);
+        });
+    }
+  }
+
   /* Editable Recipe functions above */
 
   return (
     <div className="recipe-screen-container">
+      <PopUp
+        isOpened={tipsPopUpOpened}
+        setIsOpened={setTipsPopUpOpened}
+        title="Tips Jar"
+      >
+        <div className="tip-recipe-popup-content">
+          <TipsIcon size={80} />
+          <input
+            type={"number"}
+            placeholder="tip amount in near"
+            min={1}
+            onChange={(e) => setTipsAmount(e.target.value)}
+          />
+          <div className="tip-recipe-button" onClick={() => tipRecipe()}>
+            send
+          </div>
+        </div>
+      </PopUp>
       <div
-        className="favorite-recipe-status-wrapper"
+        className="recipe-left-icons-wrapper"
         style={{ display: recipe && user ? "flex" : "none" }}
       >
+        <div onClick={() => setTipsPopUpOpened((prev) => !prev)}>
+          <TipsIcon size={40} />
+        </div>
         {recipe && user && isFavorite ? (
           <div onClick={() => toggleIsFavorite()}>
-            <HeartFillIcon size={30} />
+            <HeartFillIcon size={40} />
           </div>
         ) : (
           <div onClick={() => toggleIsFavorite()}>
-            <HeartIcon size={30} />
+            <HeartIcon size={40} />
           </div>
         )}
       </div>
@@ -460,6 +517,11 @@ const RecipeScreen: FC<Props> = () => {
         <div className="summary-info">
           <div className="reviews-quantity-wrapper">
             <small>reviews {recipe && recipe.reviews.length}</small>
+          </div>
+
+          <div className="totalTips-quantity-wrapper">
+            <NearIcon size={20} />
+            <small>tips {recipe && recipe.totalTips}</small>
           </div>
 
           <div className="ingridients-quantity-wrapper">

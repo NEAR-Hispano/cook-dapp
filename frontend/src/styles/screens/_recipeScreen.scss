@@ -16,7 +16,7 @@
   align-items: center;
   flex-direction: column;
 
-  & .favorite-recipe-status-wrapper {
+  & .recipe-left-icons-wrapper {
     display: flex;
     width: auto;
     height: auto;
@@ -24,7 +24,51 @@
     left: 0;
     top: 0;
     padding: 20px;
-    cursor: pointer;
+
+    justify-content: center;
+    align-items: center;
+
+    & svg {
+      cursor: pointer;
+    }
+  }
+
+  & .tip-recipe-popup-content {
+    width: 500px;
+    height: 400px;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    & svg {
+      margin-bottom: 25px;
+    }
+
+    & input {
+      margin-bottom: 25px;
+      padding: 7px 10px;
+      width: 60%;
+      border: none;
+      border: solid 1px $borderColor;
+    }
+
+    .tip-recipe-button {
+      padding: 7px 10px;
+      width: max-content;
+      width: 60%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: solid 1px $borderColor;
+      text-transform: uppercase;
+      font-size: small;
+      letter-spacing: 3px;
+      background-color: black;
+      color: white;
+      cursor: pointer;
+    }
   }
 
   & .edit-recipe-action-buttons-wrapper {
@@ -87,7 +131,8 @@
 
       & .reviews-quantity-wrapper,
       .ingridients-quantity-wrapper,
-      .rating-stars-wrapper {
+      .rating-stars-wrapper,
+      .totalTips-quantity-wrapper {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -109,6 +154,16 @@
             background-color: $borderColor;
             margin-left: 10px;
           }
+        }
+      }
+
+      & .totalTips-quantity-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        small {
+          margin-left: 5px;
         }
       }
 
@@ -142,10 +197,10 @@
     & .edit-icon-container {
       position: absolute;
       top: 0;
-      left: 0;      
+      left: 0;
       width: max-content;
       background-color: white;
-      border: dotted 1px;      
+      border: dotted 1px;
       cursor: pointer;
       padding: 10px;
       z-index: 100;

@@ -104,7 +104,7 @@ const CreateRecipeScreen: FC<Props> = () => {
           }, 3000);
         })
         .catch((error: Error) => {
-          contractErrorHandler(error)
+          contractErrorHandler(error);
         });
     }
   }
