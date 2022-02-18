@@ -14,7 +14,7 @@ const EditableText: FC<Props> = ({
 }) => {
   return (
     <div
-      className={className}
+      className={`${className} editable-text`}
       onBlur={(e) => onBlur(e)}
       contentEditable={isEditable}
       suppressContentEditableWarning

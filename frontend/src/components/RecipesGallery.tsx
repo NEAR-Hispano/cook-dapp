@@ -9,10 +9,11 @@ import AddIcon from "../assets/svg/AddIcon";
 import useUser from "../hooks/useUser";
 
 interface Props {
-  recipeIDs: Array<string>;
+  recipeIDs?: Array<string>;
   filter?: "tips" | "averageRating";
   allowCreate?: boolean;
   profile?: userInterface | null;
+  recipesList?: Array<recipeInterface>;
 }
 
 const RecipesGallery: FC<Props> = ({
@@ -20,6 +21,7 @@ const RecipesGallery: FC<Props> = ({
   filter = null,
   allowCreate = false,
   profile = null,
+  recipesList
 }) => {
   const [user] = useUser();
   const translate = useTranslator();
@@ -27,7 +29,7 @@ const RecipesGallery: FC<Props> = ({
   const [recipes, setRecipes] = useState<Array<recipeInterface> | null>(null);
 
   const getRecipes = async () => {
-    if (contract) {
+    if (contract && recipeIDs) {
       const recipesList: Array<recipeInterface> = [];
       for (let i = 0; i < recipeIDs.length; i++) {
         const recipe = await contract.getRecipe({ id: recipeIDs[i] });
@@ -40,6 +42,12 @@ const RecipesGallery: FC<Props> = ({
   useEffect(() => {
     getRecipes();
   }, [contract, recipeIDs]);
+  
+  useEffect(() => {
+    if(recipesList) {
+      setRecipes(recipesList)
+    }
+  }, [recipesList]);
 
   return (
     <div className="recipes-gallery">

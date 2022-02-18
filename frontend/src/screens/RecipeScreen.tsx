@@ -27,6 +27,7 @@ import TipsIcon from "../assets/svg/TipsIcon";
 import PopUp from "../components/PopUp";
 import contractErrorHandler from "../utils/contractErrorHandler";
 import NearIcon from "../assets/svg/NearIcon";
+import NEARCurrencyIcon from "../assets/svg/NEARCurrencyIcon";
 
 interface Props {}
 
@@ -46,6 +47,8 @@ const RecipeScreen: FC<Props> = () => {
   const navigate = useNavigate();
   const [editedImage, setEditedImage] = useState<imageInterface | null>(null);
   const [tipsPopUpOpened, setTipsPopUpOpened] = useState<boolean>(false);
+  const [deleteRecipePopUpOpened, setDeleteRecipePopUpOpened] =
+    useState<boolean>(false);
   const [tipsAmount, setTipsAmount] = useState<string>("0");
 
   const checkIsEditing = () => {
@@ -413,20 +416,7 @@ const RecipeScreen: FC<Props> = () => {
       });
       contract
         .tipRecipe({ recipeID: recipe.id, amount: tipsAmount })
-        .then(() => {
-          toast(translate("Succesfully tiped recipe creator!"), {
-            position: "bottom-right",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
-        })
-        .catch((error: Error) => {
-          contractErrorHandler(error);
-        });
+        .catch((error: Error) => contractErrorHandler(error));
     }
   }
 
@@ -452,6 +442,21 @@ const RecipeScreen: FC<Props> = () => {
           </div>
         </div>
       </PopUp>
+
+      <PopUp
+        isOpened={deleteRecipePopUpOpened}
+        setIsOpened={setDeleteRecipePopUpOpened}
+        title="Delete recipe"
+      >
+        <div className="delete-recipe-popup-content">
+          <div className="question-container">
+            continue deleting recipe?
+          </div>
+          <div className="button" onClick={() => setDeleteRecipePopUpOpened(prev => !prev)}>cancel</div>
+          <div className="button" onClick={() => deleteRecipe()}>delete</div>
+        </div>
+      </PopUp>
+
       <div
         className="recipe-left-icons-wrapper"
         style={{ display: recipe && user ? "flex" : "none" }}
@@ -480,7 +485,7 @@ const RecipeScreen: FC<Props> = () => {
           </div>
           <div
             className="delete-button-wrapper cursor-pointer"
-            onClick={() => deleteRecipe()}
+            onClick={() => setDeleteRecipePopUpOpened((prev) => !prev)}
           >
             <TrashIcon size={30} />
           </div>
@@ -515,13 +520,13 @@ const RecipeScreen: FC<Props> = () => {
         </div>
 
         <div className="summary-info">
-          <div className="reviews-quantity-wrapper">
-            <small>reviews {recipe && recipe.reviews.length}</small>
+          <div className="totalTips-quantity-wrapper">
+            <NEARCurrencyIcon fillCircle="#000" fillLetter="#FFF" size={20} />
+            <small>tips {recipe && recipe.totalTips}</small>
           </div>
 
-          <div className="totalTips-quantity-wrapper">
-            <NearIcon size={20} />
-            <small>tips {recipe && recipe.totalTips}</small>
+          <div className="reviews-quantity-wrapper">
+            <small>reviews {recipe && recipe.reviews.length}</small>
           </div>
 
           <div className="ingridients-quantity-wrapper">

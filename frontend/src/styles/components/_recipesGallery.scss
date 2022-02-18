@@ -4,17 +4,20 @@
   gap: 20px;
   height: 100%;
   max-width: 100%;
-  
-  padding: 20px;  
+
+  padding: 20px;
 }
 
 .recipes-gallery .recipe-tile-container {
-  position: relative;
+  position: relative;   
 }
 
 .recipe-tile-container img {
-  max-width: 100%;
   width: 100%;
+  max-width: 100%;
+  
+  width: 300px;
+
 }
 
 .recipe-slide-information-wrapper {

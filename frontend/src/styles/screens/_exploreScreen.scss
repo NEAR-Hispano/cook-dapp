@@ -1,0 +1,63 @@
+$padding: 10px 20px;
+
+.explore-screen-wrapper {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+
+  & .explore-screen-banner {
+    border-bottom: solid 1px $borderColor;
+    min-height: 25vh;
+    height: 200px;
+    background-image: url("https://images.pexels.com/photos/3944309/pexels-photo-3944309.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
+    background-position: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    backdrop-filter: blur(2px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    & .explore-input-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      width: 90%;
+
+      & input {
+        padding: $padding;
+        border: none;
+        border: solid 1px $borderColor;
+        border-right: none;
+        outline: none;
+        border-radius: 3px;
+        border-top-right-radius: 0px;
+        border-bottom-right-radius: 0px;
+        width: 500px;
+        max-width: 60%;
+        height: 100%;
+      }
+
+      & .search-button-container {
+        height: 100%;
+        background-color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: $padding;
+        border-top-right-radius: 3px;
+        border-bottom-right-radius: 3px;
+        cursor: pointer;
+        border: solid 1px black;
+        background-color: black;
+      }
+    }
+  }
+
+  & .explore-screen-recipes-gallery-wrapper {
+    overflow: hidden;
+    height: auto;
+  }
+}

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, FC } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import SearchIcon from "../assets/svg/SearchIcon";
 import UserIcon from "../assets/svg/UserIcon";
 import NearIcon from "../assets/svg/NearIcon";
@@ -18,11 +18,13 @@ const Navbar: FC = () => {
   const [isAccountMenuVisible, setIsAccountMenuVisible] = useState(false);
   const { isMobileMenuOpen, toggleMobileMenu } = useMobileMenuState();
   const [account, setAccount] = useState<string | null>(null);
+  const [isExplorer, setIsExplorer] = useState<boolean>(false);
   const userAccountWrapperRef = useRef(null);
   const translator = useTranslator();
   const navLinks = useNavLinks();
   const isLoggedIn = useAuth();
   const [user] = useUser();
+  const { pathname } = useLocation();
 
   useOnClickOutside(
     userAccountWrapperRef,
@@ -35,6 +37,8 @@ const Navbar: FC = () => {
       setAccount(user.accountID);
     }
   }, [isLoggedIn, user]);
+
+  useEffect(() => setIsExplorer(pathname.includes("explore")), [pathname]);
 
   return (
     <nav className="navbar">
@@ -52,15 +56,17 @@ const Navbar: FC = () => {
       <div className="navbar-secondary-navigation-container">
         <LangSelector />
 
-        <div
-          className="input-group"
-          style={{ display: isLoggedIn ? "flex" : "none" }}
-        >
-          <span>
-            <SearchIcon />
-          </span>
-          <input type="text" placeholder="Search for recipes" />
-        </div>
+        {!isExplorer && (
+          <div
+            className="input-group"
+            style={{ display: isLoggedIn ? "flex" : "none" }}
+          >
+            <span>
+              <SearchIcon />
+            </span>
+            <input type="text" placeholder="Search for recipes" />
+          </div>
+        )}
 
         <div className="user-account-wrapper" ref={userAccountWrapperRef}>
           <span

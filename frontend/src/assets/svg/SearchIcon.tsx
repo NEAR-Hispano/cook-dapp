@@ -1,18 +1,22 @@
-import React from "react";
-import { iconElement } from "../../types";
+import { FC } from "react";
 
-const SearchIcon: iconElement = () => {
+interface Props {
+  size?: number;
+  stroke?: string;
+}
+
+const SearchIcon: FC<Props> = ({ size = 14, stroke = "#FFF" }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="14"
-      height="14"
+      width={size}
+      height={size}
       viewBox="0 0 14 14"      
     >
       <g
         fill="none"
         fillRule="evenodd"
-        stroke="#FFF"
+        stroke={stroke}
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="2"        

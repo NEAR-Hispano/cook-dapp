@@ -1,10 +1,16 @@
+.recipe-tile-container {
+  width: 300px;
+  max-width: 300px;
+  position: relative;
+}
+
 .recipe-slide-information-wrapper {
   height: auto;
   width: 100%;
   position: relative;
   display: flex;
   flex-direction: column;
-  color: black;  
+  color: black;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
     rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
@@ -58,11 +64,16 @@
   height: 140px;
   max-height: 140px;
   min-height: 140px;
+  
+  max-width: 100%;
+
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
-  p {
+  word-wrap: break-word;
+  p {    
+    max-width: 100%;
     font-size: small;
   }
 }
@@ -95,3 +106,4 @@
   padding: 40px;
   cursor: pointer;
 }
+

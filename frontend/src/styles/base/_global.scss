@@ -35,3 +35,8 @@ body::-webkit-scrollbar-button {
 .cursor-pointer {
     cursor: pointer;
 }
+
+.editable-text {
+    max-width: 100%;
+    word-wrap: break-word;
+}
