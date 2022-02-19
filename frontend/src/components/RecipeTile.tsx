@@ -32,7 +32,7 @@ const RecipeTile: FC<Props> = ({ recipe }) => {
           <h6>{title}</h6>
         </div>
         <div className="description">
-          <p>{description}</p>
+          <p>{description.length > 160? description.split("", 157).join("") + "..." : description}</p>
         </div>
       </div>
     </Link>

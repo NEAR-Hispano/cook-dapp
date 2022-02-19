@@ -81,3 +81,14 @@
     }
   }
 }
+
+@media (max-width: 620px) {
+  .profile-book-info {
+    & .profile-book-info-header {
+      & .project-open-book-title {
+        text-align: center;
+        line-height: 1;
+      }
+    }
+  }
+}

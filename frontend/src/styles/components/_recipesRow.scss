@@ -45,3 +45,11 @@
     }
   }
 }
+
+@media (max-width: 620px) {
+  .recipes-row {
+    .recipes-row-title {
+      margin: 0 auto;
+    }
+  }
+}

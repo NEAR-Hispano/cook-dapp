@@ -1,7 +1,8 @@
-.recipe-tile-container {
-  width: 300px;
-  max-width: 300px;
+.recipe-tile-container {  
+  max-width: 330px;
+  width: 100%;
   position: relative;
+  margin: 0 auto;
 }
 
 .recipe-slide-information-wrapper {
@@ -105,5 +106,8 @@
   border: dotted 2px $borderColor;
   padding: 40px;
   cursor: pointer;
+  min-height: 300px;
+  height: 100%;
+  align-self: flex-start;
 }
 

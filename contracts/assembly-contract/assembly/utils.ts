@@ -10,11 +10,10 @@ export type AccountID = string;
  * Admins
  */
 
-
 /* Limits */
 export const MAX_TITLE_LENGTH = 30;
-export const MAX_DESCRIPTION_LENGTH = 160;
-export const MIN_DESCRIPTION_LENGTH = 15;
+export const MAX_DESCRIPTION_LENGTH = 1000;
+export const MIN_DESCRIPTION_LENGTH = 150;
 export const MIN_TITLE_LENGTH = 10;
 
 /* Definitions */

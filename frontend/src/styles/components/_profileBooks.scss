@@ -7,7 +7,31 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: 20px;
-  height: auto;
+  height: 100%;
   max-width: 100%;
   padding: 20px;
+}
+
+@media (max-width: 620px) {
+  .books-wrapper {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 620px) {
+  .books-wrapper {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 900px) {
+  .books-wrapper {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+@media (min-width: 1240px) {
+  .books-wrapper {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
 }
