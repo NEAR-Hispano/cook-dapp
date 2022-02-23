@@ -2,12 +2,9 @@
   height: auto;
   margin: auto;
   color: black;
-  max-width: 70%;
   padding-top: 40px;
   padding-bottom: 80px;
   position: relative;
-
-  border: solid 1px $borderColor;
   border-top: none;
   border-bottom: none;
 
@@ -30,6 +27,13 @@
 
     & svg {
       cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      & svg {
+        width: 6vw !important;
+        height: 6vw !important;
+      }
     }
   }
 
@@ -111,7 +115,6 @@
       cursor: pointer;
       margin-top: 10px;
     }
-    
   }
 
   & .edit-recipe-action-buttons-wrapper {
@@ -147,6 +150,13 @@
       justify-content: center;
       align-items: center;
       margin-left: 15px;
+    }
+    
+    @media (max-width: 768px) {
+      & svg {
+        width: 6vw !important;
+        height: 6vw !important;
+      }
     }
   }
 
@@ -217,6 +227,40 @@
           }
         }
       }
+
+      @media (max-width: 768px) {
+        display: flex;
+        flex-direction: column;
+
+        & .reviews-quantity-wrapper,
+        .ingridients-quantity-wrapper,
+        .rating-stars-wrapper,
+        .totalTips-quantity-wrapper {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-top: 20px;
+          padding-bottom: 10px;
+          position: relative;
+
+          small {
+            &::after {
+              display: none;
+            }
+          }
+
+          &::after {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            content: "";
+            height: 1px;
+            width: 100%;
+            background-color: $borderColor;
+            margin-top: 10px;
+          }
+        }
+      }
     }
   }
 
@@ -235,6 +279,7 @@
   }
 
   & .image-wrapper {
+    border-top: solid 1px $borderColor;
     position: relative;
 
     & .edit-icon-container {
@@ -254,9 +299,14 @@
     }
 
     margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     & img {
+      margin-top: 60px;
       display: block;
-      width: 100%;
+      width: 90%;
       height: auto;
     }
   }
@@ -435,8 +485,6 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      svg {
-      }
     }
   }
 }

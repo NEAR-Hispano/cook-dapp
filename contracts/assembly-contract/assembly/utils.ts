@@ -15,6 +15,7 @@ export const MAX_TITLE_LENGTH = 30;
 export const MAX_DESCRIPTION_LENGTH = 1000;
 export const MIN_DESCRIPTION_LENGTH = 150;
 export const MIN_TITLE_LENGTH = 10;
+export const CREATE_RECIPE_DEPOSIT = u128.from(0.00000001);
 
 /* Definitions */
 export const RecipeCategorys: Set<String> = new Set();

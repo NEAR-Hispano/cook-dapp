@@ -126,7 +126,10 @@ export class Contract {
           category,
           chefNote,
           image
-        });
+        },
+        gas,        
+        utils.format.parseNearAmount(process.env.REACT_APP_CREATE_RECIPE_DEPOSIT)
+        );
       case "RUST":
         return (window as any).contract.create_recipe({
           title,
@@ -137,7 +140,10 @@ export class Contract {
           category,
           chefNote,
           image
-        });
+        },
+        gas,        
+        utils.format.parseNearAmount(process.env.REACT_APP_CREATE_RECIPE_DEPOSIT)
+        );
       default:
         throw InvalidContractLangError;
     }

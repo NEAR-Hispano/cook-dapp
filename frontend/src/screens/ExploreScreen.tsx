@@ -50,7 +50,7 @@ const ExploreScreen: FC = () => {
           <input
             type={"text"}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="search"
+            placeholder={translate("search")}
             value={searcQuery}
             onKeyUp={(e) => {
               if (e.key === "Enter") {

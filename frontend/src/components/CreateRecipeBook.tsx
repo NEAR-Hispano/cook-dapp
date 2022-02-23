@@ -86,7 +86,7 @@ const CreateRecipeBook: FC<Props> = () => {
           className="explore-option-container"
           onClick={(e) => createRecipeBook()}
         >
-          <small>{translate("create book")}</small>
+          <small>{translate("create_book")}</small>
         </div>
       </div>
     </div>

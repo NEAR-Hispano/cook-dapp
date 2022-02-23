@@ -76,13 +76,13 @@ const IngredientsTable: FC<Props> = ({
       {editingMode ? (
         <div className="add-ingridient-wrapper">
           <div className="add-ingredient-title-wrapper">
-            <h2>add new ingredient</h2>
+            <h2>{translate("add_new_ingredient")}</h2>
           </div>
 
           <div className="add-ingridient-properties-wrapper">
             <div className="add-ingridient-property">
               <div className="label-wrapper">
-                <small>amount</small>
+                <small>{translate("amount")}</small>
               </div>
               <div className="input-wrapper">
                 <input
@@ -98,7 +98,7 @@ const IngredientsTable: FC<Props> = ({
 
             <div className="add-ingridient-property">
               <div className="label-wrapper">
-                <small>unit</small>
+                <small>{translate("unit")}</small>
               </div>
               <div className="input-wrapper">
                 <input
@@ -113,7 +113,7 @@ const IngredientsTable: FC<Props> = ({
 
             <div className="add-ingridient-property">
               <div className="label-wrapper">
-                <small>label</small>
+                <small>{translate("label")}</small>
               </div>
               <div className="input-wrapper">
                 <input
@@ -128,7 +128,7 @@ const IngredientsTable: FC<Props> = ({
 
             <div className="add-ingridient-property">
               <div className="label-wrapper">
-                <small>details</small>
+                <small>{translate("details")}</small>
               </div>
               <div className="input-wrapper">
                 <input
@@ -148,14 +148,14 @@ const IngredientsTable: FC<Props> = ({
                 editAddIngredient(label, String(amount), unit, details)
               }
             >
-              <small>add ingredient</small>
+              <small>{translate("add_ingredient")}</small>
             </button>
           </div>
         </div>
       ) : recipeID? (
         <div className="ingredients-action-button-container">
           <div className="button" onClick={() => addRecipeList()}>
-            <small>add recipe list</small>
+            <small>{translate("add_recipe_list")}</small>
             <PlusIcon size={20} />
           </div>
         </div>

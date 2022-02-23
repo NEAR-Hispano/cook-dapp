@@ -9,6 +9,7 @@ import {
 import {
   AccountID,
   Amount,
+  CREATE_RECIPE_DEPOSIT,
   getCurrentDate,
   mapRating,
   MAX_DESCRIPTION_LENGTH,
@@ -265,6 +266,15 @@ export function createRecipe(
   assert(instructions.length > 2, "Please add at least 3 steps.");
   // Check if recipe book exists
   assert(recipeBooks.contains(recipeBookID), "Recipe book not found.");
+
+  // Get amount of NEAR for creation of recipe.
+  const amount: Amount = Context.attachedDeposit;
+
+  // Check if tip amount is greater than zero.
+  assert(amount > u128.Zero, "Transaction denied.");
+  
+  // Process transaction to recipe creator.
+  ContractPromiseBatch.create(Context.contractName).transfer(amount);
 
   // Iniliatize array of Ingridient class.
   const ingridients: Array<Ingridient> = [];
@@ -523,6 +533,9 @@ export function deleteRecipe(id: string): void {
 
   // Check if creator is the one trying to delete else throw error.
   assert(recipe.creator == Context.sender, "Can only be deleted by creator.");
+
+  // Return deposit for recipe creation to creator.
+  ContractPromiseBatch.create(recipe.creator).transfer(CREATE_RECIPE_DEPOSIT);
 
   // Get user
   const user = getUser();

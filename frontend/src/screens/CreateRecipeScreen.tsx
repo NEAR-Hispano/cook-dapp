@@ -17,18 +17,19 @@ import useUser from "../hooks/useUser";
 import useCopyToClipboard from "../hooks/useCopyToClipboard";
 import ImageUploadIcon from "../assets/svg/ImageUploadIcon";
 import TextIcon from "../assets/svg/TextIcon";
-import PlusIcon from "../assets/svg/PlusIcon";
 import uploadImage from "../utils/uploadImage";
 import { v4 as uuid } from "uuid";
-import ArrowLeft from "../assets/svg/ArrowLeft";
 import ArrowRight from "../assets/svg/ArrowRight";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import contractErrorHandler from "../utils/contractErrorHandler";
+import useTranslator from "../hooks/useTranslator";
+import useQuery from "../hooks/useQuery";
 
 interface Props {}
 
 const CreateRecipeScreen: FC<Props> = () => {
+  const translate = useTranslator();
   const [user] = useUser();
   const navigate = useNavigate();
   const contract = useContract();
@@ -38,18 +39,29 @@ const CreateRecipeScreen: FC<Props> = () => {
   const [recipeBookID, setRecipeBookID] = useState<string | null>(null);
   const [image, setImage] = useState<imageInterface | null>(null);
   const [category, setCategory] = useState<string>("");
-  const [title, setTitle] = useState<string>("Click to edit title");
-  const [description, setDescription] = useState<string>(
-    "Click to edit description, make sure to leave every detail clear for those who rely on your recipe!"
-  );
-  const [chefNote, setChefNote] = useState<string>(
-    "Click to edit, here you can be spotaneous!"
-  );
+  const [title, setTitle] = useState<string | null>(null);
+  const [description, setDescription] = useState<string | null>(null);
+  const [chefNote, setChefNote] = useState<string | null>(null);
   const [ingredients, setIngredients] = useState<Array<ingredientInterface>>(
     []
   );
   const [instructions, setInstructions] = useState<Array<string>>([]);
-  const [resetChangesID, setResetChangesID] = useState<string>("");
+  const [resetChangesID, setResetChangesID] = useState<string>("");  
+  const query = useQuery()
+
+  useEffect(() => {
+    if(query.get("transactionHashes")) {
+      toast("Recipe created.", {
+        position: "bottom-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+  }, [])
 
   useEffect(() => {
     if (contract && user && !userRecipeBooks) {
@@ -62,7 +74,7 @@ const CreateRecipeScreen: FC<Props> = () => {
   }, [user, contract, userRecipeBooks]);
 
   function createRecipe() {
-    if (contract && recipeBookID && image) {
+    if (contract && recipeBookID && image && title && chefNote && description) {
       toast("Creating recipe...", {
         position: "bottom-right",
         autoClose: 2000,
@@ -88,20 +100,6 @@ const CreateRecipeScreen: FC<Props> = () => {
           ingridientsList,
           instructions,
           image,
-        })
-        .then((recipe: recipeInterface) => {
-          toast("Recipe created.", {
-            position: "bottom-right",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
-          setTimeout(() => {
-            navigate(`/recipe/${recipe.id}`);
-          }, 3000);
         })
         .catch((error: Error) => {
           contractErrorHandler(error);
@@ -217,7 +215,7 @@ const CreateRecipeScreen: FC<Props> = () => {
     <div className="create-recipe-screen-container" key={resetChangesID}>
       <div className="create-recipe-button-wrapper">
         <div className="create-recipe-button">
-          create
+          {translate("create")}
           <div
             className="create-recipe-icon-wrapper"
             onClick={() => createRecipe()}
@@ -233,17 +231,19 @@ const CreateRecipeScreen: FC<Props> = () => {
             onBlur={(e) => setTitle(e.currentTarget.innerText)}
             isEditable={true}
           >
-            {title}
+            {title ? title : translate("click_to_edit_title")}
           </EditableText>
         </div>
 
         <div className="summary-info">
           <div className="reviews-quantity-wrapper">
-            <small>reviews 0</small>
+            <small>{translate("reviews")} 0</small>
           </div>
 
           <div className="ingridients-quantity-wrapper">
-            <small>ingredients {ingredients && ingredients.length}</small>
+            <small>
+              {translate("ingredients")} {ingredients && ingredients.length}
+            </small>
           </div>
 
           <div className="rating-stars-wrapper">
@@ -269,7 +269,7 @@ const CreateRecipeScreen: FC<Props> = () => {
           onChange={(e) => setRecipeBookID(e.target.value)}
         >
           <option className="select-label" value="" disabled selected>
-            select recipe book
+            {translate("select_recipe_book")}
           </option>
           {userRecipeBooks &&
             userRecipeBooks.map((recipeBook: recipeBookInterface) => (
@@ -286,10 +286,10 @@ const CreateRecipeScreen: FC<Props> = () => {
           onChange={(e) => setCategory(e.target.value)}
         >
           <option className="select-label" value="" disabled selected>
-            select recipe category
+            {translate("select_recipe_category")}
           </option>
           {recipeCategories.map((category) => (
-            <option value={category}>{category}</option>
+            <option value={category}>{translate(category)}</option>
           ))}
         </select>
       </div>
@@ -315,7 +315,7 @@ const CreateRecipeScreen: FC<Props> = () => {
 
       <div className="user-description-wrapper">
         <div className="description-title">
-          <h2>description</h2>
+          <h2>{translate("description")}</h2>
           <TextIcon size={30} />
         </div>
         <div className="description-container">
@@ -323,14 +323,16 @@ const CreateRecipeScreen: FC<Props> = () => {
             onBlur={(e) => setDescription(e.currentTarget.innerText)}
             isEditable={true}
           >
-            {description && description}
+            {description
+              ? description
+              : translate("create_description_placeholder")}
           </EditableText>
         </div>
       </div>
 
       <div className="content-wrapper">
         <div className="title">
-          <h2>ingredients</h2>
+          <h2>{translate("ingredients")}</h2>
           <ListIcon size={30} />
         </div>
         <div className="information-container">
@@ -349,7 +351,7 @@ const CreateRecipeScreen: FC<Props> = () => {
 
       <div className="content-wrapper">
         <div className="title">
-          <h2>instructions</h2>
+          <h2>{translate("instructions")}</h2>
           <ListIcon size={30} />
         </div>
         <div className="information-container">
@@ -365,7 +367,7 @@ const CreateRecipeScreen: FC<Props> = () => {
                   }}
                 >
                   <div className="step-label-information">
-                    <div className="step-label">step</div>
+                    <div className="step-label">{translate("step")}</div>
                     <div className="step-number">{index + 1}</div>
                   </div>
 
@@ -390,12 +392,12 @@ const CreateRecipeScreen: FC<Props> = () => {
 
         <>
           <div className="title">
-            <h2>add new step</h2>
+            <h2>{translate("add_new_step")}</h2>
           </div>
           <div className="information-container">
             <div className="add-step-field-container">
               <div className="label-wrapper">
-                <small>step</small>
+                <small>{translate("step")}</small>
               </div>
               <div className="input-wrapper">
                 <input
@@ -409,7 +411,7 @@ const CreateRecipeScreen: FC<Props> = () => {
 
             <div className="add-step-button-wrapper">
               <button onClick={() => editAddStep()}>
-                <small>add new step</small>
+                <small>{translate("add_new_step")}</small>
               </button>
             </div>
           </div>
@@ -418,20 +420,18 @@ const CreateRecipeScreen: FC<Props> = () => {
 
       <div className="content-wrapper">
         <div className="title">
-          <h2>chef's note</h2>
+          <h2>{translate("chef's_note")}</h2>
           <ListIcon size={30} />
         </div>
         <div className="information-container">
-          {chefNote ? (
-            <EditableText
-              isEditable={true}
-              onBlur={(e) => setChefNote(e.currentTarget.innerText)}
-            >
-              {chefNote && chefNote}
-            </EditableText>
-          ) : (
-            "Not yet added."
-          )}
+          <EditableText
+            isEditable={true}
+            onBlur={(e) => setChefNote(e.currentTarget.innerText)}
+          >
+            {chefNote
+              ? chefNote
+              : translate("click_to-edit,_here_you_canbe_spotaneous!")}
+          </EditableText>
         </div>
       </div>
     </div>

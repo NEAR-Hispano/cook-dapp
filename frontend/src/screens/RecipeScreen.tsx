@@ -438,7 +438,7 @@ const RecipeScreen: FC<Props> = () => {
             onChange={(e) => setTipsAmount(e.target.value)}
           />
           <div className="tip-recipe-button" onClick={() => tipRecipe()}>
-            send
+            {translate("send")}
           </div>
         </div>
       </PopUp>
@@ -450,10 +450,17 @@ const RecipeScreen: FC<Props> = () => {
       >
         <div className="delete-recipe-popup-content">
           <div className="question-container">
-            continue deleting recipe?
+            {translate("continue_deleting_recipe")}
           </div>
-          <div className="button" onClick={() => setDeleteRecipePopUpOpened(prev => !prev)}>cancel</div>
-          <div className="button" onClick={() => deleteRecipe()}>delete</div>
+          <div
+            className="button"
+            onClick={() => setDeleteRecipePopUpOpened((prev) => !prev)}
+          >
+            {translate("cancel")}
+          </div>
+          <div className="button" onClick={() => deleteRecipe()}>
+            {translate("delete")}
+          </div>
         </div>
       </PopUp>
 
@@ -526,11 +533,15 @@ const RecipeScreen: FC<Props> = () => {
           </div>
 
           <div className="reviews-quantity-wrapper">
-            <small>reviews {recipe && recipe.reviews.length}</small>
+            <small>
+              {translate("reviews")} {recipe && recipe.reviews.length}
+            </small>
           </div>
 
           <div className="ingridients-quantity-wrapper">
-            <small>ingredients {recipe && recipe.ingredients.length}</small>
+            <small>
+              {translate("ingredients")} {recipe && recipe.ingredients.length}
+            </small>
           </div>
 
           <div className="rating-stars-wrapper">
@@ -576,7 +587,7 @@ const RecipeScreen: FC<Props> = () => {
 
       <div className="user-description-wrapper">
         <div className="description-title">
-          <h2>description</h2>
+          <h2>{translate("description")}</h2>
           <TextIcon size={30} />
         </div>
         <div className="description-container">
@@ -591,7 +602,7 @@ const RecipeScreen: FC<Props> = () => {
 
       <div className="content-wrapper">
         <div className="title">
-          <h2>ingredients</h2>
+          <h2>{translate("ingredients")}</h2>
           <ListIcon size={30} />
         </div>
         <div className="information-container">
@@ -613,7 +624,7 @@ const RecipeScreen: FC<Props> = () => {
 
       <div className="content-wrapper">
         <div className="title">
-          <h2>instructions</h2>
+          <h2>{translate("instructions")}</h2>
           <ListIcon size={30} />
         </div>
         <div className="information-container">
@@ -629,7 +640,7 @@ const RecipeScreen: FC<Props> = () => {
                   }}
                 >
                   <div className="step-label-information">
-                    <div className="step-label">step</div>
+                    <div className="step-label">{translate("step")}</div>
                     <div className="step-number">{index + 1}</div>
                   </div>
                   {editingMode && (
@@ -658,12 +669,12 @@ const RecipeScreen: FC<Props> = () => {
         {editingMode && (
           <>
             <div className="title">
-              <h2>add new step</h2>
+              <h2>{translate("add_new_step")}</h2>
             </div>
             <div className="information-container">
               <div className="add-step-field-container">
                 <div className="label-wrapper">
-                  <small>step</small>
+                  <small>{translate("step")}</small>
                 </div>
                 <div className="input-wrapper">
                   <input
@@ -677,7 +688,7 @@ const RecipeScreen: FC<Props> = () => {
 
               <div className="add-step-button-wrapper">
                 <button onClick={() => editAddStep(newStep)}>
-                  <small>add new step</small>
+                  <small>{translate("add_new_step")}</small>
                 </button>
               </div>
             </div>
@@ -687,7 +698,7 @@ const RecipeScreen: FC<Props> = () => {
 
       <div className="content-wrapper">
         <div className="title">
-          <h2>chef's note</h2>
+          <h2>{translate("chef's_note")}</h2>
           <ListIcon size={30} />
         </div>
         <div className="information-container">
@@ -699,14 +710,14 @@ const RecipeScreen: FC<Props> = () => {
               {recipe.chefNote}
             </EditableText>
           ) : (
-            "Not yet added."
+            <>{translate("not_yet_added")}</>
           )}
         </div>
       </div>
 
       <div className="content-wrapper">
         <div className="title">
-          <h2>reviews</h2>
+          <h2>{translate("reviews")}</h2>
           <ListIcon size={30} />
         </div>
         <div className="information-container">
@@ -715,7 +726,7 @@ const RecipeScreen: FC<Props> = () => {
               <Review key={index} reviewID={reviewID} />
             ))
           ) : (
-            <h1>Recipe does not have any reviews yet.</h1>
+            <h1>{translate("recipe_does_not_have_any_reviews_yet")}</h1>
           )}
         </div>
       </div>
