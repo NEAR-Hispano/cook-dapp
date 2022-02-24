@@ -28,6 +28,7 @@ import PopUp from "../components/PopUp";
 import contractErrorHandler from "../utils/contractErrorHandler";
 import NearIcon from "../assets/svg/NearIcon";
 import NEARCurrencyIcon from "../assets/svg/NEARCurrencyIcon";
+import CreateReview from "../components/CreateReview";
 
 interface Props {}
 
@@ -721,12 +722,15 @@ const RecipeScreen: FC<Props> = () => {
           <ListIcon size={30} />
         </div>
         <div className="information-container">
+          {user && recipe && user.accountID !== recipe.creator && (
+            <CreateReview recipeID={recipe.id} />
+          )}
           {recipe && recipe.reviews.length > 0 ? (
             recipe.reviews.map((reviewID, index) => (
               <Review key={index} reviewID={reviewID} />
             ))
           ) : (
-            <h1>{translate("recipe_does_not_have_any_reviews_yet")}</h1>
+            <h1 style={{ marginTop: "40px" }}>{translate("recipe_does_not_have_any_reviews_yet")}</h1>
           )}
         </div>
       </div>

@@ -292,9 +292,10 @@ export class Contract {
     switch (CONTRACT_LANG) {
       case "AS":
         const assemblyRating = rating * 2;
+        console.log(assemblyRating)
         return (window as any).contract.createReview({
           text,
-          assemblyRating,
+          rating: assemblyRating,
           recipeID,
         });
       case "RUST":
