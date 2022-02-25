@@ -26,7 +26,6 @@ import uploadImage from "../utils/uploadImage";
 import TipsIcon from "../assets/svg/TipsIcon";
 import PopUp from "../components/PopUp";
 import contractErrorHandler from "../utils/contractErrorHandler";
-import NearIcon from "../assets/svg/NearIcon";
 import NEARCurrencyIcon from "../assets/svg/NEARCurrencyIcon";
 import CreateReview from "../components/CreateReview";
 
@@ -46,7 +45,6 @@ const RecipeScreen: FC<Props> = () => {
   const [isFavorite, setIsFavorite] = useState<boolean>(false);
   const [newStep, setNewStep] = useState<string>("");
   const navigate = useNavigate();
-  const [editedImage, setEditedImage] = useState<imageInterface | null>(null);
   const [tipsPopUpOpened, setTipsPopUpOpened] = useState<boolean>(false);
   const [deleteRecipePopUpOpened, setDeleteRecipePopUpOpened] =
     useState<boolean>(false);
@@ -207,7 +205,7 @@ const RecipeScreen: FC<Props> = () => {
         contract.removeFavoriteRecipe({ recipeID: recipe.id }).then(() => {
           setIsFavorite((prev) => !prev);
           let updatedUser = user;
-          updatedUser.favoriteRecipes.delete(recipe.id);
+          updatedUser.favoriteRecipes = updatedUser.favoriteRecipes.filter((recipeID: string) => recipe.id !== recipeID);
           setUser(updatedUser);
           toast.dismiss();
           toast(translate("Recipe removed from favorites."), {
@@ -237,7 +235,7 @@ const RecipeScreen: FC<Props> = () => {
         contract.addFavoriteRecipe({ recipeID: recipe.id }).then(() => {
           setIsFavorite((prev) => !prev);
           let updatedUser = user;
-          updatedUser.favoriteRecipes.add(recipe.id);
+          updatedUser.favoriteRecipes.push(recipe.id);
           setUser(updatedUser);
           toast.dismiss();
           toast(translate("Recipe added to favorites."), {

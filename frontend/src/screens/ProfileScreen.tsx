@@ -7,6 +7,7 @@ import { userInterface } from "../types";
 import useContract from "../hooks/useContract";
 import useUser from "../hooks/useUser";
 import useTranslator from "../hooks/useTranslator";
+import Spinner from "../assets/svg/Spinner";
 
 const ProfileScreen: FC = () => {
   const [user] = useUser();
@@ -38,14 +39,14 @@ const ProfileScreen: FC = () => {
             <small>{profile && profile.accountID.split("")[0]}</small>
           </div>
           
-          <div className="accountID-container">
+          <div className="accountID-container">            
             <small onClick={() => copyAccountID()} className="accountID">
               {profile && profile.accountID}
             </small>
           </div>
  
         </div>
-
+                  
         <div className="tabs-container">
           {profileTabs.filter(({ label }) => label !== "book").map(({ label }, index) => (
             <div className="tab" key={index}>
@@ -65,6 +66,8 @@ const ProfileScreen: FC = () => {
             </div>
           ))}
       </div>
+
+      
     </div>
   );
 };

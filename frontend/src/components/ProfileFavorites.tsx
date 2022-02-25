@@ -13,7 +13,7 @@ const ProfileFavorites: FC<Props> = ({ profile }) => {
       {profile && (
         <RecipesGallery
           key={uuid()}
-          recipeIDs={Array.from(profile.favoriteRecipes)}
+          recipeIDs={profile.favoriteRecipes}
         />
       )}
     </div>

@@ -51,6 +51,15 @@ const RecipeBookTile: FC<Props> = ({ recipeBook, selectBook, profile }) => {
 
   function deleteRecipeBook() {
     if (contract && editingMode) {
+      toast(translate("Deleting recipe book..."), {
+        position: "bottom-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       contract.deleteRecipeBook({ id }).then(() => {
         deleteRecipeBookCB();
       });
@@ -82,6 +91,15 @@ const RecipeBookTile: FC<Props> = ({ recipeBook, selectBook, profile }) => {
 
   function saveChanges() {
     if (contract && (editedBanner || editedTitle)) {
+      toast(translate("Updating recipe book..."), {
+        position: "bottom-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       contract
         .updateRecipeBook({ id, title: editedTitle, banner: editedBanner })
         .then(() => {

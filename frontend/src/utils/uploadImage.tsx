@@ -11,6 +11,7 @@ type metadataType = Token<{
 interface Props {
   file: File;
   setBanner?: React.Dispatch<React.SetStateAction<imageInterface | null>>;
+  setIsUploadingImage?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function formatImageUrl(metadata: metadataType) {
@@ -19,7 +20,7 @@ function formatImageUrl(metadata: metadataType) {
   }/image/${metadata.data.name.replaceAll(" ", "%20")}`;
 }
 
-async function uploadImage({ file, setBanner }: Props) {
+async function uploadImage({ file, setBanner, setIsUploadingImage }: Props) {
   const resizedImage = file;
 
   const client = new NFTStorage({
@@ -43,6 +44,11 @@ async function uploadImage({ file, setBanner }: Props) {
       } else {
         return newImage;
       }
+
+      if(setIsUploadingImage) {
+        setIsUploadingImage(false)
+      }
+
     });
 }
 

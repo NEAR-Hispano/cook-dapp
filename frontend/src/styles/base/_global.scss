@@ -1,42 +1,77 @@
-
 html body {
-    margin: 0px;
-    padding: 0px;
-    position: relative;
-    color: $darkGray;    
-    min-height: 100vh !important;
-    font-size: 14px !important;
-    scroll-behavior: smooth;
+  margin: 0px;
+  padding: 0px;
+  position: relative;
+  color: $darkGray;
+  min-height: 100vh !important;
+  font-size: 14px !important;
+  scroll-behavior: smooth;
 }
 
 /* total width */
 body::-webkit-scrollbar {
-    background-color: #f5f5f5;
-    width: 15px;
+  background-color: #f5f5f5;
+  width: 15px;
 }
 
 /* background of the scrollbar except button or resizer */
 body::-webkit-scrollbar-track {
-    background-color: #f1f1f1;
+  background-color: #f1f1f1;
 }
 
 /* scrollbar itself */
 body::-webkit-scrollbar-thumb {
-    background-color: #babac0;
-    border-radius: 15px;
-    border: 4px solid #f1f1f1;
+  background-color: #babac0;
+  border-radius: 15px;
+  border: 4px solid #f1f1f1;
 }
 
 /* set button(top and bottom of the scrollbar) */
 body::-webkit-scrollbar-button {
-    display:none;
+  display: none;
 }
 
 .cursor-pointer {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .editable-text {
-    max-width: 100%;
-    word-wrap: break-word;
+  max-width: 100%;
+  word-wrap: break-word;
+}
+
+/* spinner */
+
+.lds-ring {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+.lds-ring div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  margin: 8px;
+  border: 4px solid #000;
+  border-radius: 50%;
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #000 transparent transparent transparent;
+}
+.lds-ring div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+.lds-ring div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+.lds-ring div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+@keyframes lds-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

@@ -25,6 +25,7 @@ import { useNavigate } from "react-router-dom";
 import contractErrorHandler from "../utils/contractErrorHandler";
 import useTranslator from "../hooks/useTranslator";
 import useQuery from "../hooks/useQuery";
+import Spinner from "../assets/svg/Spinner";
 
 interface Props {}
 
@@ -45,12 +46,14 @@ const CreateRecipeScreen: FC<Props> = () => {
   const [ingredients, setIngredients] = useState<Array<ingredientInterface>>(
     []
   );
+  const [isUploadingImage, setIsUploadingImage] = useState<boolean>(false);
+
   const [instructions, setInstructions] = useState<Array<string>>([]);
-  const [resetChangesID, setResetChangesID] = useState<string>("");  
-  const query = useQuery()
+  const [resetChangesID, setResetChangesID] = useState<string>("");
+  const query = useQuery();
 
   useEffect(() => {
-    if(query.get("transactionHashes")) {
+    if (query.get("transactionHashes")) {
       toast("Recipe created.", {
         position: "bottom-right",
         autoClose: 2000,
@@ -61,7 +64,7 @@ const CreateRecipeScreen: FC<Props> = () => {
         progress: undefined,
       });
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (contract && user && !userRecipeBooks) {
@@ -189,9 +192,10 @@ const CreateRecipeScreen: FC<Props> = () => {
   // Image
   async function editUpdateImage(e: React.ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
+    setIsUploadingImage(true);
     if (e && e.target && e.target.files && e.target.files[0]) {
       let file = e.target.files[0];
-      uploadImage({ file }).then((newImage) => {
+      uploadImage({ file, setIsUploadingImage }).then((newImage) => {
         if (newImage) {
           setImage(newImage);
           resetChanges();
@@ -203,12 +207,6 @@ const CreateRecipeScreen: FC<Props> = () => {
   // Utils
   function resetChanges() {
     setResetChangesID(uuid());
-  }
-
-  function copyAccountID() {
-    if (user) {
-      copy(user.accountID);
-    }
   }
 
   return (
@@ -295,20 +293,36 @@ const CreateRecipeScreen: FC<Props> = () => {
       </div>
 
       <div className="image-wrapper">
-        <img
-          src={(image && image.url) || ""}
-          alt={(image && image.name) || ""}
-        />
+        {image && (
+          <img
+            src={(image && image.url) || ""}
+            alt={(image && image.name) || ""}
+          />
+        )}
 
         {!image && (
-          <label className="edit-icon-container" htmlFor="updated-banner-image">
-            <ImageUploadIcon size={20} />
-            <input
-              onChange={(e) => editUpdateImage(e)}
-              type="file"
-              id="updated-banner-image"
-              accept="image/x-png, image/gif, image/jpeg"
-            />
+          <label className="edit-icon-container" htmlFor="updated-banner-image"
+            style={isUploadingImage? {
+              position: "relative"
+            } : {}}
+          >
+            {!isUploadingImage && (
+              <>
+                <ImageUploadIcon size={20} />
+                <input
+                  onChange={(e) => {
+                    editUpdateImage(e);
+                  }}
+                  type="file"
+                  id="updated-banner-image"
+                  accept="image/x-png, image/gif, image/jpeg"
+                />
+              </>
+            )}
+
+            {isUploadingImage && (
+              <Spinner size={30} isVisible={isUploadingImage} />
+            )}
           </label>
         )}
       </div>

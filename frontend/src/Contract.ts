@@ -73,13 +73,13 @@ export class Contract {
   }) {
     switch (CONTRACT_LANG) {
       case "AS":
-        return (window as any).contract.updateRecipeBook({ id, title, banner });
+        return (window as any).contract.updateRecipeBook({ id, title, banner }, gas);
       case "RUST":
         return (window as any).contract.update_recipe_book({
           id,
           title,
           banner,
-        });
+        }, gas);
       default:
         throw InvalidContractLangError;
     }
@@ -297,7 +297,7 @@ export class Contract {
           text,
           rating: assemblyRating,
           recipeID,
-        });
+        }, gas);
       case "RUST":
         return (window as any).contract.create_review({
           text,

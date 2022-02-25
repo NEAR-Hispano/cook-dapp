@@ -27,6 +27,15 @@ const CreateReview: FC<Props> = ({ recipeID }) => {
 
   function createReview() {
     if (contract && rating && text) {
+      toast(translate("Creating review, please wait..."), {
+        position: "bottom-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       contract
         .createReview({ text, rating, recipeID })
         .then(() => {

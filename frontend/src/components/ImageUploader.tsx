@@ -6,9 +6,10 @@ import uploadImage from "../utils/uploadImage";
 
 interface Props {
   setImage: React.Dispatch<React.SetStateAction<imageInterface | null>>;
+  setIsUploadingImage?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ImageUploader: FC<Props> = ({ setImage }) => {
+const ImageUploader: FC<Props> = ({ setImage, setIsUploadingImage }) => {
 
   function handleDragOver(e: React.DragEvent<HTMLDivElement>) {
     e.preventDefault();
@@ -17,15 +18,17 @@ const ImageUploader: FC<Props> = ({ setImage }) => {
     e.preventDefault();
   }
   async function handleDrop(e: React.DragEvent<HTMLDivElement>) {
+    if(setIsUploadingImage) setIsUploadingImage(true)
     e.preventDefault();
     let file = e.dataTransfer.files[0];
     if (file.type.match("video.*")) {     
       return;
     }
-    uploadImage({ file, setBanner: setImage });
+    uploadImage({ file, setBanner: setImage, setIsUploadingImage });
   }
 
   function handleInput(e: React.ChangeEvent<HTMLInputElement>) {
+    if(setIsUploadingImage) setIsUploadingImage(true)
     e.preventDefault();
     if (e && e.target && e.target.files && e.target.files[0]) {
       let file = e.target.files[0];      

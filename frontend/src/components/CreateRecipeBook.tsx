@@ -6,6 +6,7 @@ import EditableText from "./EditableText";
 import useContract from "../hooks/useContract";
 import { toast } from "react-toastify";
 import refreshPage from "../utils/refreshPage";
+import Spinner from "../assets/svg/Spinner";
 
 interface Props {}
 
@@ -13,7 +14,8 @@ const CreateRecipeBook: FC<Props> = () => {
   const translate = useTranslator();
   const contract = useContract();
   const [title, setTitle] = useState<string | null>("Book title here");
-  const [banner, setBanner] = useState<imageInterface | null>(null);  
+  const [banner, setBanner] = useState<imageInterface | null>(null);
+  const [isUploadingImage, setIsUploadingImage] = useState<boolean>(false);
 
   function createRecipeBook() {
     if (!title) {
@@ -46,7 +48,17 @@ const CreateRecipeBook: FC<Props> = () => {
       title !== "Book title here" &&
       banner
     ) {
+      toast(translate("Creating Recipe Book"), {
+        position: "bottom-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       contract.createRecipeBook({ title, banner }).then(() => {
+        toast.dismiss();
         toast(translate("Recipe Book Created"), {
           position: "bottom-right",
           autoClose: 2000,
@@ -68,8 +80,26 @@ const CreateRecipeBook: FC<Props> = () => {
       {banner ? (
         <img src={banner.url} alt={banner.name} />
       ) : (
-        <div className="image-input-placeholder">
-          <ImageUploader setImage={setBanner} />
+        <div
+          className="image-input-placeholder"
+          style={
+            isUploadingImage
+              ? {
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }
+              : {}
+          }
+        >
+          {isUploadingImage ? (
+            <Spinner size={50} isVisible={isUploadingImage} />
+          ) : (
+            <ImageUploader
+              setImage={setBanner}
+              setIsUploadingImage={setIsUploadingImage}
+            />
+          )}
         </div>
       )}
       <div className="recipe-slide-information-wrapper">

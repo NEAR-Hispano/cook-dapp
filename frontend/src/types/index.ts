@@ -51,7 +51,7 @@ export interface recipeListInterface {
 
 export interface userInterface {
   accountID: AccountID;
-  favoriteRecipes: Set<string>;
+  favoriteRecipes: Array<string>;
   recipesCreated: Array<string>;
   recipeBooksCreated: Array<string>;
   totalTipped: number;
