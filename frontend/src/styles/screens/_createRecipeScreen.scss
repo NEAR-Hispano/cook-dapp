@@ -2,14 +2,11 @@
   height: auto;
   margin: auto;
   color: black;
-  max-width: 70%;
+  width: 100%;
   padding-top: 40px;
   padding-bottom: 80px;
   position: relative;
-
-  border: solid 1px $borderColor;
-  border-top: none;
-  border-bottom: none;
+  
 
   display: flex;
   justify-content: center;
@@ -65,16 +62,17 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    max-width: 70%;
 
     & .title {
-      width: max-content;
+      max-width: 80%;      
       border-bottom: 1px solid $borderColor;
       margin-bottom: 30px;
       line-height: 2;
       font-size: clamp(14px, 2vw, 2vw);
       font-weight: bold;
       text-transform: uppercase;
-      letter-spacing: 3px;
+      letter-spacing: 3px;      
     }
 
     & .summary-info {

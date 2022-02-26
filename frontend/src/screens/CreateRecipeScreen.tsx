@@ -51,6 +51,9 @@ const CreateRecipeScreen: FC<Props> = () => {
   const [instructions, setInstructions] = useState<Array<string>>([]);
   const [resetChangesID, setResetChangesID] = useState<string>("");
   const query = useQuery();
+  const [hasTextLengthError, setHasTextLengthError] = useState<null | string>(
+    "Please fill all fields"
+  );
 
   useEffect(() => {
     if (query.get("transactionHashes")) {
@@ -77,6 +80,17 @@ const CreateRecipeScreen: FC<Props> = () => {
   }, [user, contract, userRecipeBooks]);
 
   function createRecipe() {
+    if (typeof hasTextLengthError !== "string") {
+      return toast("Please fix fields in red.", {
+        position: "bottom-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
     if (contract && recipeBookID && image && title && chefNote && description) {
       toast("Creating recipe...", {
         position: "bottom-right",
@@ -228,6 +242,9 @@ const CreateRecipeScreen: FC<Props> = () => {
           <EditableText
             onBlur={(e) => setTitle(e.currentTarget.innerText)}
             isEditable={true}
+            setHasTextLengthError={setHasTextLengthError}
+            textType={"title"}
+            text={title}
           >
             {title ? title : translate("click_to_edit_title")}
           </EditableText>
@@ -301,10 +318,16 @@ const CreateRecipeScreen: FC<Props> = () => {
         )}
 
         {!image && (
-          <label className="edit-icon-container" htmlFor="updated-banner-image"
-            style={isUploadingImage? {
-              position: "relative"
-            } : {}}
+          <label
+            className="edit-icon-container"
+            htmlFor="updated-banner-image"
+            style={
+              isUploadingImage
+                ? {
+                    position: "relative",
+                  }
+                : {}
+            }
           >
             {!isUploadingImage && (
               <>

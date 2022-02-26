@@ -2,6 +2,7 @@ import { FC, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import AddIcon from "../assets/svg/AddIcon";
 import ArrowRight from "../assets/svg/ArrowRight";
+import Spinner from "../assets/svg/Spinner";
 import useContract from "../hooks/useContract";
 import useTranslator from "../hooks/useTranslator";
 import useUser from "../hooks/useUser";
@@ -24,13 +25,18 @@ const ProfileBooks: FC<Props> = ({ profile }) => {
   const [recipeBooks, setRecipeBooks] = useState<Array<recipeBookInterface>>(
     []
   );
+  const [isBooksLoading, setIsBooksLoading] = useState<boolean>(true);
 
-  const getRecipeBooks = async () => {
-    if (contract && profile) {
-      const recipeBooksList = await contract.getUserRecipeBooks({
-        accountID: profile.accountID,
-      });
-      setRecipeBooks(recipeBooksList);
+  const getRecipeBooks = () => {
+    if (contract && profile) {      
+      contract
+        .getUserRecipeBooks({
+          accountID: profile.accountID,
+        })
+        .then((recipeBooksList: Array<recipeBookInterface>) => {
+          setRecipeBooks(recipeBooksList);
+          setIsBooksLoading(false);
+        });
     }
   };
 
@@ -45,26 +51,49 @@ const ProfileBooks: FC<Props> = ({ profile }) => {
 
   return (
     <div className="profile-recipes-books">
-      {recipeBooks && !isBookOpen && (
-        <div className="books-wrapper">
-          {user && profile && user.accountID === profile.accountID && recipeBooks && (
-            <CreateRecipeBook />
+      {isBooksLoading ? (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100%",
+            width: "100%",
+            paddingTop: "100px"
+          }}
+        >
+          <Spinner isVisible={isBooksLoading} size={60} />
+        </div>
+      ) : (
+        <>
+          {recipeBooks && !isBookOpen && (
+            <div className="books-wrapper">
+              {user &&
+                profile &&
+                user.accountID === profile.accountID &&
+                recipeBooks && <CreateRecipeBook />}
+
+              {recipeBooks.map((recipeBook, index) => (
+                <div className="book-wrapper" key={index}>
+                  <RecipeBookTile
+                    key={index}
+                    recipeBook={recipeBook}
+                    selectBook={selectBook}
+                    profile={profile}
+                  />
+                </div>
+              ))}
+            </div>
           )}
 
-          {recipeBooks.map((recipeBook, index) => (
-            <div className="book-wrapper" key={index}>
-              <RecipeBookTile key={index} recipeBook={recipeBook} selectBook={selectBook} profile={profile} />
-            </div>
-          ))}
-        </div>
-      )}
-
-      {selectedBook && isBookOpen && (
-        <ProfileBookInfo
-          recipeBook={selectedBook}
-          setIsBookOpen={setIsBookOpen}
-          profile={profile}
-        />
+          {selectedBook && isBookOpen && (
+            <ProfileBookInfo
+              recipeBook={selectedBook}
+              setIsBookOpen={setIsBookOpen}
+              profile={profile}
+            />
+          )}
+        </>
       )}
     </div>
   );

@@ -205,7 +205,9 @@ const RecipeScreen: FC<Props> = () => {
         contract.removeFavoriteRecipe({ recipeID: recipe.id }).then(() => {
           setIsFavorite((prev) => !prev);
           let updatedUser = user;
-          updatedUser.favoriteRecipes = updatedUser.favoriteRecipes.filter((recipeID: string) => recipe.id !== recipeID);
+          updatedUser.favoriteRecipes = updatedUser.favoriteRecipes.filter(
+            (recipeID: string) => recipe.id !== recipeID
+          );
           setUser(updatedUser);
           toast.dismiss();
           toast(translate("Recipe removed from favorites."), {
@@ -548,7 +550,11 @@ const RecipeScreen: FC<Props> = () => {
               <RatingStars
                 ratingValue={
                   recipe && recipe.averageRating
-                    ? recipe.averageRating * 2 * 10
+                    ? ((Math.ceil(recipe.averageRating) +
+                        Math.floor(recipe.averageRating)) /
+                        2) *
+                      2 *
+                      10
                     : 0
                 }
                 initialValue={0}
@@ -728,7 +734,9 @@ const RecipeScreen: FC<Props> = () => {
               <Review key={index} reviewID={reviewID} />
             ))
           ) : (
-            <h1 style={{ marginTop: "40px" }}>{translate("recipe_does_not_have_any_reviews_yet")}</h1>
+            <h1 style={{ marginTop: "40px" }}>
+              {translate("recipe_does_not_have_any_reviews_yet")}
+            </h1>
           )}
         </div>
       </div>
