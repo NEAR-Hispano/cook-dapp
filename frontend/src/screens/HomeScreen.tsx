@@ -46,7 +46,7 @@ const HomeScreen: FC = () => {
       <RecipesRow
         swiperTitle="landing_card_title_trending_recipes"
         recipes={trendingRecipes}
-        styles={{ paddingBottom: "60px" }}
+        styles={{ paddingBottom: "60px", marginTop: "60px" }}
       />
     </div>
   );

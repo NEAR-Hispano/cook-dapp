@@ -14,11 +14,18 @@
     align-items: center;
     height: auto;
     cursor: grab;
+    height: 100%;
+    min-height: 100%;
+    max-height: 100%;
 
     img {
       display: block;
       height: auto;
       max-width: 100%;
+      
+      height: calc(100% - 210px);
+      max-height: calc(100% - 210px);
+      min-height: calc(100% - 210px);
     }
   }
 
