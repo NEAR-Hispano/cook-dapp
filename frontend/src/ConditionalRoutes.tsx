@@ -1,5 +1,4 @@
-import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import useScreens from "./hooks/useScreens";
 import useAuth from "./hooks/useAuth";
 import HomeScreen from "./screens/HomeScreen";
@@ -21,6 +20,8 @@ const ConditionalRoutes = () => {
         path="*"
         element={isLoggedIn ? <HomeScreen /> : <LandingScreen />}
       />
+
+      <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );
 };
