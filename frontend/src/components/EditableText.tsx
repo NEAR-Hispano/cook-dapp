@@ -27,7 +27,7 @@ const EditableText: FC<Props> = ({
       setLengthError(validateTextLength({ textType, text }));
     }
   }, [children, text]);
-
+ 
   return (
     <div
       className={`${className} editable-text`}
