@@ -184,7 +184,10 @@ const RecipeScreen: FC<Props> = () => {
           chefNote,
           image,
         })
-        .then(() => refreshPage());
+        .then(() => refreshPage())
+        .catch((error: Error) => {
+          contractErrorHandler(error);
+        });
     }
   }
 
@@ -522,6 +525,7 @@ const RecipeScreen: FC<Props> = () => {
           <EditableText
             onBlur={(e) => editTitle(e.currentTarget.innerText)}
             isEditable={editingMode}
+
           >
             {recipe && recipe.title}
           </EditableText>
