@@ -1,4 +1,6 @@
 import { FC, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import ExploreNotFoundIcon from "../assets/svg/ExploreNotFoundIcon";
 import SearchIcon from "../assets/svg/SearchIcon";
 import RecipesGallery from "../components/RecipesGallery";
 import useContract from "../hooks/useContract";
@@ -13,6 +15,7 @@ const ExploreScreen: FC = () => {
     Array<recipeInterface>
   >([]);
   const contract = useContract();
+  const { searchParam } = useParams();
 
   function getRecipes() {
     if (contract) {
@@ -41,6 +44,7 @@ const ExploreScreen: FC = () => {
 
   useEffect(() => {
     getRecipes();
+    setSearchQuery(searchParam ? searchParam.split("+").join(" ") : "");
   }, []);
 
   return (
@@ -68,6 +72,12 @@ const ExploreScreen: FC = () => {
       </div>
       <div className="explore-screen-recipes-gallery-wrapper">
         <RecipesGallery recipesList={filteredRecipes} />
+        {filteredRecipes.length === 0 && (
+          <div className="explore-screen-no-recipes-found">
+            <ExploreNotFoundIcon size={40} />
+            <small>{translate("no_recipes_found")}</small>
+          </div>
+        )}
       </div>
     </div>
   );

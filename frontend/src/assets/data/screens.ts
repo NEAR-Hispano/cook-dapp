@@ -26,14 +26,14 @@ export const PrivateScreens: Array<screenInterface> = [
     Component: ProfileScreen,
   },
   {
-    path: "/Explore",
+    path: "/explore",
     exact: true,
     Component: ExploreScreen,
   },
   {
-    path: "/categories/*",
-    exact: false,
-    Component: CategorieScreen,
+    path: "/explore/:searchParam",
+    exact: true,
+    Component: ExploreScreen,
   },
   {
     path: "/recipe/:id/:edit",

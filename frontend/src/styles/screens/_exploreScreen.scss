@@ -61,3 +61,15 @@ $padding: 10px 20px;
     height: auto;
   }
 }
+
+.explore-screen-no-recipes-found {
+  padding-left: 40px;
+
+  & svg {
+    margin-right: 10px;
+  }  
+
+  & small {
+    text-transform: capitalize;
+  }
+}

@@ -1,4 +1,4 @@
-import { Context, ContractPromiseBatch, u128 } from "near-sdk-as";
+import { Context, ContractPromiseBatch, datetime, u128 } from "near-sdk-as";
 import {
   shoppingLists,
   recipeBooks,
@@ -272,7 +272,7 @@ export function createRecipe(
 
   // Check if tip amount is greater than zero.
   assert(amount > u128.Zero, "Transaction denied.");
-  
+
   // Process transaction to recipe creator.
   ContractPromiseBatch.create(Context.contractName).transfer(amount);
 
@@ -494,11 +494,13 @@ export function getTrendingRecipes(): Array<Recipe> {
       allRecipes[i].createdAt
     ).getUTCMonth();
     // Current month.
+    const currentDate = Date.parse(getCurrentDate());
     const currentMonth = Date.parse(getCurrentDate()).getUTCMonth();
+    const previousMonth = currentDate.getUTCMonth() - 1;
 
-    // Skip recipe which were not created in current month.
-    if (recipeCreatedMonth !== currentMonth) continue;
-    // Push recipes created in current month.
+    // Skip recipe which were not created in current or previous month.
+    if (recipeCreatedMonth !== currentMonth && recipeCreatedMonth !== previousMonth) continue;
+    // Push recipes created in current or previous month.
     validRecipes.push(allRecipes[i]);
   }
 

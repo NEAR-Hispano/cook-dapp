@@ -57,5 +57,7 @@
   "create": "crear",
   "click_to_edit_title": "haga clic para editar el título",
   "click_to-edit,_here_you_canbe_spotaneous!": "Haga clic para editar, aquí puede ser creativo!",
-  "create_description_placeholder": "haga clic para editar la descripción, ¡asegúrese de dejar claro cada detalle para aquellos que confían en su receta!"
+  "create_description_placeholder": "haga clic para editar la descripción, ¡asegúrese de dejar claro cada detalle para aquellos que confían en su receta!",
+  "search_for_recipes": "busca recetas",
+  "no_recipes_found": "no se encontraron recetas"
 }

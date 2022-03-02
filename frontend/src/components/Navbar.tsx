@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, FC } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import SearchIcon from "../assets/svg/SearchIcon";
 import UserIcon from "../assets/svg/UserIcon";
 import NearIcon from "../assets/svg/NearIcon";
@@ -25,6 +25,8 @@ const Navbar: FC = () => {
   const isLoggedIn = useAuth();
   const [user] = useUser();
   const { pathname } = useLocation();
+  const [searchParam, setSearchParam] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   useOnClickOutside(
     userAccountWrapperRef,
@@ -37,6 +39,13 @@ const Navbar: FC = () => {
       setAccount(user.accountID);
     }
   }, [isLoggedIn, user]);
+
+  // Function to search searchQuery
+  function searchExplorer() {
+    if (searchParam && searchParam.length > 0) {
+      navigate(`/explore/${searchParam.split(" ").join("+")}`);
+    }
+  }
 
   useEffect(() => setIsExplorer(pathname.includes("explore")), [pathname]);
 
@@ -61,10 +70,14 @@ const Navbar: FC = () => {
             className="input-group"
             style={{ display: isLoggedIn ? "flex" : "none" }}
           >
-            <span>
+            <span onClick={() => searchExplorer()}>
               <SearchIcon />
             </span>
-            <input type="text" placeholder="Search for recipes" />
+            <input
+              type="text"
+              placeholder={translator("search_for_recipes")}
+              onChange={(e) => setSearchParam(e.target.value)}
+            />
           </div>
         )}
 

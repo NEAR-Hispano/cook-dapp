@@ -57,5 +57,7 @@
   "create": "create",
   "click_to_edit_title": "click to edit title",
   "click_to-edit,_here_you_canbe_spotaneous!": "click to edit, here you can be creative!",
-  "create_description_placeholder": "click to edit description, make sure to leave every detail clear for those who rely on your recipe!"
+  "create_description_placeholder": "click to edit description, make sure to leave every detail clear for those who rely on your recipe!",
+  "search_for_recipes": "search for recipes",
+  "no_recipes_found": "no recipes found"
 }
