@@ -5,6 +5,7 @@
     width: 100%;
     height: auto;
     padding: 20px;
+    overflow: visible;
   }
 
   .swiper-slide {
@@ -21,11 +22,6 @@
     img {
       display: block;
       height: auto;
-      max-width: 100%;
-      
-      height: calc(100% - 210px);
-      max-height: calc(100% - 210px);
-      min-height: calc(100% - 210px);
     }
   }
 

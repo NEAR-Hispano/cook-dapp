@@ -1,19 +1,64 @@
 .create-recipe-book-tile-container {
   position: relative;
-  height: auto;
+
+  height: 450px;
+  min-height: 450px;
+  max-height: 450px;
   width: 100%;
+  min-width: 100%;
+  max-width: 100%;
+
+  & img {
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    height: calc(70%);
+    max-height: calc(70%);
+    min-height: calc(70%);
+  }
+
+  @media screen and (max-width: 620px) {    
+    height: 800px;
+    min-height: 800px;
+    max-height: 800px;
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;    
+  }
+
+  @media screen and (max-width: 820px) {    
+    height: 300px;
+    min-height: 300px;
+    max-height: 300px;
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;    
+  }
+  
+  @media screen and (max-width: 1300px) {    
+    height: 300px;
+    min-height: 300px;
+    max-height: 300px;
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;    
+  }
+
+  @media screen and (max-width: 1300px) {    
+    height: 400px;
+    min-height: 400px;
+    max-height: 400px;
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;    
+  }
+
   position: relative;
   display: flex;
   flex-direction: column;
   color: black;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
-    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
-
-  & img {
-    display: block;
-    height: auto;
-    max-width: 100%;
-  }
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;  
 
   & input[type="file"] {
     display: none;
