@@ -289,19 +289,18 @@ export class Contract {
     rating: number;
     recipeID: string;
   }) {
+    const doubleRating = rating * 2;
     switch (CONTRACT_LANG) {
       case "AS":
-        const assemblyRating = rating * 2;
-        console.log(assemblyRating)
         return (window as any).contract.createReview({
           text,
-          rating: assemblyRating,
+          rating: doubleRating,
           recipeID,
         }, gas);
       case "RUST":
         return (window as any).contract.create_review({
           text,
-          rating,
+          rating: doubleRating,
           recipeID,
         }, gas);
       default:
