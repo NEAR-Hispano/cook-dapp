@@ -26,6 +26,7 @@ const RecipeBookTile: FC<Props> = ({ recipeBook, selectBook, profile }) => {
   const translate = useTranslator();
   const contract = useContract();
   const [user] = useUser();
+  const [hasTextLengthError, setHasTextLengthError] = useState<string | null>(null)
 
   useEffect(() => {
     if (user && profile) {
@@ -147,6 +148,8 @@ const RecipeBookTile: FC<Props> = ({ recipeBook, selectBook, profile }) => {
               className="edit-recipe-book-title"
               onBlur={(e) => setEditedTitle(e.currentTarget.innerText)}
               isEditable={editingMode}
+              setHasTextLengthError={setHasTextLengthError}
+              textType="description"
             >
               {title && title}
             </EditableText>

@@ -22,6 +22,9 @@ const Review: FC<Props> = ({ reviewID }) => {
   const [editedRating, setEditedRating] = useState<number>(0);
   const [editedText, setEditedText] = useState<string>("");
   const translate = useTranslator();
+  const [hasTextLengthError, setHasTextLengthError] = useState<string | null>(
+    null
+  );
 
   async function getReview() {
     if (reviewID && contract) {
@@ -192,6 +195,8 @@ const Review: FC<Props> = ({ reviewID }) => {
         <EditableText
           isEditable={editingMode}
           onBlur={(e) => setEditedText(e.currentTarget.innerText)}
+          setHasTextLengthError={setHasTextLengthError}
+          textType="description"
         >
           {review && review.text}
         </EditableText>

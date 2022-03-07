@@ -7,7 +7,6 @@ interface Props {
   className?: string;
   setHasTextLengthError?: React.Dispatch<React.SetStateAction<string | null>>;
   textType?: "title" | "description";
-  text?: string | null;
 }
 
 const EditableText: FC<Props> = ({
@@ -17,24 +16,30 @@ const EditableText: FC<Props> = ({
   className = "",
   setHasTextLengthError,
   textType,
-  text,
 }) => {
-
   const [lengthError, setLengthError] = useState<null | string>("");
+  const [text, setText] = useState<string | null>(null);
 
   useEffect(() => {
-    if (setHasTextLengthError && textType && text) {
+    if (setHasTextLengthError !== null && textType && text) {
       setLengthError(validateTextLength({ textType, text }));
     }
   }, [children, text]);
- 
+
   return (
     <div
       className={`${className} editable-text`}
-      onBlur={(e) => onBlur(e)}
+      onBlur={(e) => {
+        setText(e.currentTarget.innerText);
+        onBlur(e);
+      }}
       contentEditable={isEditable}
       suppressContentEditableWarning
-      style={{ backgroundColor: lengthError? "#ffcccb" : "white", padding: "5px", borderRadius: "2px" }}
+      style={{
+        backgroundColor: lengthError ? "#ffcccb" : "white",
+        padding: "5px",
+        borderRadius: "2px",
+      }}
     >
       {children}
     </div>

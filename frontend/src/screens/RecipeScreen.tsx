@@ -49,6 +49,9 @@ const RecipeScreen: FC<Props> = () => {
   const [deleteRecipePopUpOpened, setDeleteRecipePopUpOpened] =
     useState<boolean>(false);
   const [tipsAmount, setTipsAmount] = useState<string>("0");
+  const [hasTextLengthError, setHasTextLengthError] = useState<string | null>(
+    null
+  );
 
   const checkIsEditing = () => {
     const result = Boolean(
@@ -525,7 +528,8 @@ const RecipeScreen: FC<Props> = () => {
           <EditableText
             onBlur={(e) => editTitle(e.currentTarget.innerText)}
             isEditable={editingMode}
-
+            setHasTextLengthError={setHasTextLengthError}
+            textType={"title"}
           >
             {recipe && recipe.title}
           </EditableText>
@@ -603,6 +607,8 @@ const RecipeScreen: FC<Props> = () => {
           <EditableText
             onBlur={(e) => editDescription(e.currentTarget.innerText)}
             isEditable={editingMode}
+            setHasTextLengthError={setHasTextLengthError}
+            textType={"description"}
           >
             {recipe && recipe.description}
           </EditableText>
@@ -668,6 +674,8 @@ const RecipeScreen: FC<Props> = () => {
                   onBlur={(e) =>
                     editInstructions(index, e.currentTarget.innerText)
                   }
+                  setHasTextLengthError={setHasTextLengthError}
+                  textType="description"
                 >
                   {instruction}
                 </EditableText>
@@ -715,6 +723,8 @@ const RecipeScreen: FC<Props> = () => {
             <EditableText
               isEditable={editingMode}
               onBlur={(e) => editChefNote(e.currentTarget.innerText)}
+              setHasTextLengthError={setHasTextLengthError}
+              textType="description"
             >
               {recipe.chefNote}
             </EditableText>

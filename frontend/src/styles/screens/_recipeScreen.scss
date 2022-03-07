@@ -151,7 +151,7 @@
       align-items: center;
       margin-left: 15px;
     }
-    
+
     @media (max-width: 768px) {
       & svg {
         width: 6vw !important;
@@ -166,16 +166,18 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    max-width: 70%;
 
     & .title {
-      width: max-content;
+      max-width: 90%;      
       border-bottom: 1px solid $borderColor;
       margin-bottom: 30px;
       line-height: 2;
       font-size: clamp(14px, 2vw, 2vw);
       font-weight: bold;
       text-transform: uppercase;
-      letter-spacing: 3px;
+      letter-spacing: 3px;      
+      text-align: center;
     }
 
     & .summary-info {

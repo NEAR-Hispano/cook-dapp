@@ -19,6 +19,9 @@ const CreateReview: FC<Props> = ({ recipeID }) => {
   const translate = useTranslator();
   const [rating, setRating] = useState<number>(0);
   const [text, setText] = useState<string>("");
+  const [hasTextLengthError, setHasTextLengthError] = useState<string | null>(
+    null
+  );
 
   function customDateFormater(unFormatedDate: string) {
     const result = new Date(unFormatedDate);
@@ -48,7 +51,7 @@ const CreateReview: FC<Props> = ({ recipeID }) => {
             draggable: true,
             progress: undefined,
           });
-          setTimeout(() => refreshPage(), 3000)
+          setTimeout(() => refreshPage(), 3000);
         })
         .catch((error: Error) => contractErrorHandler(error));
     }
@@ -100,6 +103,8 @@ const CreateReview: FC<Props> = ({ recipeID }) => {
       <EditableText
         isEditable={true}
         onBlur={(e) => setText(e.currentTarget.innerText)}
+        setHasTextLengthError={setHasTextLengthError}
+        textType="title"
       >
         {text ? text : translate("Write your review here...")}
       </EditableText>

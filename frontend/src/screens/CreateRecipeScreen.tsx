@@ -244,7 +244,6 @@ const CreateRecipeScreen: FC<Props> = () => {
             isEditable={true}
             setHasTextLengthError={setHasTextLengthError}
             textType={"title"}
-            text={title}
           >
             {title ? title : translate("click_to_edit_title")}
           </EditableText>
@@ -278,12 +277,17 @@ const CreateRecipeScreen: FC<Props> = () => {
 
       <div className="create-recipe-selectors-wrapper">
         <select
-          name="recipe book id"
-          id="cars"
+          name="recipeBookID"
+          id="recipeBookID"
           required
           onChange={(e) => setRecipeBookID(e.target.value)}
         >
-          <option className="select-label" value="" disabled selected>
+          <option
+            className="select-label"
+            value=""
+            disabled
+            selected={!recipeBookID}
+          >
             {translate("select_recipe_book")}
           </option>
           {userRecipeBooks &&
@@ -295,12 +299,17 @@ const CreateRecipeScreen: FC<Props> = () => {
         </select>
 
         <select
-          name="cars"
-          id="cars"
+          name="recipeCategory"
+          id="recipeCategory"
           required
           onChange={(e) => setCategory(e.target.value)}
         >
-          <option className="select-label" value="" disabled selected>
+          <option
+            className="select-label"
+            value=""
+            disabled
+            selected={!category}
+          >
             {translate("select_recipe_category")}
           </option>
           {recipeCategories.map((category) => (
@@ -359,6 +368,8 @@ const CreateRecipeScreen: FC<Props> = () => {
           <EditableText
             onBlur={(e) => setDescription(e.currentTarget.innerText)}
             isEditable={true}
+            setHasTextLengthError={setHasTextLengthError}
+            textType="description"
           >
             {description
               ? description
@@ -420,6 +431,8 @@ const CreateRecipeScreen: FC<Props> = () => {
                   className="step-description cursor-pointer"
                   isEditable={true}
                   onBlur={(e) => editStep(index, e.currentTarget.innerText)}
+                  setHasTextLengthError={setHasTextLengthError}
+                  textType="description"
                 >
                   {instruction}
                 </EditableText>
@@ -464,6 +477,8 @@ const CreateRecipeScreen: FC<Props> = () => {
           <EditableText
             isEditable={true}
             onBlur={(e) => setChefNote(e.currentTarget.innerText)}
+            setHasTextLengthError={setHasTextLengthError}
+            textType="description"
           >
             {chefNote
               ? chefNote
