@@ -1,4 +1,7 @@
 import { FC, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
+import useTranslator from "../hooks/useTranslator";
 import validateTextLength from "../utils/validateTextLength";
 
 interface Props {
@@ -19,6 +22,7 @@ const EditableText: FC<Props> = ({
 }) => {
   const [lengthError, setLengthError] = useState<null | string>("");
   const [text, setText] = useState<string | null>(null);
+  const translate = useTranslator();
 
   useEffect(() => {
     if (setHasTextLengthError !== null && textType && text) {
@@ -40,6 +44,7 @@ const EditableText: FC<Props> = ({
         padding: "5px",
         borderRadius: "2px",
       }}
+      title={(lengthError && lengthError) || ""}
     >
       {children}
     </div>
