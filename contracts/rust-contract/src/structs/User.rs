@@ -1,9 +1,10 @@
 use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
-use near_sdk::{near_bindgen, AccountId};
+use near_sdk::serde::{Serialize, Deserialize};
+use near_sdk::{AccountId};
 use std::collections::HashSet;
 
-#[near_bindgen]
-#[derive(BorshDeserialize, BorshSerialize)]
+#[derive(Serialize, Deserialize, BorshDeserialize, BorshSerialize)]
+#[serde(crate = "near_sdk::serde")]
 pub struct User {
     pub account_id: AccountId,
     pub favorite_recipes: HashSet<String>,
