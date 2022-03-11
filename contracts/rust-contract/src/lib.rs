@@ -1,6 +1,7 @@
 mod structs;
 use crate::structs::user::User;
 use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
+use near_sdk::serde::{Serialize, Deserialize};
 use near_sdk::collections::UnorderedMap;
 use near_sdk::{env, near_bindgen, AccountId};
 use std::collections::HashSet;
@@ -20,19 +21,40 @@ impl Default for CookDApp {
     }
 }
 
+#[derive(Serialize, Deserialize)]
+#[serde(crate = "near_sdk::serde")]
+pub enum Exists<A, B> {
+    True(A),
+    False(B),
+}
+
 #[near_bindgen]
 impl CookDApp {
-
-    pub fn get_user(&mut self, account_id: Option<AccountId>) -> Option<User> {
+    
+    pub fn get_user(&mut self, account_id: Option<AccountId>) -> Exists<User, String> {
         match account_id.as_deref() {
             None => {
                 // If no account_id is provided, create user for account_id calling the method and return it, else if already exists get it and return it.
-                self.create_user();
-                return self.users.get(&env::signer_account_id());
+                match self.users.get(&env::signer_account_id()) {
+                    None => {
+                        self.create_user();
+                    }
+                    user => {
+                        return Exists::True(user.unwrap());
+                    }
+                }
+                return Exists::True(self.users.get(&env::signer_account_id()).unwrap());
             }
             Some(account_id) => {
                 // If account_id is provided, get user and return it if exists, else throw error
-                return Some(self.users.get(&account_id.to_owned()).unwrap());
+                match self.users.get(&account_id.to_owned()) {
+                    None => {
+                        return Exists::False("User does not exists.".to_string());
+                    }
+                    user => {
+                        return Exists::True(user.unwrap());
+                    }
+                }
             }
         }
     }
@@ -49,5 +71,4 @@ impl CookDApp {
 
         self.users.insert(&env::signer_account_id(), &new_user);
     }
-
 }
