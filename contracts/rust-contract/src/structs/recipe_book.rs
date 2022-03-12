@@ -6,9 +6,9 @@ use super::image::Image;
 #[derive(Serialize, Deserialize, BorshDeserialize, BorshSerialize)]
 #[serde(crate = "near_sdk::serde")]
 pub struct RecipeBook {
-    id: String,
-    creator: AccountId,
-    title: String,
-    banner: Image,
-    recipes: Vec<String>,
+    pub id: i128,
+    pub creator: AccountId,
+    pub title: String,
+    pub banner: Image,
+    pub recipes: Vec<String>,
 }
