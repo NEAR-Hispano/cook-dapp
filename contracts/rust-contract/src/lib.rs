@@ -19,7 +19,7 @@ pub struct CookDApp {
 impl Default for CookDApp {
     fn default() -> Self {
         Self {
-            users: UnorderedMap::new(b"c"),
+            users: UnorderedMap::new(b"a"),
             recipe_books: UnorderedMap::new(b"b"),
             recipe_books_id: 0,
         }
@@ -46,12 +46,8 @@ impl CookDApp {
                 // Reminder to try out with env::panic! to throw error regarding user not existing.
                 // If account_id is provided, get user and return it if exists, else throw error
                 match self.users.get(&account_id.to_owned()) {
-                    Some(user) => {
-                        return Some(user)
-                    }
-                    None => {
-                        env::panic(b"No user found.")
-                    }
+                    Some(user) => return Some(user),
+                    None => env::panic(b"No user found."),
                 }
             }
         }
@@ -68,10 +64,6 @@ impl CookDApp {
         };
 
         self.users.insert(&env::signer_account_id(), &new_user);
-    }
-
-    pub fn get_recipe_book(&mut self, id: i128) -> Option<RecipeBook> {
-        return Some(self.recipe_books.get(&id).unwrap());
     }
 
     pub fn create_recipe_book(&mut self, title: String, banner: Image) {
@@ -94,5 +86,36 @@ impl CookDApp {
             }
             None => env::panic(b"Please log in."),
         }
+    }
+
+    pub fn get_recipe_book(&mut self, id: i128) -> Option<RecipeBook> {
+        return Some(self.recipe_books.get(&id).unwrap());
+    }
+
+    pub fn get_recipe_books(&mut self) -> Vec<RecipeBook> {
+        let user = self.get_user(Some(env::signer_account_id().to_string()));
+
+        user.unwrap()
+            .recipe_books_created
+            .iter()
+            .map(|recipe_book_id| self.get_recipe_book(*recipe_book_id).unwrap())
+            .collect()
+    }
+
+    pub fn update_recipe_book(&mut self, id: i128, title: Option<String>, banner: Option<Image>) {
+        let mut updated_recipe_book = self.get_recipe_book(id).unwrap();
+        
+        if updated_recipe_book.creator != env::signer_account_id() {
+            env::panic(b"Recipe books can only be edited by the creator.")
+        }
+
+        if title.is_some() {
+            updated_recipe_book.title = title.unwrap();
+        }
+        if banner.is_some() {
+            updated_recipe_book.banner = banner.unwrap();
+        }
+
+        self.recipe_books.insert(&id, &updated_recipe_book);
     }
 }
