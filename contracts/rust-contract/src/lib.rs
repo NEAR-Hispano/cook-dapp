@@ -1,7 +1,9 @@
 mod structs;
 use crate::structs::image::Image;
-use crate::structs::recipe_book::RecipeBook;
 use crate::structs::user::User;
+use crate::structs::recipe::Recipe;
+use crate::structs::ingredient::Ingredient;
+use crate::structs::recipe_book::RecipeBook;
 use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
 use near_sdk::collections::UnorderedMap;
 use near_sdk::{env, near_bindgen, AccountId};
@@ -89,14 +91,19 @@ impl CookDApp {
     }
 
     pub fn get_recipe_book(&mut self, id: i128) -> Option<RecipeBook> {
-        return Some(self.recipe_books.get(&id).unwrap());
+        Some(self.recipe_books.get(&id).unwrap())
+    }
+    
+    pub fn get_recipe_books(&mut self) -> Vec<RecipeBook> {
+        self.recipe_books.values().into_iter().collect()
     }
 
-    pub fn get_recipe_books(&mut self) -> Vec<RecipeBook> {
-        let user = self.get_user(Some(env::signer_account_id().to_string()));
-
-        user.unwrap()
-            .recipe_books_created
+    pub fn get_user_recipe_books(&mut self) -> Vec<RecipeBook> {
+        let user = self
+            .get_user(Some(env::signer_account_id().to_string()))
+            .unwrap();
+    
+        user.recipe_books_created
             .iter()
             .map(|recipe_book_id| self.get_recipe_book(*recipe_book_id).unwrap())
             .collect()
@@ -104,7 +111,7 @@ impl CookDApp {
 
     pub fn update_recipe_book(&mut self, id: i128, title: Option<String>, banner: Option<Image>) {
         let mut updated_recipe_book = self.get_recipe_book(id).unwrap();
-        
+
         if updated_recipe_book.creator != env::signer_account_id() {
             env::panic(b"Recipe books can only be edited by the creator.")
         }
@@ -118,4 +125,45 @@ impl CookDApp {
 
         self.recipe_books.insert(&id, &updated_recipe_book);
     }
+
+    pub fn delete_recipe_book(&mut self, id: i128) {
+
+        assert!(self.recipe_books_id >= id, "Recipe Book not found.");
+
+        // Get user object
+        let mut user = self
+            .get_user(Some(env::signer_account_id().to_string()))
+            .unwrap();
+
+        // Check if user is the recipe_book creator.
+        if !user.recipe_books_created.contains(&id) {
+            env::panic(b"Recipe books can only be deleted by the creator.")
+        }
+        
+        // Delete recipe book from contract
+        self.recipe_books.remove(&id);
+
+        // Delete recipe book id from user recipe_books_created
+        user.recipe_books_created = user.recipe_books_created.iter().filter(|recipe_book_id| recipe_book_id != &&id).map(|x| x).cloned().collect();
+
+        self.users.insert(&env::signer_account_id(), &user);
+        
+        // Delete each recipe in book (to be completed.)
+    }
+
+    // pub fn create_recipe(&mut self, title: String, description: String, ingredients_list: Vec<Ingredient>, instructions: Vec<String>, recipe_book_id: i128, category: String, chef_note: String, image: Image) {
+
+    // }
+
+    // pub fn get_recipe(&mut self, id: i128) {
+
+    // }
+
+    // pub fn update_recipe(&mut self, title: String, description: String, ingredients_list: Vec<Ingredient>, instructions: Vec<String>, recipe_book_id: i128, category: String, chef_note: String, image: Image) {
+
+    // }
+
+    // pub fn tip_recipe(&mut self, recipe_id: i128) {
+
+    // }
 }

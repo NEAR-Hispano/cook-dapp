@@ -43,9 +43,15 @@ export class Contract {
   }) {
     switch (CONTRACT_LANG) {
       case "AS":
-        return (window as any).contract.createRecipeBook({ title, banner }, gas);
+        return (window as any).contract.createRecipeBook(
+          { title, banner },
+          gas
+        );
       case "RUST":
-        return (window as any).contract.create_recipe_book({ title, banner }, gas);
+        return (window as any).contract.create_recipe_book(
+          { title, banner },
+          gas
+        );
       default:
         throw InvalidContractLangError;
     }
@@ -73,13 +79,19 @@ export class Contract {
   }) {
     switch (CONTRACT_LANG) {
       case "AS":
-        return (window as any).contract.updateRecipeBook({ id, title, banner }, gas);
+        return (window as any).contract.updateRecipeBook(
+          { id, title, banner },
+          gas
+        );
       case "RUST":
-        return (window as any).contract.update_recipe_book({
-          id,
-          title,
-          banner,
-        }, gas);
+        return (window as any).contract.update_recipe_book(
+          {
+            id,
+            title,
+            banner,
+          },
+          gas
+        );
       default:
         throw InvalidContractLangError;
     }
@@ -104,7 +116,7 @@ export class Contract {
     recipeBookID,
     category,
     chefNote,
-    image
+    image,
   }: {
     title: string;
     description: string;
@@ -117,32 +129,38 @@ export class Contract {
   }) {
     switch (CONTRACT_LANG) {
       case "AS":
-        return (window as any).contract.createRecipe({
-          title,
-          description,
-          ingridientsList,
-          instructions,
-          recipeBookID,
-          category,
-          chefNote,
-          image
-        },
-        gas,        
-        utils.format.parseNearAmount(process.env.REACT_APP_CREATE_RECIPE_DEPOSIT)
+        return (window as any).contract.createRecipe(
+          {
+            title,
+            description,
+            ingridientsList,
+            instructions,
+            recipeBookID,
+            category,
+            chefNote,
+            image,
+          },
+          gas,
+          utils.format.parseNearAmount(
+            process.env.REACT_APP_CREATE_RECIPE_DEPOSIT
+          )
         );
       case "RUST":
-        return (window as any).contract.create_recipe({
-          title,
-          description,
-          ingridientsList,
-          instructions,
-          recipeBookID,
-          category,
-          chefNote,
-          image
-        },
-        gas,        
-        utils.format.parseNearAmount(process.env.REACT_APP_CREATE_RECIPE_DEPOSIT)
+        return (window as any).contract.create_recipe(
+          {
+            title,
+            description,
+            ingredients_list: ingridientsList,
+            instructions,
+            recipe_book_id: recipeBookID,
+            category,
+            chef_note: chefNote,
+            image,
+          },
+          gas,
+          utils.format.parseNearAmount(
+            process.env.REACT_APP_CREATE_RECIPE_DEPOSIT
+          )
         );
       default:
         throw InvalidContractLangError;
@@ -292,17 +310,23 @@ export class Contract {
     const doubleRating = rating * 2;
     switch (CONTRACT_LANG) {
       case "AS":
-        return (window as any).contract.createReview({
-          text,
-          rating: doubleRating,
-          recipeID,
-        }, gas);
+        return (window as any).contract.createReview(
+          {
+            text,
+            rating: doubleRating,
+            recipeID,
+          },
+          gas
+        );
       case "RUST":
-        return (window as any).contract.create_review({
-          text,
-          rating: doubleRating,
-          recipeID,
-        }, gas);
+        return (window as any).contract.create_review(
+          {
+            text,
+            rating: doubleRating,
+            recipeID,
+          },
+          gas
+        );
       default:
         throw InvalidContractLangError;
     }
@@ -332,7 +356,10 @@ export class Contract {
       case "AS":
         return (window as any).contract.updateReview({ id, text, rating }, gas);
       case "RUST":
-        return (window as any).contract.update_review({ id, text, rating }, gas);
+        return (window as any).contract.update_review(
+          { id, text, rating },
+          gas
+        );
       default:
         throw InvalidContractLangError;
     }
