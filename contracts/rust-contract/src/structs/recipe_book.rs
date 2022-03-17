@@ -10,5 +10,5 @@ pub struct RecipeBook {
     pub creator: AccountId,
     pub title: String,
     pub banner: Image,
-    pub recipes: Vec<String>,
+    pub recipes: Vec<i128>,
 }

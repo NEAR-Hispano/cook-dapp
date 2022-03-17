@@ -1,13 +1,14 @@
 mod structs;
 use crate::structs::image::Image;
-use crate::structs::user::User;
-use crate::structs::recipe::Recipe;
 use crate::structs::ingredient::Ingredient;
+use crate::structs::recipe::Recipe;
 use crate::structs::recipe_book::RecipeBook;
+use crate::structs::user::User;
 use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
 use near_sdk::collections::UnorderedMap;
 use near_sdk::{env, near_bindgen, AccountId};
 use std::collections::HashSet;
+use std::time::{self, SystemTime};
 near_sdk::setup_alloc!();
 
 #[near_bindgen]
@@ -15,7 +16,9 @@ near_sdk::setup_alloc!();
 pub struct CookDApp {
     pub users: UnorderedMap<AccountId, User>,
     pub recipe_books: UnorderedMap<i128, RecipeBook>,
+    pub recipes: UnorderedMap<i128, Recipe>,
     pub recipe_books_id: i128,
+    pub recipe_id: i128,
 }
 
 impl Default for CookDApp {
@@ -23,7 +26,9 @@ impl Default for CookDApp {
         Self {
             users: UnorderedMap::new(b"a"),
             recipe_books: UnorderedMap::new(b"b"),
+            recipes: UnorderedMap::new(b"c"),
             recipe_books_id: 0,
+            recipe_id: 0,
         }
     }
 }
@@ -93,7 +98,7 @@ impl CookDApp {
     pub fn get_recipe_book(&mut self, id: i128) -> Option<RecipeBook> {
         Some(self.recipe_books.get(&id).unwrap())
     }
-    
+
     pub fn get_recipe_books(&mut self) -> Vec<RecipeBook> {
         self.recipe_books.values().into_iter().collect()
     }
@@ -102,7 +107,7 @@ impl CookDApp {
         let user = self
             .get_user(Some(env::signer_account_id().to_string()))
             .unwrap();
-    
+
         user.recipe_books_created
             .iter()
             .map(|recipe_book_id| self.get_recipe_book(*recipe_book_id).unwrap())
@@ -127,7 +132,6 @@ impl CookDApp {
     }
 
     pub fn delete_recipe_book(&mut self, id: i128) {
-
         assert!(self.recipe_books_id >= id, "Recipe Book not found.");
 
         // Get user object
@@ -139,21 +143,91 @@ impl CookDApp {
         if !user.recipe_books_created.contains(&id) {
             env::panic(b"Recipe books can only be deleted by the creator.")
         }
-        
+
         // Delete recipe book from contract
         self.recipe_books.remove(&id);
 
         // Delete recipe book id from user recipe_books_created
-        user.recipe_books_created = user.recipe_books_created.iter().filter(|recipe_book_id| recipe_book_id != &&id).map(|x| x).cloned().collect();
+        user.recipe_books_created = user
+            .recipe_books_created
+            .iter()
+            .filter(|recipe_book_id| recipe_book_id != &&id)
+            .map(|x| x)
+            .cloned()
+            .collect();
 
         self.users.insert(&env::signer_account_id(), &user);
-        
+
         // Delete each recipe in book (to be completed.)
     }
 
-    // pub fn create_recipe(&mut self, title: String, description: String, ingredients_list: Vec<Ingredient>, instructions: Vec<String>, recipe_book_id: i128, category: String, chef_note: String, image: Image) {
+    pub fn get_current_date() -> String {
+        env::block_timestamp().to_string()
+    }
 
-    // }
+    #[payable]
+    pub fn create_recipe(
+        &mut self,
+        title: String,
+        description: String,
+        ingredients_list: Vec<Ingredient>,
+        instructions: Vec<String>,
+        recipe_book_id: i128,
+        category: String,
+        chef_note: String,
+        image: Image,
+    ) {
+        // Update recipe id count.
+        self.recipe_id += 1;
+
+        let deposit = env::attached_deposit();
+
+        // Check if deposit was maded
+        assert!(
+            deposit > 0,
+            "Recipe needs a deposit, in order to be created."
+        );
+
+        // Create new recipe
+        let new_recipe = Recipe {
+            id: self.recipe_id,
+            recipe_book_id,
+            image,
+            creator: env::signer_account_id(),
+            category,
+            title,
+            description,
+            chef_note,
+            ingredients: ingredients_list,
+            instructions,
+            reviews: Vec::new(),
+            ratings: Vec::new(),
+            average_rating: 0.0,
+            total_tips: 0.0,
+            created_at: "03/17/2022".to_string(),
+        };
+
+        // Get user.
+        let mut user = self.get_user(Some(env::signer_account_id())).unwrap();
+
+        // Add new recipe id to list of recipes created in user object.
+        user.recipes_created.push(self.recipe_id);
+
+        // Update user information in persistent collection.
+        self.users.insert(&env::signer_account_id(), &user);
+
+        // Get recipe book.
+        let mut recipe_book = self.get_recipe_book(recipe_book_id).unwrap();
+
+        // Add recipe id to list of recipes ids in recipe book.
+        recipe_book.recipes.push(self.recipe_id);
+
+        // Update recipe book recipes information.
+        self.recipe_books.insert(&recipe_book_id, &recipe_book);
+
+        // Set new recipe created in persistent collection.
+        self.recipes.insert(&self.recipe_id, &new_recipe);
+    }
 
     // pub fn get_recipe(&mut self, id: i128) {
 

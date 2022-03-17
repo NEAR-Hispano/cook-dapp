@@ -270,7 +270,7 @@ export function createRecipe(
   // Get amount of NEAR for creation of recipe.
   const amount: Amount = Context.attachedDeposit;
 
-  // Check if tip amount is greater than zero.
+  // Check if deposit amount is greater than zero.
   assert(amount > u128.Zero, "Transaction denied.");
 
   // Process transaction to recipe creator.

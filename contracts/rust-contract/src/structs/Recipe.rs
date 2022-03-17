@@ -7,8 +7,8 @@ use super::ingredient::Ingredient;
 #[derive(Serialize, Deserialize, BorshDeserialize, BorshSerialize)]
 #[serde(crate = "near_sdk::serde")]
 pub struct Recipe {
-    pub id: String,
-    pub recipe_book_id: String,
+    pub id: i128,
+    pub recipe_book_id: i128,
     pub image: Image,
     pub creator: AccountId,
     pub category: String,
