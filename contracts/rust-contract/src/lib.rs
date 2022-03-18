@@ -229,15 +229,55 @@ impl CookDApp {
         self.recipes.insert(&self.recipe_id, &new_recipe);
     }
 
-    // pub fn get_recipe(&mut self, id: i128) {
+    pub fn get_recipe(&mut self, id: i128) -> Recipe {
+        self.recipes.get(&id).unwrap()
+    }
 
-    // }
+    pub fn update_recipe(
+        &mut self,
+        id: i128,
+        title: Option<String>,
+        description: Option<String>,
+        ingredients_list: Option<Vec<Ingredient>>,
+        instructions: Option<Vec<String>>,
+        recipe_book_id: Option<i128>,
+        category: Option<String>,
+        chef_note: Option<String>,
+        image: Option<Image>,
+    ) {
+        let mut updated_recipe = self.get_recipe(id);
 
-    // pub fn update_recipe(&mut self, title: String, description: String, ingredients_list: Vec<Ingredient>, instructions: Vec<String>, recipe_book_id: i128, category: String, chef_note: String, image: Image) {
+        if updated_recipe.creator != env::signer_account_id() {
+            env::panic(b"Recipe can only be edited by the creator.")
+        }
 
-    // }
+        if title.is_some() {
+            updated_recipe.title = title.unwrap();
+        }
+        if image.is_some() {
+            updated_recipe.image = image.unwrap();
+        }
+        if description.is_some() {
+            updated_recipe.description = description.unwrap()
+        }
+        if ingredients_list.is_some() {
+            updated_recipe.ingredients = ingredients_list.unwrap()
+        }
+        if instructions.is_some() {
+            updated_recipe.instructions = instructions.unwrap()
+        }
+        if recipe_book_id.is_some() {
+            updated_recipe.recipe_book_id = recipe_book_id.unwrap()
+        }
+        if category.is_some() {
+            updated_recipe.category = category.unwrap()
+        }
+        if chef_note.is_some() {
+            updated_recipe.chef_note = chef_note.unwrap()
+        }
 
-    // pub fn tip_recipe(&mut self, recipe_id: i128) {
+        self.recipes.insert(&id, &updated_recipe);
+    }
 
-    // }
+    pub fn tip_recipe(&mut self, recipe_id: i128) {}
 }
