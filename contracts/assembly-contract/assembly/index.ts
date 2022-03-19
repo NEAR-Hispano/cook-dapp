@@ -273,7 +273,7 @@ export function createRecipe(
   // Check if deposit amount is greater than zero.
   assert(amount > u128.Zero, "Transaction denied.");
 
-  // Process transaction to recipe creator.
+  // Process transaction to contract.
   ContractPromiseBatch.create(Context.contractName).transfer(amount);
 
   // Iniliatize array of Ingridient class.

@@ -4,11 +4,12 @@ use crate::structs::ingredient::Ingredient;
 use crate::structs::recipe::Recipe;
 use crate::structs::recipe_book::RecipeBook;
 use crate::structs::user::User;
+use near_sdk::Balance;
 use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
 use near_sdk::collections::UnorderedMap;
-use near_sdk::{env, near_bindgen, AccountId};
+use near_sdk::{env, near_bindgen, AccountId, Promise, json_types::U128};
 use std::collections::HashSet;
-use std::time::{self, SystemTime};
+use std::u128;
 near_sdk::setup_alloc!();
 
 #[near_bindgen]
@@ -188,6 +189,9 @@ impl CookDApp {
             "Recipe needs a deposit, in order to be created."
         );
 
+        // Process transaction to contract.
+        Promise::new(env::predecessor_account_id()).transfer(deposit);
+
         // Create new recipe
         let new_recipe = Recipe {
             id: self.recipe_id,
@@ -279,5 +283,88 @@ impl CookDApp {
         self.recipes.insert(&id, &updated_recipe);
     }
 
-    pub fn tip_recipe(&mut self, recipe_id: i128) {}
+    #[payable]
+    pub fn tip_recipe(&mut self, recipe_id: i128) {
+        // Check that recipe ID is valid and recipe exists.
+        assert!(self.recipe_id >= recipe_id, "Recipe does not exist.");
+
+        // Check that user tipping exists.
+        assert!(
+            self.users
+                .get(&env::signer_account_id().to_string())
+                .is_some(),
+            "Please register as a user with the method getUser or login to DApp."
+        );
+
+        // Get amount of NEAR for the recipe tip.
+        let amount = env::attached_deposit();
+
+        // Check if tip amount is greater than zero.
+        assert!(amount > 0, "Tip amount must be greater than zero.");
+
+        // Get recipe
+        let mut recipe = self.get_recipe(recipe_id);
+
+        // Process transaction to recipe creator.
+        Promise::new(recipe.creator.to_string()).transfer(amount);
+
+        // Update recipe totalTips
+        recipe.total_tips += amount as f64;
+
+        // Get user that is tipping.
+        let mut user_tipping = self.get_user(Some(env::signer_account_id())).unwrap();
+
+        // Get user being tipped.
+        let mut user_being_tipped = self.get_user(Some(recipe.creator.clone())).unwrap();
+
+        // Increment Creator of recipe tips recived.
+        user_being_tipped.tips_received += amount as f64;
+
+        // Updated total tipped by user.
+        user_tipping.total_tipped += amount as f64;
+
+        // Update users in persistent collection.
+        self.users.insert(&env::signer_account_id(), &user_tipping);
+        self.users.insert(&recipe.creator,&user_being_tipped);
+
+        // Update Recipe
+        self.recipes.insert(&recipe_id, &recipe);
+    }
+
+    pub fn delete_recipe(&mut self, id: i128) {
+        // Check that recipe ID is valid and recipe exists.
+        assert!(self.recipe_id >= id, "Recipe does not exist.");
+
+        // Get recipe
+        let recipe = self.get_recipe(id);
+
+        // Check if creator is the one trying to delete else throw error
+        assert!(recipe.creator == env::signer_account_id(), "Only creators can delete their recipe.");
+
+        // Return deposit for recipe creation to creator.
+        // Promise::new(recipe.creator.to_string()).transfer(U128::from(u128::from(0.00000001)));
+
+        // Get user
+        let mut user = self.get_user(Some(env::signer_account_id())).unwrap();
+
+        // Delete id of recipe from user recipes created.
+        user.recipes_created = user.recipes_created.iter().filter(|x| x != &&id).map(|x| x).cloned().collect();
+
+        // Delete recipe reviews -> to be continued.
+
+        // Get recipe book.
+        let mut recipe_book = self.get_recipe_book(recipe.recipe_book_id.clone()).unwrap();
+
+        // Delete recipe id from recipe book recipes created ids.
+        recipe_book.recipes = recipe_book.recipes.iter().filter(|x| x != &&id).map(|x| x).cloned().collect();
+
+        // Update recipe book
+        self.recipe_books.insert(&recipe_book.id, &recipe_book);
+        
+        // Update user
+        self.users.insert(&env::signer_account_id(), &user);
+
+        // Delete recipe from collection.
+        self.recipes.remove(&id);
+    }
 }
