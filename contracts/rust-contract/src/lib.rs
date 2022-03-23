@@ -3,11 +3,11 @@ use crate::structs::image::Image;
 use crate::structs::ingredient::Ingredient;
 use crate::structs::recipe::Recipe;
 use crate::structs::recipe_book::RecipeBook;
+use crate::structs::review::Review;
 use crate::structs::user::User;
-use near_sdk::Balance;
 use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
 use near_sdk::collections::UnorderedMap;
-use near_sdk::{env, near_bindgen, AccountId, Promise, json_types::U128};
+use near_sdk::{env, near_bindgen, AccountId, Promise};
 use std::collections::HashSet;
 use std::u128;
 near_sdk::setup_alloc!();
@@ -18,6 +18,7 @@ pub struct CookDApp {
     pub users: UnorderedMap<AccountId, User>,
     pub recipe_books: UnorderedMap<i128, RecipeBook>,
     pub recipes: UnorderedMap<i128, Recipe>,
+    pub reviews: UnorderedMap<String, Review>,
     pub recipe_books_id: i128,
     pub recipe_id: i128,
 }
@@ -28,6 +29,7 @@ impl Default for CookDApp {
             users: UnorderedMap::new(b"a"),
             recipe_books: UnorderedMap::new(b"b"),
             recipes: UnorderedMap::new(b"c"),
+            reviews: UnorderedMap::new(b"d"),
             recipe_books_id: 0,
             recipe_id: 0,
         }
@@ -325,7 +327,7 @@ impl CookDApp {
 
         // Update users in persistent collection.
         self.users.insert(&env::signer_account_id(), &user_tipping);
-        self.users.insert(&recipe.creator,&user_being_tipped);
+        self.users.insert(&recipe.creator, &user_being_tipped);
 
         // Update Recipe
         self.recipes.insert(&recipe_id, &recipe);
@@ -339,7 +341,10 @@ impl CookDApp {
         let recipe = self.get_recipe(id);
 
         // Check if creator is the one trying to delete else throw error
-        assert!(recipe.creator == env::signer_account_id(), "Only creators can delete their recipe.");
+        assert!(
+            recipe.creator == env::signer_account_id(),
+            "Only creators can delete their recipe."
+        );
 
         // Return deposit for recipe creation to creator.
         // Promise::new(recipe.creator.to_string()).transfer(U128::from(u128::from(0.00000001)));
@@ -348,7 +353,13 @@ impl CookDApp {
         let mut user = self.get_user(Some(env::signer_account_id())).unwrap();
 
         // Delete id of recipe from user recipes created.
-        user.recipes_created = user.recipes_created.iter().filter(|x| x != &&id).map(|x| x).cloned().collect();
+        user.recipes_created = user
+            .recipes_created
+            .iter()
+            .filter(|x| x != &&id)
+            .map(|x| x)
+            .cloned()
+            .collect();
 
         // Delete recipe reviews -> to be continued.
 
@@ -356,15 +367,101 @@ impl CookDApp {
         let mut recipe_book = self.get_recipe_book(recipe.recipe_book_id.clone()).unwrap();
 
         // Delete recipe id from recipe book recipes created ids.
-        recipe_book.recipes = recipe_book.recipes.iter().filter(|x| x != &&id).map(|x| x).cloned().collect();
+        recipe_book.recipes = recipe_book
+            .recipes
+            .iter()
+            .filter(|x| x != &&id)
+            .map(|x| x)
+            .cloned()
+            .collect();
 
         // Update recipe book
         self.recipe_books.insert(&recipe_book.id, &recipe_book);
-        
+
         // Update user
         self.users.insert(&env::signer_account_id(), &user);
 
         // Delete recipe from collection.
         self.recipes.remove(&id);
+    }
+
+    pub fn create_review(&mut self, text: String, rating: i32, recipe_id: i128) {
+        // Check that recipe ID is valid and recipe exists.
+        assert!(self.recipe_id >= recipe_id, "Recipe does not exist.");
+        // Check that rating is greater or equal to 1 and equal or lesser than 10.
+        assert!(
+            rating > 0 && rating < 11,
+            "Rating must range beetwen 1 through 10."
+        );
+
+        // Get recipe
+        let mut recipe = self.get_recipe(recipe_id);
+
+        // Create review key which is the creator of review and recipe_id.
+        let review_key = env::signer_account_id() + &recipe_id.to_string();
+
+        //Check if the user has already reviewed the current recipe.
+        assert!(
+            !recipe.reviews.contains(&review_key),
+            "Users can only review a recipe once.",
+        );
+
+        //Create new review
+        let review = Review {
+            id: review_key.clone(),
+            creator: env::signer_account_id(),
+            text,
+            rating: (rating as f64 * 2.0) as f64,
+            recipe_id,
+            created_at: "03/23/2022".to_string(),
+        };
+
+        //Add review to the current recipe.
+        recipe.reviews.push(review_key.clone());
+        //Add rating to the current recipe.
+        recipe.ratings.push((rating as f64 * 2.0) as f64);
+        // Update recipe average rating.
+        recipe.update_average_rating();
+
+        // Update recipe and set new review.
+        self.reviews.insert(&review_key, &review);
+        self.recipes.insert(&recipe_id, &recipe);
+    }
+
+    pub fn get_review(&mut self, id: String) -> Review {
+        self.reviews.get(&id).unwrap()
+    }
+
+    pub fn update_review(&mut self, id: String, text: String, rating: i32) {
+        let mut review = self.get_review(id.clone());
+        let mut recipe = self.get_recipe(review.recipe_id.clone());
+
+        // Check if creator is the one updating.
+        assert!(
+            review.creator == env::signer_account_id(),
+            "Review can only be updated by creator."
+        );
+
+        // Delete old rating from recipe.
+        recipe.delete_rating((review.rating.clone() as f64 * 2.0) as f64);
+
+        // Update review
+        review.text = text;
+        review.rating = (rating as f64 * 2.0) as f64;
+
+        // Update new rating from review
+        recipe.ratings.push((rating as f64 * 2.0) as f64);
+        recipe.update_average_rating();
+
+        // Update contract.
+        self.reviews.insert(&(env::signer_account_id() + &recipe.id.to_string()), &review);
+        self.recipes.insert(&recipe.id, &recipe);
+    }
+
+    pub fn get_recipe_reviews(&mut self, id: i128) -> Vec<Review> {
+        // get recipe from the id.
+        let recipe = self.get_recipe(id);
+        
+        recipe.reviews.iter().map(|review_id| self.get_review(review_id.to_string())).collect()
     }
 }
