@@ -52,4 +52,14 @@ impl Recipe {
             .cloned()
             .collect();
     }
+    
+    pub fn delete_review_id(&mut self, review_id: String) {
+        self.reviews = self
+            .reviews
+            .iter()
+            .filter(|x| x == &&review_id)
+            .map(|x| x)
+            .cloned()
+            .collect();
+    }
 }

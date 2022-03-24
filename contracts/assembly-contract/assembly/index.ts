@@ -715,7 +715,7 @@ export function deleteReview(id: string): void {
   //Set the reviewKey
   const reviewKey = `${review.creator}-${review.recipeID}`;
 
-  //Set recipe by ID
+  // Get recipe by ID
   const recipe = getRecipe(review.recipeID);
 
   //Deletes Review from recipe.

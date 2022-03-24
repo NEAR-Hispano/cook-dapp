@@ -9,7 +9,6 @@ use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
 use near_sdk::collections::UnorderedMap;
 use near_sdk::{env, near_bindgen, AccountId, Promise};
 use std::collections::HashSet;
-use std::u128;
 near_sdk::setup_alloc!();
 
 #[near_bindgen]
@@ -454,14 +453,85 @@ impl CookDApp {
         recipe.update_average_rating();
 
         // Update contract.
-        self.reviews.insert(&(env::signer_account_id() + &recipe.id.to_string()), &review);
+        self.reviews.insert(
+            &(env::signer_account_id() + &recipe.id.to_string()),
+            &review,
+        );
         self.recipes.insert(&recipe.id, &recipe);
     }
 
     pub fn get_recipe_reviews(&mut self, id: i128) -> Vec<Review> {
         // get recipe from the id.
         let recipe = self.get_recipe(id);
-        
-        recipe.reviews.iter().map(|review_id| self.get_review(review_id.to_string())).collect()
+
+        recipe
+            .reviews
+            .iter()
+            .map(|review_id| self.get_review(review_id.to_string()))
+            .collect()
+    }
+
+    pub fn delete_review(&mut self, id: String) {
+        let review = self.get_review(id);
+
+        //Check if the user who wants to delete the review is the author of it
+        assert!(
+            review.creator == env::signer_account_id(),
+            "Review can only be deleted by creator."
+        );
+
+        // Set the reviewKey
+        let review_key = env::signer_account_id() + &review.recipe_id.to_string();
+
+        // Get recipe by ID
+        let mut recipe = self.get_recipe(review.recipe_id.clone());
+
+        // Deletes Review from recipe.
+        recipe.delete_review_id(review_key.clone());
+
+        // Deletes Rating from recipe.
+        recipe.delete_rating(review.rating.clone());
+
+        //Updates the Average Rating of the recipe.
+        recipe.update_average_rating();
+
+        // Update recipe
+        self.recipes.insert(&review.recipe_id, &recipe);
+
+        // Deletes the review
+        self.reviews.remove(&review_key);
+    }
+
+    pub fn add_favorite_recipe(&mut self, recipe_id: i128) {
+        // Gets user
+        let mut user = self.get_user(Some(env::signer_account_id())).unwrap();
+
+        // Inserts recipe id, into favorite recipes.
+        user.favorite_recipes.insert(recipe_id);
+
+        // Sets user updating changes.
+        self.users.insert(&env::signer_account_id(), &user);
+    }
+
+    pub fn remove_favorite_recipe(&mut self, recipe_id: i128) {
+        // Gets user
+        let mut user = self.get_user(Some(env::signer_account_id())).unwrap();
+
+        // Removes recipe id, into favorite recipes.
+        user.favorite_recipes.remove(&recipe_id);
+
+        // Sets user updating changes.
+        self.users.insert(&env::signer_account_id(), &user);
+    }
+
+    pub fn get_user_recipes(&mut self) -> Vec<Recipe> {
+        let user = self
+            .get_user(Some(env::signer_account_id().to_string()))
+            .unwrap();
+
+        user.recipes_created
+            .iter()
+            .map(|recipe_id| self.get_recipe(*recipe_id))
+            .collect::<Vec<Recipe>>()
     }
 }
