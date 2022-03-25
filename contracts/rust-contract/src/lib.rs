@@ -525,13 +525,24 @@ impl CookDApp {
     }
 
     pub fn get_user_recipes(&mut self) -> Vec<Recipe> {
+        // Get user object.
         let user = self
             .get_user(Some(env::signer_account_id().to_string()))
             .unwrap();
 
+        // Return collection of recipes from recipes created ids of user.
         user.recipes_created
             .iter()
             .map(|recipe_id| self.get_recipe(*recipe_id))
             .collect::<Vec<Recipe>>()
+    }
+
+    pub fn get_recipes(&mut self) -> Vec<Recipe> {
+        self.recipes.values().into_iter().collect()
+    }
+
+    pub fn get_most_tiped_recipes(&mut self) {
+        self.get_recipes()
+            .sort_by(|a, b| b.total_tips.partial_cmp(&a.total_tips).unwrap())
     }
 }
