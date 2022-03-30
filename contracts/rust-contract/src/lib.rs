@@ -7,9 +7,11 @@ use crate::structs::review::Review;
 use crate::structs::user::User;
 use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
 use near_sdk::collections::UnorderedMap;
-use near_sdk::{env, near_bindgen, AccountId, Promise};
+use near_sdk::{env, near_bindgen, AccountId, Promise, Balance};
 use std::collections::HashSet;
 near_sdk::setup_alloc!();
+
+const ONE_NEAR: Balance = 1000000000000000000000000;
 
 #[near_bindgen]
 #[derive(BorshDeserialize, BorshSerialize)]
@@ -135,6 +137,7 @@ impl CookDApp {
 
     pub fn delete_recipe_book(&mut self, id: i128) {
         assert!(self.recipe_books_id >= id, "Recipe Book not found.");
+        assert!(self.get_recipe_book(id).unwrap().recipes.len() == 0, "First delete all recipes in this book.");
 
         // Get user object
         let mut user = self
@@ -159,12 +162,6 @@ impl CookDApp {
             .collect();
 
         self.users.insert(&env::signer_account_id(), &user);
-
-        // Delete each recipe in book (to be completed.)
-    }
-
-    pub fn get_current_date() -> String {
-        env::block_timestamp().to_string()
     }
 
     #[payable]
@@ -209,7 +206,7 @@ impl CookDApp {
             ratings: Vec::new(),
             average_rating: 0.0,
             total_tips: 0.0,
-            created_at: "03/17/2022".to_string(),
+            created_at: env::block_timestamp(),
         };
 
         // Get user.
@@ -346,7 +343,7 @@ impl CookDApp {
         );
 
         // Return deposit for recipe creation to creator.
-        // Promise::new(recipe.creator.to_string()).transfer(U128::from(u128::from(0.00000001)));
+        // Promise::new(recipe.creator.to_string()).transfer(U128::from(u128::from(0.00000001 * ONE_NEAR)));
 
         // Get user
         let mut user = self.get_user(Some(env::signer_account_id())).unwrap();
@@ -359,8 +356,6 @@ impl CookDApp {
             .map(|x| x)
             .cloned()
             .collect();
-
-        // Delete recipe reviews -> to be continued.
 
         // Get recipe book.
         let mut recipe_book = self.get_recipe_book(recipe.recipe_book_id.clone()).unwrap();
@@ -384,7 +379,13 @@ impl CookDApp {
         self.recipes.remove(&id);
     }
 
-    pub fn create_review(&mut self, text: String, rating: i32, recipe_id: i128) {
+    pub fn create_review(
+        &mut self,
+        text: String,
+        rating: i32,
+        recipe_id: i128,
+        created_at: String,
+    ) {
         // Check that recipe ID is valid and recipe exists.
         assert!(self.recipe_id >= recipe_id, "Recipe does not exist.");
         // Check that rating is greater or equal to 1 and equal or lesser than 10.
@@ -410,15 +411,15 @@ impl CookDApp {
             id: review_key.clone(),
             creator: env::signer_account_id(),
             text,
-            rating: (rating as f64 * 2.0) as f64,
+            rating: (rating as f64 / 2.0) as f64,
             recipe_id,
-            created_at: "03/23/2022".to_string(),
+            created_at,
         };
 
         //Add review to the current recipe.
         recipe.reviews.push(review_key.clone());
         //Add rating to the current recipe.
-        recipe.ratings.push((rating as f64 * 2.0) as f64);
+        recipe.ratings.push((rating as f64 / 2.0) as f64);
         // Update recipe average rating.
         recipe.update_average_rating();
 
@@ -442,14 +443,14 @@ impl CookDApp {
         );
 
         // Delete old rating from recipe.
-        recipe.delete_rating((review.rating.clone() as f64 * 2.0) as f64);
+        recipe.delete_rating((review.rating.clone() as f64 / 2.0) as f64);
 
         // Update review
         review.text = text;
-        review.rating = (rating as f64 * 2.0) as f64;
+        review.rating = (rating as f64 / 2.0) as f64;
 
         // Update new rating from review
-        recipe.ratings.push((rating as f64 * 2.0) as f64);
+        recipe.ratings.push((rating as f64 / 2.0) as f64);
         recipe.update_average_rating();
 
         // Update contract.
@@ -496,7 +497,7 @@ impl CookDApp {
         recipe.update_average_rating();
 
         // Update recipe
-        self.recipes.insert(&review.recipe_id, &recipe);
+        self.recipes.insert(&recipe.id, &recipe);
 
         // Deletes the review
         self.reviews.remove(&review_key);
@@ -537,12 +538,19 @@ impl CookDApp {
             .collect::<Vec<Recipe>>()
     }
 
-    pub fn get_recipes(&mut self) -> Vec<Recipe> {
+    pub fn get_recipes(&self) -> Vec<Recipe> {
         self.recipes.values().into_iter().collect()
     }
 
-    pub fn get_most_tiped_recipes(&mut self) {
-        self.get_recipes()
-            .sort_by(|a, b| b.total_tips.partial_cmp(&a.total_tips).unwrap())
+    pub fn get_most_tiped_recipes(&self) -> Vec<Recipe> {
+        let mut result = self.get_recipes();
+        result.sort_by(|a, b| b.total_tips.partial_cmp(&a.total_tips).unwrap());
+        result
+    }
+
+    pub fn get_trending_recipes(&self) -> Vec<Recipe> {
+        let mut result = self.get_recipes();
+        result.sort_by(|a, b| b.total_tips.partial_cmp(&a.total_tips).unwrap());
+        result
     }
 }

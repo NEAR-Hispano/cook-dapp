@@ -21,7 +21,7 @@ pub struct Recipe {
     pub ratings: Vec<f64>,
     pub average_rating: f64,
     pub total_tips: f64,
-    pub created_at: String,
+    pub created_at: u64,
 }
 
 impl Recipe {
@@ -47,7 +47,7 @@ impl Recipe {
         self.ratings = self
             .ratings
             .iter()
-            .filter(|x| x == &&rating)
+            .filter(|x| x != &&rating)
             .map(|x| x)
             .cloned()
             .collect();
@@ -57,7 +57,7 @@ impl Recipe {
         self.reviews = self
             .reviews
             .iter()
-            .filter(|x| x == &&review_id)
+            .filter(|x| x != &&review_id)
             .map(|x| x)
             .cloned()
             .collect();

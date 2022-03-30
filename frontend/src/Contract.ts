@@ -323,7 +323,8 @@ export class Contract {
           {
             text,
             rating: doubleRating,
-            recipeID,
+            recipe_id: recipeID,
+            created_at: new Date().toDateString()
           },
           gas
         );
