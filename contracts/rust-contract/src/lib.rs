@@ -11,7 +11,9 @@ use near_sdk::{env, near_bindgen, AccountId, Promise, Balance};
 use std::collections::HashSet;
 near_sdk::setup_alloc!();
 
+
 const ONE_NEAR: Balance = 1000000000000000000000000;
+const CREATION_NEAR_DEPOSIT: Balance = ONE_NEAR / 100;
 
 #[near_bindgen]
 #[derive(BorshDeserialize, BorshSerialize)]
@@ -188,7 +190,7 @@ impl CookDApp {
         );
 
         // Process transaction to contract.
-        Promise::new(env::predecessor_account_id()).transfer(deposit);
+        Promise::new(env::current_account_id()).transfer(deposit);
 
         // Create new recipe
         let new_recipe = Recipe {
@@ -282,7 +284,7 @@ impl CookDApp {
     }
 
     #[payable]
-    pub fn tip_recipe(&mut self, recipe_id: i128) {
+    pub fn tip_recipe(&mut self, recipe_id: i128, tip_amount: String) {
         // Check that recipe ID is valid and recipe exists.
         assert!(self.recipe_id >= recipe_id, "Recipe does not exist.");
 
@@ -307,7 +309,7 @@ impl CookDApp {
         Promise::new(recipe.creator.to_string()).transfer(amount);
 
         // Update recipe totalTips
-        recipe.total_tips += amount as f64;
+        recipe.total_tips +=  tip_amount.parse::<f64>().unwrap();
 
         // Get user that is tipping.
         let mut user_tipping = self.get_user(Some(env::signer_account_id())).unwrap();
@@ -316,10 +318,10 @@ impl CookDApp {
         let mut user_being_tipped = self.get_user(Some(recipe.creator.clone())).unwrap();
 
         // Increment Creator of recipe tips recived.
-        user_being_tipped.tips_received += amount as f64;
+        user_being_tipped.tips_received +=  tip_amount.parse::<f64>().unwrap();
 
         // Updated total tipped by user.
-        user_tipping.total_tipped += amount as f64;
+        user_tipping.total_tipped +=  tip_amount.parse::<f64>().unwrap();
 
         // Update users in persistent collection.
         self.users.insert(&env::signer_account_id(), &user_tipping);
@@ -343,7 +345,7 @@ impl CookDApp {
         );
 
         // Return deposit for recipe creation to creator.
-        // Promise::new(recipe.creator.to_string()).transfer(U128::from(u128::from(0.00000001 * ONE_NEAR)));
+        Promise::new(recipe.creator.to_string()).transfer(CREATION_NEAR_DEPOSIT);
 
         // Get user
         let mut user = self.get_user(Some(env::signer_account_id())).unwrap();
@@ -550,7 +552,7 @@ impl CookDApp {
 
     pub fn get_trending_recipes(&self) -> Vec<Recipe> {
         let mut result = self.get_recipes();
-        result.sort_by(|a, b| b.total_tips.partial_cmp(&a.total_tips).unwrap());
+        result.sort_by(|a, b| b.average_rating.partial_cmp(&a.average_rating).unwrap());
         result
     }
 }

@@ -159,7 +159,7 @@ export class Contract {
           },
           gas,
           utils.format.parseNearAmount(
-            process.env.REACT_APP_CREATE_RECIPE_DEPOSIT
+            process.env.REACT_APP_CREATE_RECIPE_MAINNET_DEPOSIT
           )
         );
       default:
@@ -245,7 +245,7 @@ export class Contract {
         );
       case "RUST":
         return (window as any).contract.tip_recipe(
-          { recipeID },
+          { recipeID, tip_amount: amount },
           gas,
           utils.format.parseNearAmount(amount)
         );

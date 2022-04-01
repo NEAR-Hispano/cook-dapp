@@ -732,51 +732,6 @@ export function deleteReview(id: string): void {
 }
 
 /**
- * Method that gets and returns User ShoppingList.
- * @returns User ShoppingList
- */
-export function getShoppingList(): ShoppingList {
-  return shoppingLists.getSome(Context.sender);
-}
-
-/**
- * Method that updates the User GroceryList in ShoppingList.
- * @param lists List of ingridients the User ShoppingList - GroceryList will be populated with.
- */
-export function updateGroceryList(lists: Array<GroceryList>): void {
-  const shoppingList = shoppingLists.getSome(Context.sender);
-  shoppingList.setGroceryLists(lists);
-  shoppingLists.set(Context.sender, shoppingList);
-}
-
-/**
- * Method that updates the User RecipeList in ShoppingList.
- * @param lists List of ingridients the User ShoppingList - RecipeList will be populated with.
- */
-export function updateRecipeList(lists: Array<RecipeList>): void {
-  const shoppingList = shoppingLists.getSome(Context.sender);
-  shoppingList.setRecipeLists(lists);
-  shoppingLists.set(Context.sender, shoppingList);
-}
-
-/**
- * Method that creates a dedicated list of recipe ingridients and adds it to the User ShoppingList.
- * @param recipeID ID of recipe which Ingridients will be added to a dedicated list in the user shopping list.
- */
-export function addRecipeList(recipeID: string): void {
-  const shoppingList = shoppingLists.getSome(Context.sender);
-  const recipe = getRecipe(recipeID);
-  const recipeList: RecipeList = new RecipeList();
-
-  recipeList.label = recipe.title;
-  recipeList.recipeID = recipe.id;
-  recipeList.ingridients = recipe.ingredients;
-
-  shoppingList.recipesLists.push(recipeList);
-  shoppingLists.set(Context.sender, shoppingList);
-}
-
-/**
  * Method that adds a recipe id to the users list of favorite recipes.
  * @param recipeID ID of recipe to be added to the User favoriteRecipes.
  */
@@ -840,4 +795,64 @@ export function getUserRecipes(accountID: AccountID): Array<Recipe> {
 
   // return list or recipes created.
   return list;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * Method that gets and returns User ShoppingList.
+ * @returns User ShoppingList
+ */
+ export function getShoppingList(): ShoppingList {
+  return shoppingLists.getSome(Context.sender);
+}
+
+/**
+ * Method that updates the User GroceryList in ShoppingList.
+ * @param lists List of ingridients the User ShoppingList - GroceryList will be populated with.
+ */
+export function updateGroceryList(lists: Array<GroceryList>): void {
+  const shoppingList = shoppingLists.getSome(Context.sender);
+  shoppingList.setGroceryLists(lists);
+  shoppingLists.set(Context.sender, shoppingList);
+}
+
+/**
+ * Method that updates the User RecipeList in ShoppingList.
+ * @param lists List of ingridients the User ShoppingList - RecipeList will be populated with.
+ */
+export function updateRecipeList(lists: Array<RecipeList>): void {
+  const shoppingList = shoppingLists.getSome(Context.sender);
+  shoppingList.setRecipeLists(lists);
+  shoppingLists.set(Context.sender, shoppingList);
+}
+
+/**
+ * Method that creates a dedicated list of recipe ingridients and adds it to the User ShoppingList.
+ * @param recipeID ID of recipe which Ingridients will be added to a dedicated list in the user shopping list.
+ */
+export function addRecipeList(recipeID: string): void {
+  const shoppingList = shoppingLists.getSome(Context.sender);
+  const recipe = getRecipe(recipeID);
+  const recipeList: RecipeList = new RecipeList();
+
+  recipeList.label = recipe.title;
+  recipeList.recipeID = recipe.id;
+  recipeList.ingridients = recipe.ingredients;
+
+  shoppingList.recipesLists.push(recipeList);
+  shoppingLists.set(Context.sender, shoppingList);
 }
