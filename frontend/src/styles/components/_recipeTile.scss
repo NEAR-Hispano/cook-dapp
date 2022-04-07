@@ -8,6 +8,7 @@
   width: 100%;
   min-width: 100%;
   max-width: 100%;
+  overflow: hidden;
 
   & img {
     width: 100%;
@@ -16,6 +17,8 @@
     height: calc(55%);
     max-height: calc(55%);
     min-height: calc(55%);
+    border: solid;
+    border-bottom: 0;
   }
 
   @media screen and (max-width: 620px) {    

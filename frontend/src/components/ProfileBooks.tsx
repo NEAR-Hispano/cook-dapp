@@ -31,7 +31,7 @@ const ProfileBooks: FC<Props> = ({ profile }) => {
     if (contract && profile) {      
       contract
         .getUserRecipeBooks({
-          accountID: profile.accountID,
+          accountID: profile.accountId,
         })
         .then((recipeBooksList: Array<recipeBookInterface>) => {
           setRecipeBooks(recipeBooksList);
@@ -70,7 +70,7 @@ const ProfileBooks: FC<Props> = ({ profile }) => {
             <div className="books-wrapper">
               {user &&
                 profile &&
-                user.accountID === profile.accountID &&
+                user.accountId === profile.accountId &&
                 recipeBooks && <CreateRecipeBook />}
 
               {recipeBooks.map((recipeBook, index) => (

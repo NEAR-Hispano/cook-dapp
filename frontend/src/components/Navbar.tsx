@@ -36,7 +36,7 @@ const Navbar: FC = () => {
 
   useEffect(() => {
     if (isLoggedIn && user) {
-      setAccount(user.accountID);
+      setAccount(user.accountId);
     }
   }, [isLoggedIn, user]);
 

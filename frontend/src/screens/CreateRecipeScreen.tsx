@@ -72,7 +72,7 @@ const CreateRecipeScreen: FC<Props> = () => {
   useEffect(() => {
     if (contract && user && !userRecipeBooks) {
       contract
-        .getUserRecipeBooks({ accountID: user.accountID })
+        .getUserRecipeBooks({ accountID: user.accountId })
         .then((recipeBooks: Array<recipeBookInterface>) =>
           setUserRecipeBooks(recipeBooks)
         );
@@ -136,7 +136,7 @@ const CreateRecipeScreen: FC<Props> = () => {
   function editIngridientAmount(index: number, amount: string) {
     const editedIngredients = ingredients;
     const editedIngredient = ingredients[index];
-    editedIngredient.amount = amount;
+    editedIngredient.amount = parseInt(amount);
     editedIngredients[index] = editedIngredient;
     setIngredients(editedIngredients);
     resetChanges();
@@ -172,7 +172,7 @@ const CreateRecipeScreen: FC<Props> = () => {
     details: string
   ) {
     const editedIngredients = ingredients;
-    editedIngredients.push({ label, amount, unit, details });
+    editedIngredients.push({ label, amount: parseInt(amount), unit, details });
     setIngredients(editedIngredients);
     resetChanges();
   }
@@ -242,7 +242,6 @@ const CreateRecipeScreen: FC<Props> = () => {
           <EditableText
             onBlur={(e) => setTitle(e.currentTarget.innerText)}
             isEditable={true}
-            setHasTextLengthError={setHasTextLengthError}
             textType={"title"}
           >
             {title ? title : translate("click_to_edit_title")}
@@ -368,7 +367,6 @@ const CreateRecipeScreen: FC<Props> = () => {
           <EditableText
             onBlur={(e) => setDescription(e.currentTarget.innerText)}
             isEditable={true}
-            setHasTextLengthError={setHasTextLengthError}
             textType="description"
           >
             {description
@@ -431,7 +429,6 @@ const CreateRecipeScreen: FC<Props> = () => {
                   className="step-description cursor-pointer"
                   isEditable={true}
                   onBlur={(e) => editStep(index, e.currentTarget.innerText)}
-                  setHasTextLengthError={setHasTextLengthError}
                   textType="description"
                 >
                   {instruction}
@@ -454,13 +451,32 @@ const CreateRecipeScreen: FC<Props> = () => {
                   type="text"
                   name="label"
                   id={"label"}
+                  minLength={150}
+                  maxLength={1000}
                   onChange={(e) => setNewStep(e.currentTarget.value)}
                 />
               </div>
             </div>
 
             <div className="add-step-button-wrapper">
-              <button onClick={() => editAddStep()}>
+              <button
+                onClick={() => {
+                  if (newStep && newStep.length < 150) {
+                    toast.dismiss();
+                    toast(translate("length is to short."), {
+                      position: "bottom-right",
+                      autoClose: 2000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                    });
+                  } else {
+                    editAddStep();
+                  }
+                }}
+              >
                 <small>{translate("add_new_step")}</small>
               </button>
             </div>
@@ -477,7 +493,6 @@ const CreateRecipeScreen: FC<Props> = () => {
           <EditableText
             isEditable={true}
             onBlur={(e) => setChefNote(e.currentTarget.innerText)}
-            setHasTextLengthError={setHasTextLengthError}
             textType="description"
           >
             {chefNote

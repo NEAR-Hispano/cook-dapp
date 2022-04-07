@@ -45,9 +45,9 @@ export async function initContract() {
         "getShoppingList",
         "get_shopping_list",
         "getUserRecipeBooks",
-        "get_user_recipe_books",
         "getUserRecipes",
         "get_user_recipes",
+        "get_user_recipe_books",
       ],
       // Change methods can modify the state. But you don't receive the returned value when called.
       changeMethods: [

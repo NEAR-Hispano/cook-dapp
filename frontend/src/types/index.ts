@@ -33,7 +33,7 @@ export interface imageInterface {
 
 export interface ingredientInterface {
   label: string;
-  amount: number | string;
+  amount: number;
   unit: string;
   details: string;
 }
@@ -50,7 +50,7 @@ export interface recipeListInterface {
 }
 
 export interface userInterface {
-  accountID: AccountID;
+  accountId: AccountID;
   favoriteRecipes: Array<string>;
   recipesCreated: Array<string>;
   recipeBooksCreated: Array<string>;

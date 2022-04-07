@@ -51,7 +51,7 @@ const RecipesGallery: FC<Props> = ({
 
   return (
     <div className="recipes-gallery">
-      {allowCreate && profile && user && profile.accountID === user.accountID && recipes && (
+      {allowCreate && profile && user && profile.accountId === user.accountId && recipes && (
         <Link to="/recipe/create" className="recipe-tile-container create-recipe-tile">
           <div className="recipe-message">
             <small>{translate("create recipe")}</small>

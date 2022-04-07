@@ -18,7 +18,7 @@ const ProfileScreen: FC = () => {
   const translate = useTranslator();
 
   function copyAccountID() {
-    if (profile) copy(profile.accountID);
+    if (profile) copy(profile.accountId);
   }
 
   useEffect(() => {
@@ -36,12 +36,12 @@ const ProfileScreen: FC = () => {
       <div className="header">
         <div className="avatar-container">
           <div className="avatar">
-            <small>{profile && profile.accountID.split("")[0]}</small>
+            <small>{profile && profile.accountId.split("")[0]}</small>
           </div>
           
           <div className="accountID-container">            
             <small onClick={() => copyAccountID()} className="accountID">
-              {profile && profile.accountID}
+              {profile && profile.accountId}
             </small>
           </div>
  
@@ -66,7 +66,6 @@ const ProfileScreen: FC = () => {
             </div>
           ))}
       </div>
-
       
     </div>
   );

@@ -106,6 +106,8 @@ const IngredientsTable: FC<Props> = ({
                   name="unit"
                   id={"unit"}
                   value={unit}
+                  minLength={10}
+                  maxLength={30}
                   onChange={(e) => setUnit(e.currentTarget.value)}
                 />
               </div>
@@ -121,6 +123,8 @@ const IngredientsTable: FC<Props> = ({
                   name="label"
                   id={"label"}
                   value={label}
+                  minLength={10}
+                  maxLength={30}
                   onChange={(e) => setLabel(e.currentTarget.value)}
                 />
               </div>
@@ -136,6 +140,8 @@ const IngredientsTable: FC<Props> = ({
                   name="label"
                   id={"label"}
                   value={details}
+                  minLength={10}
+                  maxLength={30}
                   onChange={(e) => setDetails(e.currentTarget.value)}
                 />
               </div>
@@ -144,21 +150,41 @@ const IngredientsTable: FC<Props> = ({
 
           <div className="add-ingridient-button-wrapper">
             <button
-              onClick={() =>
-                editAddIngredient(label, String(amount), unit, details)
-              }
+              onClick={() => {
+                if (
+                  label.length > 0 &&
+                  amount > 0 &&
+                  unit.length > 0 &&
+                  details.length > 0
+                ) {
+                  editAddIngredient(label, String(amount), unit, details);
+                } else {
+                  toast.dismiss();
+                  toast(translate("Please fill missing fields."), {
+                    position: "bottom-right",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                  });
+                }
+              }}
             >
               <small>{translate("add_ingredient")}</small>
             </button>
           </div>
         </div>
-      ) : recipeID? (
-        <div className="ingredients-action-button-container">
+      ) : recipeID ? (
+        <>
+          {/* <div className="ingredients-action-button-container">
           <div className="button" onClick={() => addRecipeList()}>
             <small>{translate("add_recipe_list")}</small>
             <PlusIcon size={20} />
           </div>
-        </div>
+        </div> */}
+        </>
       ) : null}
     </div>
   );

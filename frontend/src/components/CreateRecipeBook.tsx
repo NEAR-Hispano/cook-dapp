@@ -16,9 +16,6 @@ const CreateRecipeBook: FC<Props> = () => {
   const [title, setTitle] = useState<string | null>("Book title here");
   const [banner, setBanner] = useState<imageInterface | null>(null);
   const [isUploadingImage, setIsUploadingImage] = useState<boolean>(false);
-  const [hasTextLengthError, setHasTextLengthError] = useState<string | null>(
-    null
-  );
 
   function createRecipeBook() {
     if (!title) {
@@ -111,7 +108,6 @@ const CreateRecipeBook: FC<Props> = () => {
             className="create-recipe-book-title"
             onBlur={(e) => setTitle(e.currentTarget.innerText)}
             isEditable={true}
-            setHasTextLengthError={setHasTextLengthError}
             textType="title"
           >
             {title && title}

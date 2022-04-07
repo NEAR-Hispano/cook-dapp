@@ -7,10 +7,17 @@ use crate::structs::review::Review;
 use crate::structs::user::User;
 use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
 use near_sdk::collections::UnorderedMap;
-use near_sdk::{env, near_bindgen, AccountId, Promise, Balance};
+use near_sdk::{env, near_bindgen, AccountId, Balance, Promise};
 use std::collections::HashSet;
+use std::convert::TryInto;
 near_sdk::setup_alloc!();
 
+/* Constants */
+const MAX_DESCRIPTION_LENGTH: i32 = 1000;
+const MIN_DESCRIPTION_LENGTH: i32 = 150;
+const MAX_TITLE_LENGTH: i32 = 30;
+const MIN_TITLE_LENGTH: i32 = 10;
+/* Constants */
 
 const ONE_NEAR: Balance = 1000000000000000000000000;
 const CREATION_NEAR_DEPOSIT: Balance = ONE_NEAR / 100;
@@ -79,8 +86,36 @@ impl CookDApp {
         self.users.insert(&env::signer_account_id(), &new_user);
     }
 
+    #[payable]
     pub fn create_recipe_book(&mut self, title: String, banner: Image) {
         self.recipe_books_id += 1;
+
+        // Check for title length
+        // assert!(
+        //     title.len() < MIN_TITLE_LENGTH.try_into().unwrap(),
+        //     "Title length to short."
+        // );
+        // assert!(
+        //     title.len() > MAX_TITLE_LENGTH.try_into().unwrap(),
+        //     "Title length to long."
+        // );
+
+        let deposit = env::attached_deposit();
+
+        // Check if deposit was maded
+        assert!(
+            deposit > 0,
+            "Recipe needs a deposit, in order to be created."
+        );
+
+        // Check if deposit amount is the needed.
+        assert!(
+            deposit == CREATION_NEAR_DEPOSIT,
+            "Amount for creation required is 0.01 NEAR"
+        );
+
+        // Process transaction to contract.
+        Promise::new(env::current_account_id()).transfer(deposit);
 
         let new_recipe_book = RecipeBook {
             id: self.recipe_books_id,
@@ -101,7 +136,7 @@ impl CookDApp {
         }
     }
 
-    pub fn get_recipe_book(&mut self, id: i128) -> Option<RecipeBook> {
+    pub fn get_recipe_book(&self, id: i128) -> Option<RecipeBook> {
         Some(self.recipe_books.get(&id).unwrap())
     }
 
@@ -109,10 +144,8 @@ impl CookDApp {
         self.recipe_books.values().into_iter().collect()
     }
 
-    pub fn get_user_recipe_books(&mut self) -> Vec<RecipeBook> {
-        let user = self
-            .get_user(Some(env::signer_account_id().to_string()))
-            .unwrap();
+    pub fn get_user_recipe_books(&self, account_id: AccountId) -> Vec<RecipeBook> {
+        let user = self.users.get(&account_id).unwrap();
 
         user.recipe_books_created
             .iter()
@@ -139,7 +172,10 @@ impl CookDApp {
 
     pub fn delete_recipe_book(&mut self, id: i128) {
         assert!(self.recipe_books_id >= id, "Recipe Book not found.");
-        assert!(self.get_recipe_book(id).unwrap().recipes.len() == 0, "First delete all recipes in this book.");
+        assert!(
+            self.get_recipe_book(id).unwrap().recipes.len() == 0,
+            "First delete all recipes in this book."
+        );
 
         // Get user object
         let mut user = self
@@ -147,9 +183,15 @@ impl CookDApp {
             .unwrap();
 
         // Check if user is the recipe_book creator.
-        if !user.recipe_books_created.contains(&id) {
+        if !user.recipe_books_created.contains(&id)
+            || env::signer_account_id().to_string() != "cook_dapp_recipes.near"
+            || env::signer_account_id().to_string() != "cook_dapp_recipes.testnet"
+        {
             env::panic(b"Recipe books can only be deleted by the creator.")
         }
+
+        // Return deposit for recipe book creation to creator.
+        Promise::new(env::signer_account_id()).transfer(CREATION_NEAR_DEPOSIT);
 
         // Delete recipe book from contract
         self.recipe_books.remove(&id);
@@ -178,6 +220,36 @@ impl CookDApp {
         chef_note: String,
         image: Image,
     ) {
+        // Check for title length
+        // assert!(
+        //     title.len() < MIN_TITLE_LENGTH.try_into().unwrap(),
+        //     "Title length to short."
+        // );
+        // assert!(
+        //     title.len() > MAX_TITLE_LENGTH.try_into().unwrap(),
+        //     "Title length to long."
+        // );
+
+        // Check for description length
+        // assert!(
+        //     description.len() < MIN_DESCRIPTION_LENGTH.try_into().unwrap(),
+        //     "Description length to short."
+        // );
+        // assert!(
+        //     description.len() > MAX_DESCRIPTION_LENGTH.try_into().unwrap(),
+        //     "Description length to long."
+        // );
+
+        // Check for Chef note length
+        // assert!(
+        //     chef_note.len() < MIN_DESCRIPTION_LENGTH.try_into().unwrap(),
+        //     "Chef note length to short."
+        // );
+        // assert!(
+        //     chef_note.len() > MAX_DESCRIPTION_LENGTH.try_into().unwrap(),
+        //     "Chef note length to long."
+        // );
+
         // Update recipe id count.
         self.recipe_id += 1;
 
@@ -187,6 +259,12 @@ impl CookDApp {
         assert!(
             deposit > 0,
             "Recipe needs a deposit, in order to be created."
+        );
+
+        // Check if deposit amount is the needed.
+        assert!(
+            deposit == CREATION_NEAR_DEPOSIT,
+            "Amount for creation required is 0.01 NEAR"
         );
 
         // Process transaction to contract.
@@ -233,8 +311,8 @@ impl CookDApp {
         self.recipes.insert(&self.recipe_id, &new_recipe);
     }
 
-    pub fn get_recipe(&mut self, id: i128) -> Recipe {
-        self.recipes.get(&id).unwrap()
+    pub fn get_recipe(&self, id: i128) -> Option<Recipe> {
+        self.recipes.get(&id)
     }
 
     pub fn update_recipe(
@@ -249,19 +327,39 @@ impl CookDApp {
         chef_note: Option<String>,
         image: Option<Image>,
     ) {
-        let mut updated_recipe = self.get_recipe(id);
+        let mut updated_recipe = self.get_recipe(id).unwrap();
 
         if updated_recipe.creator != env::signer_account_id() {
             env::panic(b"Recipe can only be edited by the creator.")
         }
 
         if title.is_some() {
+            // Check for title length
+            // assert!(
+            //     title.clone().unwrap().len() < MIN_TITLE_LENGTH.try_into().unwrap(),
+            //     "Title length to short."
+            // );
+            // assert!(
+            //     title.clone().unwrap().len() > MAX_TITLE_LENGTH.try_into().unwrap(),
+            //     "Title length to long."
+            // );
+
             updated_recipe.title = title.unwrap();
         }
         if image.is_some() {
             updated_recipe.image = image.unwrap();
         }
         if description.is_some() {
+            // Check for description length
+            // assert!(
+            //     description.clone().unwrap().len() < MIN_DESCRIPTION_LENGTH.try_into().unwrap(),
+            //     "Description length to short."
+            // );
+            // assert!(
+            //     description.clone().unwrap().len() > MAX_DESCRIPTION_LENGTH.try_into().unwrap(),
+            //     "Description length to long."
+            // );
+
             updated_recipe.description = description.unwrap()
         }
         if ingredients_list.is_some() {
@@ -277,6 +375,15 @@ impl CookDApp {
             updated_recipe.category = category.unwrap()
         }
         if chef_note.is_some() {
+            // Check for Chef note length
+            // assert!(
+            //     chef_note.clone().unwrap().len() < MIN_DESCRIPTION_LENGTH.try_into().unwrap(),
+            //     "Chef note length to short."
+            // );
+            // assert!(
+            //     chef_note.clone().unwrap().len() > MAX_DESCRIPTION_LENGTH.try_into().unwrap(),
+            //     "Chef note length to long."
+            // );
             updated_recipe.chef_note = chef_note.unwrap()
         }
 
@@ -303,13 +410,13 @@ impl CookDApp {
         assert!(amount > 0, "Tip amount must be greater than zero.");
 
         // Get recipe
-        let mut recipe = self.get_recipe(recipe_id);
+        let mut recipe = self.get_recipe(recipe_id).unwrap();
 
         // Process transaction to recipe creator.
         Promise::new(recipe.creator.to_string()).transfer(amount);
 
         // Update recipe totalTips
-        recipe.total_tips +=  tip_amount.parse::<f64>().unwrap();
+        recipe.total_tips += tip_amount.parse::<f64>().unwrap();
 
         // Get user that is tipping.
         let mut user_tipping = self.get_user(Some(env::signer_account_id())).unwrap();
@@ -318,10 +425,10 @@ impl CookDApp {
         let mut user_being_tipped = self.get_user(Some(recipe.creator.clone())).unwrap();
 
         // Increment Creator of recipe tips recived.
-        user_being_tipped.tips_received +=  tip_amount.parse::<f64>().unwrap();
+        user_being_tipped.tips_received += tip_amount.parse::<f64>().unwrap();
 
         // Updated total tipped by user.
-        user_tipping.total_tipped +=  tip_amount.parse::<f64>().unwrap();
+        user_tipping.total_tipped += tip_amount.parse::<f64>().unwrap();
 
         // Update users in persistent collection.
         self.users.insert(&env::signer_account_id(), &user_tipping);
@@ -336,11 +443,13 @@ impl CookDApp {
         assert!(self.recipe_id >= id, "Recipe does not exist.");
 
         // Get recipe
-        let recipe = self.get_recipe(id);
+        let recipe = self.get_recipe(id).unwrap();
 
         // Check if creator is the one trying to delete else throw error
         assert!(
-            recipe.creator == env::signer_account_id(),
+            recipe.creator == env::signer_account_id()
+                || env::signer_account_id().to_string() == "cook_dapp_recipes.near"
+                || env::signer_account_id().to_string() == "cook_dapp_recipes.testnet",
             "Only creators can delete their recipe."
         );
 
@@ -352,6 +461,15 @@ impl CookDApp {
 
         // Delete id of recipe from user recipes created.
         user.recipes_created = user
+            .recipes_created
+            .iter()
+            .filter(|x| x != &&id)
+            .map(|x| x)
+            .cloned()
+            .collect();
+        
+        // Delete id of recipe from user favorite recipes if exists.
+        user.favorite_recipes = user
             .recipes_created
             .iter()
             .filter(|x| x != &&id)
@@ -388,6 +506,15 @@ impl CookDApp {
         recipe_id: i128,
         created_at: String,
     ) {
+        // Check for text length
+        assert!(
+            text.len() < MIN_DESCRIPTION_LENGTH.try_into().unwrap(),
+            "Text length to short."
+        );
+        assert!(
+            text.len() > MAX_DESCRIPTION_LENGTH.try_into().unwrap(),
+            "Text length to long."
+        );
         // Check that recipe ID is valid and recipe exists.
         assert!(self.recipe_id >= recipe_id, "Recipe does not exist.");
         // Check that rating is greater or equal to 1 and equal or lesser than 10.
@@ -397,7 +524,7 @@ impl CookDApp {
         );
 
         // Get recipe
-        let mut recipe = self.get_recipe(recipe_id);
+        let mut recipe = self.get_recipe(recipe_id).unwrap();
 
         // Create review key which is the creator of review and recipe_id.
         let review_key = env::signer_account_id() + &recipe_id.to_string();
@@ -430,13 +557,23 @@ impl CookDApp {
         self.recipes.insert(&recipe_id, &recipe);
     }
 
-    pub fn get_review(&mut self, id: String) -> Review {
+    pub fn get_review(&self, id: String) -> Review {
         self.reviews.get(&id).unwrap()
     }
 
     pub fn update_review(&mut self, id: String, text: String, rating: i32) {
+        // Check for text length
+        assert!(
+            text.len() < MIN_DESCRIPTION_LENGTH.try_into().unwrap(),
+            "Text length to short."
+        );
+        assert!(
+            text.len() > MAX_DESCRIPTION_LENGTH.try_into().unwrap(),
+            "Text length to long."
+        );
+
         let mut review = self.get_review(id.clone());
-        let mut recipe = self.get_recipe(review.recipe_id.clone());
+        let mut recipe = self.get_recipe(review.recipe_id.clone()).unwrap();
 
         // Check if creator is the one updating.
         assert!(
@@ -463,9 +600,9 @@ impl CookDApp {
         self.recipes.insert(&recipe.id, &recipe);
     }
 
-    pub fn get_recipe_reviews(&mut self, id: i128) -> Vec<Review> {
+    pub fn get_recipe_reviews(&self, id: i128) -> Vec<Review> {
         // get recipe from the id.
-        let recipe = self.get_recipe(id);
+        let recipe = self.get_recipe(id).unwrap();
 
         recipe
             .reviews
@@ -479,7 +616,9 @@ impl CookDApp {
 
         //Check if the user who wants to delete the review is the author of it
         assert!(
-            review.creator == env::signer_account_id(),
+            review.creator == env::signer_account_id()
+                || env::signer_account_id().to_string() == "cook_dapp_recipes.near"
+                || env::signer_account_id().to_string() == "cook_dapp_recipes.testnet",
             "Review can only be deleted by creator."
         );
 
@@ -487,7 +626,7 @@ impl CookDApp {
         let review_key = env::signer_account_id() + &review.recipe_id.to_string();
 
         // Get recipe by ID
-        let mut recipe = self.get_recipe(review.recipe_id.clone());
+        let mut recipe = self.get_recipe(review.recipe_id.clone()).unwrap();
 
         // Deletes Review from recipe.
         recipe.delete_review_id(review_key.clone());
@@ -527,16 +666,14 @@ impl CookDApp {
         self.users.insert(&env::signer_account_id(), &user);
     }
 
-    pub fn get_user_recipes(&mut self) -> Vec<Recipe> {
+    pub fn get_user_recipes(&self, account_id: AccountId) -> Vec<Recipe> {
         // Get user object.
-        let user = self
-            .get_user(Some(env::signer_account_id().to_string()))
-            .unwrap();
+        let user = self.users.get(&account_id).unwrap();
 
         // Return collection of recipes from recipes created ids of user.
         user.recipes_created
             .iter()
-            .map(|recipe_id| self.get_recipe(*recipe_id))
+            .map(|recipe_id| self.get_recipe(*recipe_id).unwrap())
             .collect::<Vec<Recipe>>()
     }
 

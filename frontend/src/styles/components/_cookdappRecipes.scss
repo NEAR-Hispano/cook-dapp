@@ -1,6 +1,5 @@
 .cook-dapp-recipes-row {
   .swiper {
-    // display: none;
     margin: 20px;
     width: calc(100% - 40px);
     height: 100%;
@@ -18,6 +17,7 @@
     width: 33.33%;
     cursor: grab;
     overflow: hidden;
+    // border: solid;
 
     .title {
       position: absolute;

@@ -489,7 +489,7 @@ const RecipeScreen: FC<Props> = () => {
         )}
       </div>
 
-      {recipe && user && recipe.creator === user.accountID && !editingMode && (
+      {recipe && user && recipe.creator === user.accountId && !editingMode && (
         <div className="edit-recipe-action-buttons-wrapper">
           <div
             className="edit-button-wrapper cursor-pointer"
@@ -506,7 +506,7 @@ const RecipeScreen: FC<Props> = () => {
         </div>
       )}
 
-      {recipe && user && recipe.creator === user.accountID && editingMode && (
+      {recipe && user && recipe.creator === user.accountId && editingMode && (
         <div className="edit-recipe-action-buttons-wrapper">
           <div
             className="reset-button-wrapper cursor-pointer"
@@ -528,7 +528,6 @@ const RecipeScreen: FC<Props> = () => {
           <EditableText
             onBlur={(e) => editTitle(e.currentTarget.innerText)}
             isEditable={editingMode}
-            setHasTextLengthError={setHasTextLengthError}
             textType={"title"}
           >
             {recipe && recipe.title}
@@ -607,7 +606,6 @@ const RecipeScreen: FC<Props> = () => {
           <EditableText
             onBlur={(e) => editDescription(e.currentTarget.innerText)}
             isEditable={editingMode}
-            setHasTextLengthError={setHasTextLengthError}
             textType={"description"}
           >
             {recipe && recipe.description}
@@ -674,7 +672,6 @@ const RecipeScreen: FC<Props> = () => {
                   onBlur={(e) =>
                     editInstructions(index, e.currentTarget.innerText)
                   }
-                  setHasTextLengthError={setHasTextLengthError}
                   textType="description"
                 >
                   {instruction}
@@ -723,7 +720,6 @@ const RecipeScreen: FC<Props> = () => {
             <EditableText
               isEditable={editingMode}
               onBlur={(e) => editChefNote(e.currentTarget.innerText)}
-              setHasTextLengthError={setHasTextLengthError}
               textType="description"
             >
               {recipe.chefNote}
@@ -740,7 +736,7 @@ const RecipeScreen: FC<Props> = () => {
           <ListIcon size={30} />
         </div>
         <div className="information-container">
-          {user && recipe && user.accountID !== recipe.creator && (
+          {user && recipe && user.accountId !== recipe.creator && (
             <CreateReview recipeID={recipe.id} />
           )}
           {recipe && recipe.reviews.length > 0 ? (

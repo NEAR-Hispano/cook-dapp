@@ -1,5 +1,4 @@
 import { FC, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import useTranslator from "../hooks/useTranslator";
 import validateTextLength from "../utils/validateTextLength";
@@ -8,7 +7,6 @@ interface Props {
   onBlur: (e: React.FormEvent<HTMLDivElement>) => void;
   isEditable: boolean;
   className?: string;
-  setHasTextLengthError?: React.Dispatch<React.SetStateAction<string | null>>;
   textType?: "title" | "description";
 }
 
@@ -17,33 +15,52 @@ const EditableText: FC<Props> = ({
   onBlur,
   children,
   className = "",
-  setHasTextLengthError,
   textType,
 }) => {
   const [lengthError, setLengthError] = useState<null | string>("");
-  const [text, setText] = useState<string | null>(null);
+  const [text, setText] = useState<string>(children?.toString() || "");
   const translate = useTranslator();
 
   useEffect(() => {
-    if (setHasTextLengthError !== null && textType && text) {
+    if (textType && text) {
       setLengthError(validateTextLength({ textType, text }));
     }
-  }, [children, text]);
+  }, [text]);
+  
+  useEffect(() => {
+    if(lengthError) {
+      toast.dismiss()
+      toast(translate(lengthError), {
+        position: "bottom-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+  }, [lengthError]);
 
   return (
     <div
       className={`${className} editable-text`}
       onBlur={(e) => {
-        setText(e.currentTarget.innerText);
         onBlur(e);
+      }}
+      onKeyDown={(e) => {
+        if(e.key === "Backspace" && lengthError === "length is to long.") {
+          setLengthError(null)
+        }
+        if(e.key !== "Backspace" && lengthError === "length is to long.") {
+          e.preventDefault()
+        }
+      }}
+      onInput={(e) => {
+        setText(e.currentTarget.innerText);
       }}
       contentEditable={isEditable}
       suppressContentEditableWarning
-      style={{
-        backgroundColor: lengthError ? "#ffcccb" : "white",
-        padding: "5px",
-        borderRadius: "2px",
-      }}
       title={(lengthError && lengthError) || ""}
     >
       {children}

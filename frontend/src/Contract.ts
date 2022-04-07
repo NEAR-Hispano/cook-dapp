@@ -6,12 +6,13 @@ import {
 } from "./types/index";
 import { utils } from "near-api-js";
 import { imageInterface } from "./types";
+import camelcaseKeys from "camelcase-keys";
 
 // Gas.
 const gas = 300000000000000;
 
 // Choose smart contract to use, options are AS = Assemblyscript | RUST = Rust.
-let CONTRACT_LANG: "AS" | "RUST" = "AS";
+let CONTRACT_LANG: "AS" | "RUST" = "RUST";
 
 const InvalidContractLangError = new Error(
   "Please choose a valid contract language, it should be either RUST or AS."
@@ -26,9 +27,9 @@ export class Contract {
   getUser({ accountID = null }: { accountID: string | null }) {
     switch (CONTRACT_LANG) {
       case "AS":
-        return (window as any).contract.getUser({ accountID });
+        return (window as any).contract.getUser({ accountID }).then((result: any) => camelcaseKeys(result, { deep: true }));
       case "RUST":
-        return (window as any).contract.get_user({ accountID });
+        return (window as any).contract.get_user({ account_id: accountID }).then((result: any) => camelcaseKeys(result, { deep: true }));
       default:
         throw InvalidContractLangError;
     }
@@ -46,12 +47,15 @@ export class Contract {
         return (window as any).contract.createRecipeBook(
           { title, banner },
           gas
-        );
+        ).then((result: any) => camelcaseKeys(result, { deep: true }));
       case "RUST":
         return (window as any).contract.create_recipe_book(
           { title, banner },
-          gas
-        );
+          gas,
+          utils.format.parseNearAmount(
+            process.env.REACT_APP_CREATION_DEPOSIT
+          )
+        ).then((result: any) => camelcaseKeys(result, { deep: true }));
       default:
         throw InvalidContractLangError;
     }
@@ -60,9 +64,9 @@ export class Contract {
   getRecipeBook({ id }: { id: string }) {
     switch (CONTRACT_LANG) {
       case "AS":
-        return (window as any).contract.getRecipeBook({ id });
+        return (window as any).contract.getRecipeBook({ id }).then((result: any) => camelcaseKeys(result, { deep: true }));
       case "RUST":
-        return (window as any).contract.get_recipe_book({ id });
+        return (window as any).contract.get_recipe_book({ id }).then((result: any) => camelcaseKeys(result, { deep: true }));
       default:
         throw InvalidContractLangError;
     }
@@ -82,7 +86,7 @@ export class Contract {
         return (window as any).contract.updateRecipeBook(
           { id, title, banner },
           gas
-        );
+        ).then((result: any) => camelcaseKeys(result, { deep: true }));
       case "RUST":
         return (window as any).contract.update_recipe_book(
           {
@@ -91,7 +95,7 @@ export class Contract {
             banner,
           },
           gas
-        );
+        ).then((result: any) => camelcaseKeys(result, { deep: true }));
       default:
         throw InvalidContractLangError;
     }
@@ -100,9 +104,9 @@ export class Contract {
   deleteRecipeBook({ id }: { id: string }) {
     switch (CONTRACT_LANG) {
       case "AS":
-        return (window as any).contract.deleteRecipeBook({ id });
+        return (window as any).contract.deleteRecipeBook({ id }).then((result: any) => camelcaseKeys(result, { deep: true }));
       case "RUST":
-        return (window as any).contract.delete_recipe_book({ id });
+        return (window as any).contract.delete_recipe_book({ id }).then((result: any) => camelcaseKeys(result, { deep: true }));
       default:
         throw InvalidContractLangError;
     }
@@ -142,9 +146,9 @@ export class Contract {
           },
           gas,
           utils.format.parseNearAmount(
-            process.env.REACT_APP_CREATE_RECIPE_DEPOSIT
+            process.env.REACT_APP_CREATION_DEPOSIT
           )
-        );
+        ).then((result: any) => camelcaseKeys(result, { deep: true }));
       case "RUST":
         return (window as any).contract.create_recipe(
           {
@@ -152,16 +156,16 @@ export class Contract {
             description,
             ingredients_list: ingridientsList,
             instructions,
-            recipe_book_id: recipeBookID,
+            recipe_book_id: parseInt(recipeBookID),
             category,
             chef_note: chefNote,
             image,
           },
           gas,
           utils.format.parseNearAmount(
-            process.env.REACT_APP_CREATE_RECIPE_MAINNET_DEPOSIT
+            process.env.REACT_APP_CREATION_DEPOSIT
           )
-        );
+        ).then((result: any) => camelcaseKeys(result, { deep: true }));
       default:
         throw InvalidContractLangError;
     }
@@ -170,9 +174,9 @@ export class Contract {
   getRecipe({ id }: { id: string }) {
     switch (CONTRACT_LANG) {
       case "AS":
-        return (window as any).contract.getRecipe({ id });
+        return (window as any).contract.getRecipe({ id }).then((result: any) => camelcaseKeys(result, { deep: true }));
       case "RUST":
-        return (window as any).contract.get_recipe({ id });
+        return (window as any).contract.get_recipe({ id: parseInt(id) }).then((result: any) => camelcaseKeys(result, { deep: true }));
       default:
         throw InvalidContractLangError;
     }
@@ -214,22 +218,22 @@ export class Contract {
             image,
           },
           300000000000000
-        );
+        ).then((result: any) => camelcaseKeys(result, { deep: true }));
       case "RUST":
         return (window as any).contract.update_recipe(
           {
             id,
             title,
             description,
-            ingridients,
+            ingredients_list: ingridients,
             instructions,
-            recipeBookID,
+            recipe_book_id: recipeBookID,
             category,
-            chefNote,
+            chef_note: chefNote,
             image,
           },
           300000000000000
-        );
+        ).then((result: any) => camelcaseKeys(result, { deep: true }));
       default:
         throw InvalidContractLangError;
     }
@@ -242,13 +246,13 @@ export class Contract {
           { recipeID },
           gas,
           utils.format.parseNearAmount(amount)
-        );
+        ).then((result: any) => camelcaseKeys(result, { deep: true }));
       case "RUST":
         return (window as any).contract.tip_recipe(
-          { recipeID, tip_amount: amount },
+          { recipe_id: recipeID, tip_amount: amount },
           gas,
           utils.format.parseNearAmount(amount)
-        );
+        ).then((result: any) => camelcaseKeys(result, { deep: true }));
       default:
         throw InvalidContractLangError;
     }
@@ -257,9 +261,9 @@ export class Contract {
   getRecipes() {
     switch (CONTRACT_LANG) {
       case "AS":
-        return (window as any).contract.getRecipes({});
+        return (window as any).contract.getRecipes({}).then((result: any) => camelcaseKeys(result, { deep: true }));
       case "RUST":
-        return (window as any).contract.get_recipes({});
+        return (window as any).contract.get_recipes({}).then((result: any) => camelcaseKeys(result, { deep: true }));
       default:
         throw InvalidContractLangError;
     }
@@ -268,9 +272,9 @@ export class Contract {
   getTrendingRecipes() {
     switch (CONTRACT_LANG) {
       case "AS":
-        return (window as any).contract.getTrendingRecipes({});
+        return (window as any).contract.getTrendingRecipes({}).then((result: any) => camelcaseKeys(result, { deep: true }));
       case "RUST":
-        return (window as any).contract.get_trending_recipes({});
+        return (window as any).contract.get_trending_recipes({}).then((result: any) => camelcaseKeys(result, { deep: true }));
       default:
         throw InvalidContractLangError;
     }
@@ -279,9 +283,9 @@ export class Contract {
   getMostTipedRecipes() {
     switch (CONTRACT_LANG) {
       case "AS":
-        return (window as any).contract.getMostTipedRecipes({});
+        return (window as any).contract.getMostTipedRecipes({}).then((result: any) => camelcaseKeys(result, { deep: true }));
       case "RUST":
-        return (window as any).contract.get_most_tiped_recipes({});
+        return (window as any).contract.get_most_tiped_recipes({}).then((result: any) => camelcaseKeys(result, { deep: true }));
       default:
         throw InvalidContractLangError;
     }
@@ -290,9 +294,9 @@ export class Contract {
   deleteRecipe({ id }: { id: string }) {
     switch (CONTRACT_LANG) {
       case "AS":
-        return (window as any).contract.deleteRecipe({ id });
+        return (window as any).contract.deleteRecipe({ id }).then((result: any) => camelcaseKeys(result, { deep: true }));
       case "RUST":
-        return (window as any).contract.delete_recipe({ id });
+        return (window as any).contract.delete_recipe({ id: parseInt(id) }).then((result: any) => camelcaseKeys(result, { deep: true }));
       default:
         throw InvalidContractLangError;
     }
@@ -317,7 +321,7 @@ export class Contract {
             recipeID,
           },
           gas
-        );
+        ).then((result: any) => camelcaseKeys(result, { deep: true }));
       case "RUST":
         return (window as any).contract.create_review(
           {
@@ -327,7 +331,7 @@ export class Contract {
             created_at: new Date().toDateString()
           },
           gas
-        );
+        ).then((result: any) => camelcaseKeys(result, { deep: true }));
       default:
         throw InvalidContractLangError;
     }
@@ -336,9 +340,9 @@ export class Contract {
   getReview({ id }: { id: string }) {
     switch (CONTRACT_LANG) {
       case "AS":
-        return (window as any).contract.getReview({ id });
+        return (window as any).contract.getReview({ id }).then((result: any) => camelcaseKeys(result, { deep: true }));
       case "RUST":
-        return (window as any).contract.get_review({ id });
+        return (window as any).contract.get_review({ id }).then((result: any) => camelcaseKeys(result, { deep: true }));
       default:
         throw InvalidContractLangError;
     }
@@ -355,12 +359,12 @@ export class Contract {
   }) {
     switch (CONTRACT_LANG) {
       case "AS":
-        return (window as any).contract.updateReview({ id, text, rating }, gas);
+        return (window as any).contract.updateReview({ id, text, rating }, gas).then((result: any) => camelcaseKeys(result, { deep: true }));
       case "RUST":
         return (window as any).contract.update_review(
           { id, text, rating },
           gas
-        );
+        ).then((result: any) => camelcaseKeys(result, { deep: true }));
       default:
         throw InvalidContractLangError;
     }
@@ -369,9 +373,9 @@ export class Contract {
   getRecipeReviews({ id }: { id: string }) {
     switch (CONTRACT_LANG) {
       case "AS":
-        return (window as any).contract.getRecipeReviews({ id });
+        return (window as any).contract.getRecipeReviews({ id }).then((result: any) => camelcaseKeys(result, { deep: true }));
       case "RUST":
-        return (window as any).contract.get_recipe_reviews({ id });
+        return (window as any).contract.get_recipe_reviews({ id }).then((result: any) => camelcaseKeys(result, { deep: true }));
       default:
         throw InvalidContractLangError;
     }
@@ -380,53 +384,9 @@ export class Contract {
   deleteReview({ id }: { id: string }) {
     switch (CONTRACT_LANG) {
       case "AS":
-        return (window as any).contract.deleteReview({ id });
+        return (window as any).contract.deleteReview({ id }).then((result: any) => camelcaseKeys(result, { deep: true }));
       case "RUST":
-        return (window as any).contract.delete_review({ id });
-      default:
-        throw InvalidContractLangError;
-    }
-  }
-
-  getShoppingList() {
-    switch (CONTRACT_LANG) {
-      case "AS":
-        return (window as any).contract.getShoppingList({});
-      case "RUST":
-        return (window as any).contract.get_shopping_list({});
-      default:
-        throw InvalidContractLangError;
-    }
-  }
-
-  updateGroceryList({ lists }: { lists: Array<groceryListInterface> }) {
-    switch (CONTRACT_LANG) {
-      case "AS":
-        return (window as any).contract.updateGroceryList({ lists }, gas);
-      case "RUST":
-        return (window as any).contract.update_grocery_list({ lists }, gas);
-      default:
-        throw InvalidContractLangError;
-    }
-  }
-
-  updateRecipeList({ lists }: { lists: Array<recipeListInterface> }) {
-    switch (CONTRACT_LANG) {
-      case "AS":
-        return (window as any).contract.updateRecipeList({ lists }, gas);
-      case "RUST":
-        return (window as any).contract.update_recipe_list({ lists }, gas);
-      default:
-        throw InvalidContractLangError;
-    }
-  }
-
-  addRecipeList({ recipeID }: { recipeID: string }) {
-    switch (CONTRACT_LANG) {
-      case "AS":
-        return (window as any).contract.addRecipeList({ recipeID }, gas);
-      case "RUST":
-        return (window as any).contract.add_recipe_list({ recipeID }, gas);
+        return (window as any).contract.delete_review({ id }).then((result: any) => camelcaseKeys(result, { deep: true }));
       default:
         throw InvalidContractLangError;
     }
@@ -435,9 +395,9 @@ export class Contract {
   addFavoriteRecipe({ recipeID }: { recipeID: string }) {
     switch (CONTRACT_LANG) {
       case "AS":
-        return (window as any).contract.addFavoriteRecipe({ recipeID }, gas);
+        return (window as any).contract.addFavoriteRecipe({ recipeID }, gas).then((result: any) => camelcaseKeys(result, { deep: true }));
       case "RUST":
-        return (window as any).contract.add_favorite_recipe({ recipeID }, gas);
+        return (window as any).contract.add_favorite_recipe({ recipe_id: parseInt(recipeID) }, gas).then((result: any) => camelcaseKeys(result, { deep: true }));
       default:
         throw InvalidContractLangError;
     }
@@ -446,9 +406,9 @@ export class Contract {
   getUserRecipeBooks({ accountID }: { accountID: AccountID }) {
     switch (CONTRACT_LANG) {
       case "AS":
-        return (window as any).contract.getUserRecipeBooks({ accountID });
+        return (window as any).contract.getUserRecipeBooks({ accountID }).then((result: any) => camelcaseKeys(result, { deep: true }));
       case "RUST":
-        return (window as any).contract.get_user_recipe_books({ accountID });
+        return (window as any).contract.get_user_recipe_books({ account_id: accountID }).then((result: any) => camelcaseKeys(result, { deep: true }));
       default:
         throw InvalidContractLangError;
     }
@@ -457,9 +417,9 @@ export class Contract {
   getUserRecipes({ accountID }: { accountID: AccountID }) {
     switch (CONTRACT_LANG) {
       case "AS":
-        return (window as any).contract.getUserRecipes({ accountID });
+        return (window as any).contract.getUserRecipes({ accountID }).then((result: any) => camelcaseKeys(result, { deep: true }));
       case "RUST":
-        return (window as any).contract.get_user_recipes({ accountID });
+        return (window as any).contract.get_user_recipes({ account_id: accountID }).then((result: any) => camelcaseKeys(result, { deep: true }));
       default:
         throw InvalidContractLangError;
     }
@@ -468,9 +428,54 @@ export class Contract {
   removeFavoriteRecipe({ recipeID }: { recipeID: string }) {
     switch (CONTRACT_LANG) {
       case "AS":
-        return (window as any).contract.removeFavoriteRecipe({ recipeID });
+        return (window as any).contract.removeFavoriteRecipe({ recipeID }).then((result: any) => camelcaseKeys(result, { deep: true }));
       case "RUST":
-        return (window as any).contract.remove_favorite_recipe({ recipeID });
+        return (window as any).contract.remove_favorite_recipe({ recipe_id: parseInt(recipeID) }).then((result: any) => camelcaseKeys(result, { deep: true }));
+      default:
+        throw InvalidContractLangError;
+    }
+  }
+
+  // To be considered.
+  getShoppingList() {
+    switch (CONTRACT_LANG) {
+      case "AS":
+        return (window as any).contract.getShoppingList({}).then((result: any) => camelcaseKeys(result, { deep: true }));
+      case "RUST":
+        return (window as any).contract.get_shopping_list({}).then((result: any) => camelcaseKeys(result, { deep: true }));
+      default:
+        throw InvalidContractLangError;
+    }
+  }
+
+  updateGroceryList({ lists }: { lists: Array<groceryListInterface> }) {
+    switch (CONTRACT_LANG) {
+      case "AS":
+        return (window as any).contract.updateGroceryList({ lists }, gas).then((result: any) => camelcaseKeys(result, { deep: true }));
+      case "RUST":
+        return (window as any).contract.update_grocery_list({ lists }, gas).then((result: any) => camelcaseKeys(result, { deep: true }));
+      default:
+        throw InvalidContractLangError;
+    }
+  }
+
+  updateRecipeList({ lists }: { lists: Array<recipeListInterface> }) {
+    switch (CONTRACT_LANG) {
+      case "AS":
+        return (window as any).contract.updateRecipeList({ lists }, gas).then((result: any) => camelcaseKeys(result, { deep: true }));
+      case "RUST":
+        return (window as any).contract.update_recipe_list({ lists }, gas).then((result: any) => camelcaseKeys(result, { deep: true }));
+      default:
+        throw InvalidContractLangError;
+    }
+  }
+
+  addRecipeList({ recipeID }: { recipeID: string }) {
+    switch (CONTRACT_LANG) {
+      case "AS":
+        return (window as any).contract.addRecipeList({ recipeID }, gas).then((result: any) => camelcaseKeys(result, { deep: true }));
+      case "RUST":
+        return (window as any).contract.add_recipe_list({ recipeID }, gas).then((result: any) => camelcaseKeys(result, { deep: true }));
       default:
         throw InvalidContractLangError;
     }

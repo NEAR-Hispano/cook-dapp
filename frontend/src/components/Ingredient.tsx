@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import TrashIcon from "../assets/svg/TrashIcon";
 import useCopyToClipboard from "../hooks/useCopyToClipboard";
 import { ingredientInterface } from "../types";
@@ -27,9 +27,6 @@ const Ingredient: FC<Props> = ({
 }) => {
   const { amount, unit, label, details } = ingredient;
   const [_, copy] = useCopyToClipboard();
-  const [hasTextLengthError, setHasTextLengthError] = useState<string | null>(
-    null
-  );
 
   return (
     <div className="ingredient-wrapper cursor-pointer">
@@ -41,6 +38,7 @@ const Ingredient: FC<Props> = ({
             onBlur={(e) =>
               editIngridientAmount(index, e.currentTarget.innerText)
             }
+            textType="title"
           >
             {amount}
           </EditableText>
@@ -50,6 +48,7 @@ const Ingredient: FC<Props> = ({
             className="ingredient-quality-container-unit"
             isEditable={editingMode}
             onBlur={(e) => editIngridientUnit(index, e.currentTarget.innerText)}
+            textType="title"
           >
             {unit}
           </EditableText>
@@ -61,7 +60,6 @@ const Ingredient: FC<Props> = ({
             onBlur={(e) =>
               editIngridientLabel(index, e.currentTarget.innerText)
             }
-            setHasTextLengthError={setHasTextLengthError}
             textType="title"
           >
             {label}
@@ -74,7 +72,6 @@ const Ingredient: FC<Props> = ({
             onBlur={(e) =>
               editIngridientDetails(index, e.currentTarget.innerText)
             }
-            setHasTextLengthError={setHasTextLengthError}
             textType="title"
           >
             {details}

@@ -5,6 +5,7 @@ import ImageUploadIcon from "../assets/svg/ImageUploadIcon";
 import SaveIcon from "../assets/svg/SaveIcon";
 import TrashIcon from "../assets/svg/TrashIcon";
 import useContract from "../hooks/useContract";
+import usePlaceholder from "../hooks/usePlaceholder";
 import useTranslator from "../hooks/useTranslator";
 import useUser from "../hooks/useUser";
 import { imageInterface, recipeBookInterface, userInterface } from "../types";
@@ -26,11 +27,14 @@ const RecipeBookTile: FC<Props> = ({ recipeBook, selectBook, profile }) => {
   const translate = useTranslator();
   const contract = useContract();
   const [user] = useUser();
-  const [hasTextLengthError, setHasTextLengthError] = useState<string | null>(null)
+  const [hasTextLengthError, setHasTextLengthError] = useState<string | null>(
+    null
+  );
+  const [isPlaceholder] = usePlaceholder();
 
   useEffect(() => {
     if (user && profile) {
-      setEditingMode(user.accountID === profile.accountID);
+      setEditingMode(user.accountId === profile.accountId);
     }
   }, [user, profile]);
 
@@ -110,7 +114,7 @@ const RecipeBookTile: FC<Props> = ({ recipeBook, selectBook, profile }) => {
   }
 
   return (
-    <div className="recipe-book-tile-container">
+    <div className={`recipe-book-tile-container`}>
       {editingMode && (
         <div className="edit-icons">
           <label className="edit-icon-container" htmlFor="updated-banner-image">
@@ -138,31 +142,31 @@ const RecipeBookTile: FC<Props> = ({ recipeBook, selectBook, profile }) => {
         <small>{translate("recipe_book")}</small>
       </div>
       <img
-        src={editedBanner ? editedBanner.url : banner.url}
-        alt={editedBanner ? editedBanner.name : banner.name}
+        src={isPlaceholder? "" : editedBanner ? editedBanner.url : banner.url}
+        alt=""
+        className={`${isPlaceholder && "placeholder"}`}
       />
       <div className="recipe-slide-information-wrapper">
         <div className="title">
           {editingMode ? (
             <EditableText
-              className="edit-recipe-book-title"
+              className={`edit-recipe-book-title ${isPlaceholder && "placeholder"}`}
               onBlur={(e) => setEditedTitle(e.currentTarget.innerText)}
               isEditable={editingMode}
-              setHasTextLengthError={setHasTextLengthError}
-              textType="description"
+              textType="title"
             >
               {title && title}
             </EditableText>
           ) : (
-            <h6>{title}</h6>
+            <h6 className={`${isPlaceholder && "placeholder"}`}>{title}</h6>
           )}
         </div>
         <div
           className="explore-option-container"
           onClick={() => selectBook(recipeBook)}
         >
-          <small>{translate("explore")}</small>
-          <ArrowRight size={20} />
+          <small className={`${isPlaceholder && "placeholder"}`}>{translate("explore")}</small>
+          {!isPlaceholder && <ArrowRight size={20} />}
         </div>
       </div>
     </div>

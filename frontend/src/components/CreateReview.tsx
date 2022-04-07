@@ -19,10 +19,6 @@ const CreateReview: FC<Props> = ({ recipeID }) => {
   const translate = useTranslator();
   const [rating, setRating] = useState<number>(0);
   const [text, setText] = useState<string>("");
-  const [hasTextLengthError, setHasTextLengthError] = useState<string | null>(
-    null
-  );
-
   function customDateFormater(unFormatedDate: string) {
     const result = new Date(unFormatedDate);
     return result.toDateString();
@@ -97,13 +93,12 @@ const CreateReview: FC<Props> = ({ recipeID }) => {
           </div>
         </div>
         <div className="review-header-bottom-wrapper">
-          {user && user.accountID} - {customDateFormater(new Date().toString())}
+          {user && user.accountId} - {customDateFormater(new Date().toString())}
         </div>
       </div>
       <EditableText
         isEditable={true}
         onBlur={(e) => setText(e.currentTarget.innerText)}
-        setHasTextLengthError={setHasTextLengthError}
         textType="title"
       >
         {text ? text : translate("Write your review here...")}

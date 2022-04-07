@@ -1,0 +1,16 @@
+@keyframes skeleton-loading {
+  to {
+    background-position: -170% 0;
+  }
+}
+
+.placeholder {
+  background-image: linear-gradient(to right, #999, #ccc);
+  height: 100%;
+  width: 100%;
+  background-size: 200% 100%;
+  animation: skeleton-loading 1s linear infinite;
+  background-color: #b3b3b3;
+  color: #0000;
+  color: transparent !important;
+}
